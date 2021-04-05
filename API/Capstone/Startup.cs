@@ -35,7 +35,8 @@ namespace Capstone
                     });
             });
 
-            string connectionString = Configuration.GetConnectionString("Project");
+            //todo: make this use the prodiction DB when we're done
+            string connectionString = Configuration.GetConnectionString("Testing");
 
             // configure jwt authentication
             var key = Encoding.ASCII.GetBytes(Configuration["JwtSecret"]);
