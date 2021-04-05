@@ -6,6 +6,7 @@ import Logout from '@/views/Logout.vue'
 import Register from '@/views/Register.vue'
 import store from '@/store/index'
 import Profile from '@/views/Profile.vue'
+import Playdates from '@/views/Playdates.vue'
 
 Vue.use(Router)
 
@@ -22,6 +23,14 @@ const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
+    {
+      path: '/playdates',
+      name: 'playdates',
+      component: Playdates,
+      meta: {
+        requiresAuth: false
+      }
+    },
     {
       path: '/',
       name: 'home',
