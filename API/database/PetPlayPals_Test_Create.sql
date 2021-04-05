@@ -15,15 +15,34 @@ USE PetPlayPals_Test
 GO
 
 --create tables
+
+--locations table
+create table locations (
+	location_id int identity(1,1) not null,
+	name varchar(60) null,
+	address varchar(80) null,
+	lat numeric(10,6) not null,
+	lng numeric(10,6) not null,
+
+	CONSTRAINT PK_location PRIMARY KEY (location_id)
+)
+
 --user table
 CREATE TABLE users (
 	user_id int IDENTITY(1,1) NOT NULL,
 	username varchar(50) NOT NULL,
 	password_hash varchar(200) NOT NULL,
 	salt varchar(200) NOT NULL,
-	user_role varchar(50) NOT NULL
+	user_role varchar(50) NOT NULL,
+	location_id int null,
 	CONSTRAINT PK_user PRIMARY KEY (user_id)
 )
+
+--populate default data
+INSERT INTO users (username, password_hash, salt, user_role) VALUES ('user','Jg45HuwT7PZkfuKTz6IB90CtWY4=','LHxP4Xh7bN0=','user');
+INSERT INTO users (username, password_hash, salt, user_role) VALUES ('admin','YhyGVQ+Ch69n4JMBncM4lNF/i9s=', 'Ar/aB2thQTI=','admin');
+
+-- ######## pet stuff ############
 
 --pet_type table
 create table pet_types(
@@ -53,10 +72,6 @@ insert into personalities(personality_name) values
 	('Skittish'),
 	('High-energy')
 
-
-
-
-
 --pets table
 create table pets(
 	pet_id int identity(1,1) NOT NULL,
@@ -65,6 +80,7 @@ create table pets(
 	sex char NOT NULL,
 	pet_type_id int not null,
 	pet_breed varchar(20),
+	bio varchar(300),
 
 
 	constraint PK_pet primary key (pet_id),
@@ -88,8 +104,22 @@ create table personality_pet(
 	constraint FK_personality_pet_personality_id foreign key (personality_id) references personalities (personality_id),
 )
 
---populate default data
-INSERT INTO users (username, password_hash, salt, user_role) VALUES ('user','Jg45HuwT7PZkfuKTz6IB90CtWY4=','LHxP4Xh7bN0=','user');
-INSERT INTO users (username, password_hash, salt, user_role) VALUES ('admin','YhyGVQ+Ch69n4JMBncM4lNF/i9s=', 'Ar/aB2thQTI=','admin');
+-- ####### playdate stuff #########
+create table playdates(
+	playdate_id int identity(1,1) not null,
+	date Date not null,
+	location_id int not null,
+
+	constraint PK_playdate primary key (playdate_id),
+	constraint FK_playdate_location foreign key (location_id) references locations (location_id)
+)
+
+create table playdate_pet(
+	playdate_id int not null,
+	pet_id int not null,
+	constraint FK_playdate_id foreign key (playdate_id) references playdates (playdate_id),
+	constraint FK_pet_id foreign key (pet_id) references pets (pet_id)
+)
+--
 
 GO
