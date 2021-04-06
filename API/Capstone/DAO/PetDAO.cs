@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Capstone.DAO
 {
-    public class PetDAO
+    public class PetDAO : IPetDAO
     {
         private readonly string connectionString;
         private const string SQL_ADDPET = "insert into pets(pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values (@pet_name, @birthday, @sex, @pet_type_id, @pet_breed, @color, @bio); select @@IDENTITY;";
