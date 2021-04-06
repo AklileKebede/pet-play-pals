@@ -88,6 +88,15 @@ create table pets(
 	constraint CHK_sex check (sex in ('M','F'))
 )
 
+--pet pictures
+create table pet_images(
+	pet_image_id int identity(1,1) not null,
+	pet_image_data varbinary(max)not null,
+	pet_id int not null,
+	constraint PK_pet_images primary key (pet_image_id),
+	constraint FK_pet_id foreign key (pet_id) references pets (pet_id)
+)
+
 --owner_pet relator table
 create table user_pet(
 	user_id int not null,
@@ -114,6 +123,7 @@ create table playdates(
 	constraint FK_playdate_location foreign key (location_id) references locations (location_id)
 )
 
+--playdate_pet relator table
 create table playdate_pet(
 	playdate_id int not null,
 	pet_id int not null,
