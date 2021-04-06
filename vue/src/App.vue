@@ -22,9 +22,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
+  background-color: #F2F3F4;
 }
-#nav {
+/* #nav {
   padding: 30px;
   a {
     font-weight: bold;
@@ -33,5 +33,6 @@
       color: #42b983;
     }
   }
-}
+} */
+
 </style>
