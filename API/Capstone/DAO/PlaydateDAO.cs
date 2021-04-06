@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Capstone.DAO
 {
-    public class PlaydateDAO
+    public class PlaydateDAO : IPlaydateDAO
     {
         private readonly string connectionString;
         private const string SQL_GETALLPLAYDATES = "select * from playdates;";
@@ -49,7 +49,7 @@ namespace Capstone.DAO
                     }
                 }
             }
-            catch(SqlException)
+            catch (SqlException)
             {
                 throw;
             }
@@ -63,7 +63,7 @@ namespace Capstone.DAO
         public Playdate GetPlaydateById(int playdateId)
         {
             Playdate playdate = new Playdate();
-            
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -72,7 +72,7 @@ namespace Capstone.DAO
                     SqlCommand cmd = new SqlCommand(SQL_GETPLAYDATEBYID, conn);
                     cmd.Parameters.AddWithValue("@playdate_id", playdateId);
                     SqlDataReader rdr = cmd.ExecuteReader();
-                    while(rdr.Read())
+                    while (rdr.Read())
                     {
                         playdate = RowToObject(rdr);
                     }
@@ -91,7 +91,7 @@ namespace Capstone.DAO
         //add a new playdate 
         public int AddPlaydate(Playdate playdateToAdd)
         {
-            int playdateId = 0;
+            int playdateId = -1;
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -106,7 +106,7 @@ namespace Capstone.DAO
                 }
 
             }
-            catch(SqlException)
+            catch (SqlException)
             {
                 throw;
             }
