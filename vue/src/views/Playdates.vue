@@ -6,6 +6,7 @@
         <td>Pet Type:</td>
         <td class="dropdown">
           <select name="searchPetType" id="petType" class="dropdown-content">
+              <option value=""></option>
             <option value="dog">Dog</option>
             <option value="cat">Cat</option>
           </select>
@@ -90,8 +91,8 @@ export default {
 }
 .dropdown-content {
   position: relative;
-  background-color: #d7dff8;
-  color:darkslateblue;
+  background-color: whitesmoke;
+  color:#0D7685;
 
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
