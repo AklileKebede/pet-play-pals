@@ -10,3 +10,6 @@ select * from locations
 --insert a playdate
 insert into playdates(date,location_id) values
 	('04-20-2021',1)
+
+
+select * from playdates
