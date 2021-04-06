@@ -12,7 +12,7 @@ namespace Capstone.DAO
         private readonly string connectionString;
         private const string SQL_GETALLPLAYDATES = "select * from playdates;";
         private const string SQL_GETPLAYDATEBYID = "select * from playdates where playdate_id = @playdate_id;";
-        private const string SQL_ADDPLAYDATE = "insert into playdates (date, location_id) values (@date, @location_id);";
+        private const string SQL_ADDPLAYDATE = "insert into playdates (date, location_id) values (@date, @location_id); select @@IDENTITY;";
 
         public PlaydateDAO(string connectionString)
         {
@@ -104,13 +104,11 @@ namespace Capstone.DAO
                     playdateToAdd.PlaydateId = playdateId;
 
                 }
-
             }
             catch (SqlException)
             {
-                throw;
+                return playdateId;
             }
-
 
             return playdateId;
 
