@@ -67,10 +67,12 @@ create table personalities(
 --populate the pet personality table
 insert into personalities(personality_name) values 
 	('Friendly'),
-	('Aggressive'),
+	('Plays Rough'),
 	('Shy'),
 	('Skittish'),
-	('High-energy')
+	('High-energy'),
+	('Reactive'),
+	('Gentle')
 
 --pets table
 create table pets(

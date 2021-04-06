@@ -29,13 +29,13 @@ namespace Capstone.Controllers
         {
             List<Playdate> playdates = DAO.GetAllPlaydates();
             return Ok(playdates);
-        } 
+        }
 
-        [HttpGet("/playdates/{id}")]
+        [HttpGet("{id}")]
         public ActionResult<Playdate> getPlaydateById(int id)
         {
             Playdate playdate = DAO.GetPlaydateById(id);
-            if(playdate != null)
+            if (playdate != null)
             {
                 return Ok(playdate);
             } else
@@ -45,5 +45,15 @@ namespace Capstone.Controllers
         }
 
         //add playdate
+        [HttpPost()]
+        public ActionResult<Playdate> CreatePlaydate(Playdate playdateToAdd)
+        {
+            int playdateId = DAO.AddPlaydate(playdateToAdd);
+            if (playdateId < 1)
+            {
+                return BadRequest();
+            }
+            else return Ok(playdateToAdd);
+        }
     }
 }

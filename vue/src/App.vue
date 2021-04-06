@@ -1,38 +1,56 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <div>
-        <router-link v-bind:to="{ name: 'home' }">Home</router-link>&nbsp;|&nbsp;
-        <!-- <router-link>Search</router-link>&nbsp;|&nbsp; -->
-        <router-link v-bind:to="{ name: 'login' }" v-if="$store.state.token === ''">Login</router-link>
+    <header>
+      <div class="left-nav">
+        <router-link id="home-nav" v-bind:to="{ name: 'home' }"
+          ><img src="logo.png" alt="Play Pals Logo"
+        /></router-link>
       </div>
-      <div v-if="$store.state.token != ''">
-      <router-link v-bind:to="{ name: 'profile' }" v-if="$store.state.token != ''">Profile</router-link> <span v-if="$store.state.token != ''">&nbsp; | &nbsp;</span>
-      <router-link v-bind:to="{ name: 'logout' }" v-if="$store.state.token != ''">Logout</router-link>
-      <!-- <router-link>Form</router-link> -->
+      <div class="right-nav">
+        <router-link
+          v-bind:to="{ name: 'login' }"
+          v-if="$store.state.token === ''"
+          >Login</router-link
+        >
+        <div v-if="$store.state.token != ''">
+          <router-link
+            v-bind:to="{ name: 'profile' }"
+            v-if="$store.state.token != ''"
+            >Profile</router-link
+          >
+          <span v-if="$store.state.token != ''">&nbsp; | &nbsp;</span>
+          <router-link
+            v-bind:to="{ name: 'logout' }"
+            v-if="$store.state.token != ''"
+            >Logout</router-link
+          >
+        </div>
       </div>
-
-    </div>
+    </header>
     <router-view />
+    <footer>&copy; Pet Play Pals</footer>
   </div>
 </template>
 <style scoped>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+header {
+  display: flex;
+}
+.left-nav img {
+  height: 1.5em;
+}
+.right-nav img{
+  height: 1.5em;
+}
+
+header {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  background-color: #F2F3F4;
+  display: flex;
+  justify-content: space-between;
 }
-/* #nav {
-  padding: 30px;
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-} */
-
+#app{
+zoom: 2
+}
 </style>
