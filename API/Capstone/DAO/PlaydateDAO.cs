@@ -62,7 +62,7 @@ namespace Capstone.DAO
         //get a specific playdate by id
         public Playdate GetPlaydateById(int playdateId)
         {
-            Playdate playdate = new Playdate();
+            Playdate playdate = null;
 
             try
             {
