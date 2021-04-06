@@ -95,7 +95,7 @@ create table pet_images(
 	pet_image_data varbinary(max)not null,
 	pet_id int not null,
 	constraint PK_pet_images primary key (pet_image_id),
-	constraint FK_pet_id foreign key (pet_id) references pets (pet_id)
+	constraint FK_pet_images_pet_id foreign key (pet_id) references pets (pet_id)
 )
 
 --owner_pet relator table
@@ -129,7 +129,7 @@ create table playdate_pet(
 	playdate_id int not null,
 	pet_id int not null,
 	constraint FK_playdate_id foreign key (playdate_id) references playdates (playdate_id),
-	constraint FK_pet_id foreign key (pet_id) references pets (pet_id)
+	constraint FK_playdate_pet_pet_id foreign key (pet_id) references pets (pet_id)
 )
 --
 
