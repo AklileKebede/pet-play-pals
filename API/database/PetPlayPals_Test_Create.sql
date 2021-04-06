@@ -80,6 +80,7 @@ create table pets(
 	sex char NOT NULL,
 	pet_type_id int not null,
 	pet_breed varchar(20),
+	color varchar(20) null,
 	bio varchar(300),
 
 
