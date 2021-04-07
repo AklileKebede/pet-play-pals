@@ -1,10 +1,10 @@
 <template>
   <div class="profile">
     <h1>Profile</h1>
-    <p>These are your profile details:</p>
+    <!-- <p>These are your profile details:</p> -->
     <p>User Name: {{currentUser.username}}</p>
-    <p>User Id: {{currentUser.userId}}</p>
-    <p>Role: {{currentUser.role}}</p>
+    <!-- <p>User Id: {{currentUser.userId}}</p> -->
+    <!-- <p>Role: {{currentUser.role}}</p> -->
   </div>
 </template>
 
