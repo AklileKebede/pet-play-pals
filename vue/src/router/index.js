@@ -7,6 +7,7 @@ import Register from '@/views/Register.vue'
 import store from '@/store/index'
 import Profile from '@/views/Profile.vue'
 import Playdates from '@/views/Playdates.vue'
+import PlaydateMap from '@/views/PlaydateMap'
 
 Vue.use(Router)
 
@@ -71,6 +72,11 @@ const router = new Router({
         requiresAuth: false
       }
     },
+	{
+		path: "/map",
+		name: "map",
+		component: PlaydateMap
+	}
   ]
 })
 
