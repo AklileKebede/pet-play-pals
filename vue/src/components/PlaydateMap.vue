@@ -11,10 +11,11 @@
 			<span id="place-address"></span>
 		</div>
 		<div class="map" id="map" />
-		<div>
+		<!-- <div>
+			
 			<p id='lat'>Current Lat: {{currentLocation.lat}}</p>
 			<p id='lng'>Current lng: {{currentLocation.lng}}</p>
-		</div>
+		</div> -->
 	</div>
 </template>
 
@@ -45,10 +46,10 @@ export default {
 
 		const options = {
 			componentRestrictions: { country: "us" },
-			fields: ["formatted_address", "geometry", "name"],
+			fields: ["formatted_address", "geometry", "name" ],
 			origin: map.getCenter(),
 			strictBounds: false,
-			types: ["establishment"],
+			types: ["geocode","establishment"],
 		};
 		//map.controls[google.maps.ControlPosition.TOP_RIGHT].push(card);
 		const autocomplete = new google.maps.places.Autocomplete(
