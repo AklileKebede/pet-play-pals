@@ -1,19 +1,19 @@
 <template>
   <div class="playdates">
-    <h1>Play Dates</h1>
+    <h1>Play Dates Search</h1>
     <table class="form">
       <tr>
-        <td>Pet Type:</td>
+        <tr>Pet Type:</tr>
         <td class="dropdown">
           <select name="searchPetType" id="petType" class="dropdown-content">
-              <option value=""></option>
+            <option value=""></option>
             <option value="dog">Dog</option>
             <option value="cat">Cat</option>
           </select>
         </td>
 
-        <td>Personality:</td>
-        
+        <tr>Personality:</tr>
+
         <td class="dropdown">
           <select
             name="searchPersonality"
@@ -22,21 +22,28 @@
           >
             <option value=""></option>
             <option value="friendly">Friendly</option>
-            <option value="aggressive">Aggressive</option>
+            <option value="Plays Rough">Plays Rough</option>
             <option value="shy">Shy</option>
             <option value="skittish">Skittish</option>
             <option value="highEnergy">High-energy</option>
+            <option value="Reactive">Reactive</option>
+            <option value="Gentle">Gentle</option>
           </select>
         </td>
-        <td>Location:</td>
+        <tr>Location:</tr>
         <td>
-          <input type="text" v-model="location" placeholder="zip code" class="dropdown-content"/>
+          <input
+            type="text"
+            v-model="location"
+            placeholder="zip code"
+            class="dropdown-content"
+          />
         </td>
-        <td>
-          <button type="button" @click="getData">Search</button>
-        </td>
-      </tr>
+        <tr>
+          <button type="button" @click="getData" class="green-button">Search</button>
+        </tr>
     </table>
+    <h2>Search Results</h2>
     <!-- Shows below the list of playdates , TODO need to change to show on a search page-->
     <playdate-list :playdates="playdates"></playdate-list>
   </div>
@@ -82,6 +89,23 @@ export default {
 </script>
 
 <style scoped>
+.playdates{
+  display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.green-button{
+background:    #69c181;
+border-radius: 11px;
+width:         200px;
+height:        50px;
+color:         #ffffff;
+display:       inline-block;
+font:          normal bold 26px/50px "Open Sans", sans-serif;
+text-align:    center;
+text-decoration: none;
+margin: 6px;
+}
 .dropdown:hover .dropdown-content {
   display: block;
 }
@@ -92,11 +116,13 @@ export default {
 .dropdown-content {
   position: relative;
   background-color: whitesmoke;
-  color:#0D7685;
+  color: #0d7685;
 
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 }
-
+h1{
+  text-align: center;
+}
 </style>

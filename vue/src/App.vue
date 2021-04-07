@@ -2,24 +2,29 @@
   <div id="app">
     <header>
       <div class="left-nav">
-        <router-link id="home-nav" v-bind:to="{ name: 'home' }"
-          ><img src="logo.png" alt="Play Pals Logo"
-        /></router-link>
+        <router-link
+          id="home-nav"
+          v-bind:to="{ name: 'home' }"
+          class="green-button"
+          >Pet Play Pals</router-link
+        >
       </div>
       <div class="right-nav">
         <router-link
+          class="green-button"
           v-bind:to="{ name: 'login' }"
           v-if="$store.state.token === ''"
           >Login</router-link
         >
         <div v-if="$store.state.token != ''">
           <router-link
+            class="green-button"
             v-bind:to="{ name: 'profile' }"
             v-if="$store.state.token != ''"
             >Profile</router-link
           >
-          <span v-if="$store.state.token != ''">&nbsp; | &nbsp;</span>
           <router-link
+            class="green-button"
             v-bind:to="{ name: 'logout' }"
             v-if="$store.state.token != ''"
             >Logout</router-link
@@ -27,19 +32,60 @@
         </div>
       </div>
     </header>
-    <router-view />
+    <aside v-if="$store.state.token != ''">
+      <ul>
+        <div>
+          <p>Forum</p>
+          <p>Schedule Playdate</p>
+        </div>
+        </ul>
+    </aside>
+    <body>
+      <router-view class="main" />
+    </body>
     <footer>&copy; Pet Play Pals</footer>
   </div>
 </template>
+
+
 <style scoped>
 header {
-  display: flex;
+  grid-area: header;
 }
-.left-nav img {
-  height: 1.5em;
+aside {
+  grid-area: aside;
 }
-.right-nav img{
-  height: 1.5em;
+body {
+  grid-area: body;
+}
+footer {
+  grid-area: footer;
+}
+
+#app {
+  display: grid;
+  grid-template-areas:
+    'header header header'
+    'asid body body'
+    'aside footer footer';
+  grid-gap: 20px;
+  background-color: 0d7685;
+  padding: 20px;
+}
+ul {
+    padding: 0;
+}
+.green-button {
+  background: #69c181;
+  border-radius: 11px;
+  width: 200px;
+  height: 50px;
+  color: #ffffff;
+  display: inline-block;
+  font: normal bold 26px/50px "Open Sans", sans-serif;
+  text-align: center;
+  text-decoration: none;
+  margin: 6px;
 }
 
 header {
@@ -49,8 +95,5 @@ header {
   text-align: center;
   display: flex;
   justify-content: space-between;
-}
-#app{
-zoom: 2
 }
 </style>
