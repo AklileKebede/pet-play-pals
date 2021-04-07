@@ -3,17 +3,22 @@ go
 
 --insert a location
 insert into locations(name,address,lat,lng) values
-	('Tech Elevator','7100 Euclid Ave #140, Cleveland, OH 44103', 41.50383000392251,-81.63868811898969)
+	('Tech Elevator','7100 Euclid Ave #140, Cleveland, OH 44103', 41.50383000392251,-81.63868811898969),
+	('Canine Meadow Dog Park', '9038 Euclid Chardon Rd, Kirtland, OH 44094', 41.578580, -81.319240),
+	('affoGATO Cat Cafe', '761 Starkweather Ave, Cleveland, OH 44113', 41.477340, -81.682290)
 
 select * from locations
 
 --insert a playdate
 insert into playdates(date,location_id) values
-	('04-20-2021',1)
+	('04-20-2021',1),
+	('05-12-2021',2),
+	('11-11-2021',3)
+
 
 select * from playdates
 
-	select * from pets
+
 --insert a pet 
 insert into pets(pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values ('Ramona', '12-02-2018', 'F', 1, 'Mix', 'Spotted', 'A goofy lass');
 insert into pets(pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values ('Maggie', '05-12-2019', 'F', 1, 'Goldendoodle', 'Golden', 'Perfect snuggler'  );
@@ -21,10 +26,30 @@ insert into pets(pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) va
 insert into pets(pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values ('Hanzo', '01-15-2015', 'M', 2, 'Brown Tabby', 'Brown and Black', 'HAMzo is fat');
 
 
+select * from pets
+
+--creating users from web app
 INSERT INTO users (username, password_hash, salt, user_role) VALUES ('brandon', 'V0lRjxFQxgKeP+/h5IbKqnAPQoU=', 'Rz+Z8yMoqIg=', 'user');
 insert into users (username, password_hash, salt, user_role) values ('rosa', 'EBbMAfKO8NXslvRz6GCCVmeV6ig=', 'ybDc/+RXVqs=', 'user');
 insert into users (username, password_hash, salt, user_role) values ('paul', 'fp9wBngxMgdo2HIcts7YLBJdhyU=', 'Sqzc1pc53es=', 'user');
 insert into users (username, password_hash, salt, user_role)values ('aklile', 'HqkX65RZf4sM+SaOwjcVhDKJgvY=', 'v7N29suiPBA=', 'user');
 
+select * from users
 
+--connecting users to pets
+insert into user_pet(user_id, pet_id) Values(3,4);
+insert into user_pet(user_id, pet_id) Values(4,1);
+insert into user_pet(user_id, pet_id) Values(5,2);
+insert into user_pet(user_id, pet_id) Values(6,3);
+
+select * from user_pet 
+
+--connecting pets to play dates
+insert into playdate_pet(playdate_id, pet_id) Values(1,3);
+insert into playdate_pet(playdate_id, pet_id) Values(1,1);
+insert into playdate_pet(playdate_id, pet_id) Values(2,4);
+insert into playdate_pet(playdate_id, pet_id) Values(2,2);
+insert into playdate_pet(playdate_id, pet_id) Values(3,4);
+
+select * from playdate_pet
 
