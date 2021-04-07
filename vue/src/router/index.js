@@ -7,7 +7,7 @@ import Register from '@/views/Register.vue'
 import store from '@/store/index'
 import Profile from '@/views/Profile.vue'
 import Playdates from '@/views/Playdates.vue'
-import PlaydateMap from '@/views/PlaydateMap'
+import PlaydateMapView from '@/views/PlaydateMapView'
 
 Vue.use(Router)
 
@@ -21,76 +21,79 @@ Vue.use(Router)
  */
 
 const router = new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/playdates',
-      name: 'playdates',
-      component: Playdates,
-      meta: {
-        requiresAuth: false
-      }
-    },
-    {
-      path: '/',
-      name: 'home',
-      component: Home,
-      meta: {
-        requiresAuth: false
-      }
-    },
-    {
-      path: '/home/profile/:id',
-      name: 'profile',
-      component: Profile,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: "/login",
-      name: "login",
-      component: Login,
-      meta: {
-        requiresAuth: false
-      }
-    },
-    {
-      path: "/logout",
-      name: "logout",
-      component: Logout,
-      meta: {
-        requiresAuth: false
-      }
-    },
-    {
-      path: "/register",
-      name: "register",
-      component: Register,
-      meta: {
-        requiresAuth: false
-      }
-    },
-	{
-		path: "/map",
-		name: "map",
-		component: PlaydateMap
-	}
-  ]
+	mode: 'history',
+	base: process.env.BASE_URL,
+	routes: [
+		{
+			path: '/playdates',
+			name: 'playdates',
+			component: Playdates,
+			meta: {
+				requiresAuth: false
+			}
+		},
+		{
+			path: '/',
+			name: 'home',
+			component: Home,
+			meta: {
+				requiresAuth: false
+			}
+		},
+		{
+			path: '/home/profile/:id',
+			name: 'profile',
+			component: Profile,
+			meta: {
+				requiresAuth: true
+			}
+		},
+		{
+			path: "/login",
+			name: "login",
+			component: Login,
+			meta: {
+				requiresAuth: false
+			}
+		},
+		{
+			path: "/logout",
+			name: "logout",
+			component: Logout,
+			meta: {
+				requiresAuth: false
+			}
+		},
+		{
+			path: "/register",
+			name: "register",
+			component: Register,
+			meta: {
+				requiresAuth: false
+			}
+		},
+		{
+			path: "/map",
+			name: "map",
+			component: PlaydateMapView,
+			meta: {
+				requiresAuth: false
+			}
+		}
+	]
 })
 
 router.beforeEach((to, from, next) => {
-  // Determine if the route requires Authentication
-  const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
+	// Determine if the route requires Authentication
+	const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
 
-  // If it does and they are not logged in, send the user to "/login"
-  if (requiresAuth && store.state.token === '') {
-    next("/login");
-  } else {
-    // Else let them go to their next destination
-    next();
-  }
+	// If it does and they are not logged in, send the user to "/login"
+	if (requiresAuth && store.state.token === '') {
+		next("/login");
+	} else {
+		// Else let them go to their next destination
+		next();
+	}
 });
 
 export default router;
