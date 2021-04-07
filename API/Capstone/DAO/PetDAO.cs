@@ -59,12 +59,9 @@ namespace Capstone.DAO
 
             return petId;
 
-
-
-
         }
 
-
+        // get all pets for a registered user 
 
 
     }
