@@ -14,7 +14,7 @@
 			</li>
 		</ul>
 		<router-link to="/PetForm" tag="button" id="petForm"
-      >Edit Pets</router-link>
+      >Add a new Pet!</router-link>
 	</div>
 </template>
 
