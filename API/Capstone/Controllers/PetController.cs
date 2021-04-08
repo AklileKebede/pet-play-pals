@@ -35,13 +35,27 @@ namespace Capstone.Controllers
         [HttpPost()]
         public ActionResult<Pet> CreatePet(Pet petToAdd)
         {
-            int playdateId = petDAO.AddPet(petToAdd);
-            if (playdateId < 1)
+            int petId = petDAO.AddPet(petToAdd);
+            if (petId < 1)
             {
                 return BadRequest();
             }
-            else return Ok(petToAdd);
+            else
+            {
+                petToAdd.PetId = petId;
+                return Ok(petToAdd);
+            }
         }
+
+        //get pet by id
+
+        //get all pets
+
+        //get all pets by user ID
+
+        //get pets by filter. query string
+
+
 
 
     }
