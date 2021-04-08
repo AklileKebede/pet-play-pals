@@ -34,7 +34,7 @@
     </header>
     <aside>
       <ul>
-        <router-link to="/playdates" tag="button" id="search" class="green-button"
+        <router-link to="/playdates"  id="search" class="green-button"
       >Search Playdates</router-link>
         <div v-if="$store.state.token != ''">
           <p>Forum</p>
@@ -68,7 +68,7 @@ footer {
   display: grid;
   grid-template-areas:
     'header header header'
-    'asid body body'
+    'aside body body'
     'aside footer footer';
   grid-gap: 20px;
   background-color: 0d7685;
@@ -77,19 +77,7 @@ footer {
 ul {
     padding: 0;
 }
-.green-button {
-  background: #69c181;
-  border-radius: 11px;
-  width: 200px;
-  height: 50px;
-  color: #ffffff;
-  display: inline-block;
-  font: normal bold 26px/50px "Open Sans", sans-serif;
-  text-align: center;
-  text-decoration: none;
-  margin: 6px;
-  border: none;
-}
+
 
 
 header {

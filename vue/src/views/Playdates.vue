@@ -51,7 +51,8 @@
 
 <script>
 import PlaydateList from "@/components/PlaydateList.vue";
-import api from "../services/AuthService.js";
+import api from "@/services/AuthService.js";
+import "@/css/style.css"
 
 export default {
   name: "playdates",
@@ -88,24 +89,13 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .playdates{
   display: flex;
     flex-direction: column;
     align-items: center;
 }
-.green-button{
-background:    #69c181;
-border-radius: 11px;
-width:         200px;
-height:        50px;
-color:         #ffffff;
-display:       inline-block;
-font:          normal bold 26px/50px "Open Sans", sans-serif;
-text-align:    center;
-text-decoration: none;
-margin: 6px;
-}
+
 .dropdown:hover .dropdown-content {
   display: block;
 }
