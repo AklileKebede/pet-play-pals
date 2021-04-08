@@ -8,6 +8,7 @@ import store from '@/store/index'
 import Profile from '@/views/Profile.vue'
 import Playdates from '@/views/Playdates.vue'
 import PlaydateMapView from '@/views/PlaydateMapView'
+import PetForm from '@/components/PetForm'
 
 Vue.use(Router)
 
@@ -79,7 +80,15 @@ const router = new Router({
 			meta: {
 				requiresAuth: false
 			}
-		}
+		},
+		{
+			path: "/PetForm",
+			name: "PetForm",
+			component: PetForm,
+			meta: {
+				requiresAuth: false
+			}
+		},
 	]
 })
 

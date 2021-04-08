@@ -1,7 +1,7 @@
 <template>
   <div>
-    <form id="PetForm">
-      <h1>Register Your Pet</h1>
+  <!-- <form id="PetForm">
+      <h1>Example h1: Register Your Pet</h1>
       <p> Pet Name: 
         <input type="text" v-model="location" placeholder="Pet Name" />
       </p>
@@ -11,27 +11,22 @@
       <li>Breed: <input type="text" v-model="location" placeholder="Breed" /></li>
       <li>Color: <input type="text" v-model="location" placeholder="Color" /></li>
       <li>Personality: <input type="text" v-model="location" placeholder="Personality" /></li>
-    </form>
+    </form> -->
+
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+ import PetForm from "@/components/PetForm.vue";
+// import api from "@/services/AuthService.js";
+// import axios from 'axios';
+
 export default {
     name: "PetForm",
-    props: {},
+    components: {PetForm},
     data(){
         return{
-            pet: {
-                petId:0,
-                petName: "",
-                bio:"",
-                petType:"",
-                sex:"",
-                breed:"",
-                color:"",
-                personality:""
-            }
+           
         };
     },
     methods:{
@@ -40,11 +35,11 @@ export default {
             
         }
     },
-    created(){ //post from form to database.
-      const petForm = {title: "Pet Form Update"};
-      axios.post("BASE_URL/home/profile/", petForm).then(response => this.petId = response.data.petId)
+    // created(){ //post from form to database.
+    //   const petForm = {title: "Pet Form Update"};
+    //   axios.post("BASE_URL/home/profile/", petForm).then(response => this.petId = response.data.petId)
 
-    }
+    // }
 };
 </script>
 

@@ -13,6 +13,8 @@
 				<pet-details v-bind:pet="pet"></pet-details>
 			</li>
 		</ul>
+		<router-link to="/PetForm" tag="button" id="petForm"
+      >Edit Pets</router-link>
 	</div>
 </template>
 
