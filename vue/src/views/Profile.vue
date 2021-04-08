@@ -9,8 +9,8 @@
 		<!-- <p>Role: {{currentUser.role}}</p> -->
 		<h2>My Pets</h2>
 		<ul>
-			<li v-for="pet in myPets" v-bind:key="pet.id">
-				<pet-details></pet-details>
+			<li v-for="pet in pets" v-bind:key="pet.id">
+				<pet-details v-bind:pet="pet"></pet-details>
 			</li>
 		</ul>
 	</div>
@@ -18,7 +18,7 @@
 
 <script>
 import PetDetails from "../components/PetDetails.vue";
-import AuthService from "../services/AuthService";
+import PetService from "@/services/PetsService"
 export default {
 	components: { PetDetails },
 	name: "profile",
@@ -34,7 +34,7 @@ export default {
 	},
 	methods: {},
 	created() {
-		this.pets = AuthService.getAllPets();
+		this.pets = PetService.getPetsForUser(this.currentUser.userId)
 	},
 };
 </script>

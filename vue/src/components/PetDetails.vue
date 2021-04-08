@@ -1,6 +1,7 @@
 <template>
 	<div>
-		
+		<p>Name: {{pet.name}}</p>
+		<p>Type: {{pet.type}}</p>
 	</div>
 </template>
 
@@ -8,17 +9,12 @@
 export default {
 	data(){
 		return{
-			pet:{
-				name : "",
-				birthday : "",
-				type : "", //dog or cat
-				
-			}
 		}
 	},
 	props:{
-		petId: Number
+		pet: object
 	},
+
 
 
 }
