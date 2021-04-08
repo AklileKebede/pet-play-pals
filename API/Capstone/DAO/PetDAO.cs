@@ -11,10 +11,11 @@ namespace Capstone.DAO
     {
         private readonly string connectionString;
         private const string SQL_ADDPET = "insert into pets(pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values (@pet_name, @birthday, @sex, @pet_type_id, @pet_breed, @color, @bio); select @@IDENTITY;";
+        private const string SQL_GETUSERPET = "select * from pets p join user_pet u_p on u_p.pet_id = p.pet_id where u_p.user_id = @userId";
 
         public PetDAO(string connectionString)
         {
-            connectionString = this.connectionString;
+            this.connectionString = connectionString;
         }
 
         public Pet RowToObject(SqlDataReader rdr)
