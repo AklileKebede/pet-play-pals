@@ -25,6 +25,13 @@ namespace Capstone.Controllers
             return Ok(personalities);
         }
 
+        [HttpGet("types")]
+        public ActionResult<Dictionary<int, string>> getPetTypes()
+        {
+            Dictionary<int, string> petTypes = petDAO.GetPetTypes();
+            return Ok(petTypes);
+        }
+
 
         [HttpGet()]
         public ActionResult<List<Pet>> UsersPets(int userId)

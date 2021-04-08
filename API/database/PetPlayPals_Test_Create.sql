@@ -57,15 +57,15 @@ insert into pet_types(pet_type_name) values
 	('Dog'),
 	('Cat')
 
---pet_personality table
-create table personalities(
+--personality table
+create table personality(
 	personality_id int identity(1,1) not null,
 	personality_name varchar(20) not null
 
 	constraint PK_pet_personality primary key(personality_id)
 )
 --populate the pet personality table
-insert into personalities(personality_name) values 
+insert into personality(personality_name) values 
 	('Friendly'),
 	('Plays Rough'),
 	('Shy'),
@@ -73,6 +73,7 @@ insert into personalities(personality_name) values
 	('High-energy'),
 	('Reactive'),
 	('Gentle')
+
 
 --pets table
 create table pets(
@@ -113,7 +114,8 @@ create table personality_pet(
 	pet_id int not null,
 	personality_id int not null,
 	constraint FK_personality_pet_pet_id foreign key (pet_id) references pets (pet_id),
-	constraint FK_personality_pet_personality_id foreign key (personality_id) references personalities (personality_id),
+	constraint FK_personality_pet_personality_id foreign key (personality_id) references personality (personality_id),
+	constraint UC_personality_pet unique (personality_id,pet_id)
 )
 
 -- ####### playdate stuff #########
