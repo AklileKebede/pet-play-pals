@@ -1,0 +1,13 @@
+.green-button {
+    background: #69c181;
+    border-radius: 11px;
+    width: 200px;
+    height: 50px;
+    color: #ffffff;
+    display: inline-block;
+    font: normal bold 26px/50px "Open Sans", sans-serif;
+    text-align: center;
+    text-decoration: none;
+    margin: 6px;
+    border: none;
+}
