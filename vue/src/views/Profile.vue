@@ -1,20 +1,37 @@
 <template>
-  <div class="profile">
-    <h1>Profile</h1>
-    <!-- <p>These are your profile details:</p> -->
-    <p>User Name: {{currentUser.username}}</p>
-    <!-- <p>User Id: {{currentUser.userId}}</p> -->
-    <!-- <p>Role: {{currentUser.role}}</p> -->
-  </div>
+	<div class="profile">
+		<h1>Profile</h1>
+		<!-- <p>These are your profile details:</p> -->
+		<p>User Name: {{ currentUser.username }}</p>
+
+		<p>My Address: {{}}</p>
+		<!-- <p>User Id: {{currentUser.userId}}</p> -->
+		<!-- <p>Role: {{currentUser.role}}</p> -->
+		<h2>My Pets</h2>
+		<ul>
+			<li v-for="pet in myPets" v-bind:key="pet.id">{{pet.name}}</li>
+		</ul>
+	</div>
 </template>
 
 <script>
+import AuthService from "../services/AuthService";
 export default {
-  name: "profile",
-  computed: {
-    currentUser() {
-      return this.$store.state.user;
-    },
-  },
+	name: "profile",
+	data() {
+		return {
+			pets: {},
+		};
+	},
+	computed: {
+		currentUser() {
+			return this.$store.state.user;
+		},
+	},
+	methods: {
+	},
+	created(){
+		this.pets = AuthService.getAllPets();
+	}
 };
 </script>
