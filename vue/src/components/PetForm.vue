@@ -10,6 +10,8 @@
       <li>Sex: <input type="text" v-model="location" placeholder="Sex" /></li>
       <li>Breed: <input type="text" v-model="location" placeholder="Breed" /></li>
       <li>Color: <input type="text" v-model="location" placeholder="Color" /></li>
+      <!-- /*TODO add check box for personality. using info from the database*/ -->
+      <!-- TODO find a job in the backend -->
       <li>Personality: <input type="text" v-model="location" placeholder="Personality" /></li>
     </form>
   </div>
