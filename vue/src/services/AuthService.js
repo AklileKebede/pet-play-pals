@@ -24,8 +24,6 @@ export default {
 		}
 		return http.get(url)
 	},
-	getAllPets() {
-		return axios.get('/pets');
-	}
+
 
 }

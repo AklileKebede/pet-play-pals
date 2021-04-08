@@ -12,7 +12,7 @@ export default {
 		}
 	},
 	props:{
-		pet: object
+		pet: Object
 	},
 
 

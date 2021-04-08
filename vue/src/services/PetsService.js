@@ -6,13 +6,13 @@ const http = axios.create(
 	});
 export default {
 	getAllPets() {
-		return axios.get('/pets');
+		return http.get('/pets');
 	},
 	getPetById(petId){
-		return axios.get(`/pets/${petId}`)
+		return http.get(`/pets/${petId}`)
 	},
 	getPetsForUser(userId){
-		return axios.get(`/pets?userId=${userId}`)
+		return http.get(`/pets?userId=${userId}`)
 	}
 
 }
