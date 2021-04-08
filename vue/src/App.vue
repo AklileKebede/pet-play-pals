@@ -32,11 +32,13 @@
         </div>
       </div>
     </header>
-    <aside v-if="$store.state.token != ''">
+    <aside>
       <ul>
-        <div>
-          <p>Forum</p>
-          <p>Schedule Playdate</p>
+        <router-link to="/playdates" id="search" class="green-button"
+      >Search Playdates</router-link>
+        <div v-if="$store.state.token != ''">
+          <p class="green-button">Forum</p>
+          <p class="green-button">Schedule Playdate</p>
         </div>
         </ul>
     </aside>
@@ -66,7 +68,7 @@ footer {
   display: grid;
   grid-template-areas:
     'header header header'
-    'asid body body'
+    'aside body body'
     'aside footer footer';
   grid-gap: 20px;
   background-color: 0d7685;
@@ -86,7 +88,10 @@ ul {
   text-align: center;
   text-decoration: none;
   margin: 6px;
+  border: none;
+  inline-size: fit-content;
 }
+
 
 header {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
