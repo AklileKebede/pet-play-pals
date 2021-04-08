@@ -61,6 +61,7 @@ namespace Capstone
             });
 
             // Dependency Injection configuration
+            //todo: always add more dependency injections
             services.AddSingleton<ITokenGenerator>(tk => new JwtGenerator(Configuration["JwtSecret"]));
             services.AddSingleton<IPasswordHasher>(ph => new PasswordHasher());
             services.AddTransient<IUserDAO>(m => new UserSqlDAO(connectionString));
