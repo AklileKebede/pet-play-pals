@@ -32,9 +32,11 @@
         </div>
       </div>
     </header>
-    <aside v-if="$store.state.token != ''">
+    <aside>
       <ul>
-        <div>
+        <router-link to="/playdates" tag="button" id="search" class="green-button"
+      >Search Playdates</router-link>
+        <div v-if="$store.state.token != ''">
           <p>Forum</p>
           <p>Schedule Playdate</p>
         </div>
@@ -86,7 +88,9 @@ ul {
   text-align: center;
   text-decoration: none;
   margin: 6px;
+  border: none;
 }
+
 
 header {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
