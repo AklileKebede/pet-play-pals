@@ -53,3 +53,9 @@ insert into playdate_pet(playdate_id, pet_id) Values(3,4);
 
 select * from playdate_pet
 
+--populating pet personalities
+insert into personality_pet (personality_id, pet_id) values (6, 1);
+insert into personality_pet (personality_id, pet_id) values (1, 3);
+insert into personality_pet (personality_id, pet_id) values (5, 3);
+insert into personality_pet (personality_id, pet_id) values (2, 3);
+insert into personality_pet (personality_id, pet_id) values (1, 4);

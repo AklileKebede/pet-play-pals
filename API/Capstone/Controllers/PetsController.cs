@@ -10,27 +10,25 @@ namespace Capstone.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class PetController : AuthorizedControllerBase
+    public class PetsController : AuthorizedControllerBase
     {
         private readonly IPetDAO petDAO;
-        public PetController(IPetDAO petDAO)
+        public PetsController(IPetDAO petDAO)
         {
             this.petDAO = petDAO;
         }
 
-        //[HttpGet("{id}")]
-        //public ActionResult<List<Playdate> getUsersPets(int id)
-        //{
-        //     List<Pet> pets = petDao.get(id);
-        //    if (playdate != null)
-        //    {
-        //        return Ok(playdate);
-        //    }
-        //    else
-        //    {
-        //        return NotFound();
-        //    }
-        //}
+
+        [HttpGet("{userId}")]
+        public ActionResult<List<Pet>> UsersPets(int userId)
+        {
+            List<Pet> pets = petDAO.GetUserPets(userId);
+            if (pets == null)
+            {
+                return NoContent();
+            }
+            else return Ok(pets);
+        }
 
         [HttpPost()]
         public ActionResult<Pet> CreatePet(Pet petToAdd)

@@ -11,7 +11,9 @@ namespace Capstone.DAO
     {
         private readonly string connectionString;
         private const string SQL_ADDPET = "insert into pets(pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values (@pet_name, @birthday, @sex, @pet_type_id, @pet_breed, @color, @bio); select @@IDENTITY;";
+        private const string SQL_ADDPETTOUSER = "insert into user_pet(user_id, pet_id) Values(@userId, @petId); select @@IDENTITY";
         private const string SQL_GETUSERPET = "select * from pets p join user_pet u_p on u_p.pet_id = p.pet_id where u_p.user_id = @userId";
+      
 
         public PetDAO(string connectionString)
         {
@@ -59,11 +61,65 @@ namespace Capstone.DAO
             }
 
             return petId;
+        }
+
+        public int AddPetToUser(int petId, int userId)
+        {
+            int rowsAffected = 0;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_ADDPETTOUSER, conn);
+                    cmd.Parameters.AddWithValue("@userId", userId);
+                    cmd.Parameters.AddWithValue("@petId", petId);
+                    rowsAffected = cmd.ExecuteNonQuery();
+
+                }
+
+            }
+            catch(SqlException)
+            {
+                return rowsAffected;
+            }
+            return rowsAffected;
 
         }
 
-        // get all pets for a registered user 
 
+        // get all pets for a registered user 
+        public List<Pet> GetUserPets(int userId)
+        {
+
+            List<Pet> usersPets = new List<Pet>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_GETUSERPET, conn);
+                    cmd.Parameters.AddWithValue("@userId", userId);
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        Pet pet = RowToObject(rdr);
+                        usersPets.Add(pet);
+                    }
+
+                }
+
+            }
+            catch(SqlException)
+            {
+                return usersPets;
+            }
+            return usersPets;
+
+
+        }
 
     }
 }
