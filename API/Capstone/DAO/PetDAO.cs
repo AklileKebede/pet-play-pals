@@ -13,27 +13,45 @@ namespace Capstone.DAO
         private const string SQL_ADDPET = "insert into pets(pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values (@pet_name, @birthday, @sex, @pet_type_id, @pet_breed, @color, @bio); select @@IDENTITY;";
         private const string SQL_ADDPETTOUSER = "insert into user_pet(user_id, pet_id) Values(@userId, @petId); select @@IDENTITY";
         private const string SQL_GETUSERPET = "select * from pets p join user_pet u_p on u_p.pet_id = p.pet_id where u_p.user_id = @userId";
-      
+        private const string SQL_GETALLPERSONALITIES = "select * from personalities";
 
         public PetDAO(string connectionString)
         {
             this.connectionString = connectionString;
         }
 
-        public Pet RowToObject(SqlDataReader rdr)
-        {
-            Pet pet = new Pet();
-            pet.PetId = Convert.ToInt32(rdr["pet_id"]);
-            pet.PetName = Convert.ToString(rdr["pet_name"]);
-            pet.Birthday = Convert.ToDateTime(rdr["birthday"]);
-            pet.Sex = Convert.ToChar(rdr["sex"]);
-            pet.PetType = (PetType)Convert.ToInt32(rdr["pet_type_id"]);
-            pet.Breed = Convert.ToString(rdr["pet_breed"]);
-            pet.Color = Convert.ToString(rdr["color"]);
-            pet.Bio = Convert.ToString(rdr["bio"]);
 
-            return pet;
+        /// <summary>Gets a dictionary of valid personality types.</summary>
+        /// <returns> a <see cref="Dictionary{int, String}"/>
+        /// </returns>
+        public Dictionary<int, string> GetPersonalityTypes()
+        {
+            Dictionary<int, string> personalities = new Dictionary<int, string>();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+                    SqlCommand cmd = new SqlCommand(SQL_GETALLPERSONALITIES, conn);
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        int id = Convert.ToInt32(rdr["personality_id"]);
+                        string name = Convert.ToString(rdr["personality_name"]);
+                        personalities[id] = name;
+                    }
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+
+            return personalities;
         }
+
+
 
         public int AddPet(Pet petToAdd)
         {
@@ -81,7 +99,7 @@ namespace Capstone.DAO
                 }
 
             }
-            catch(SqlException)
+            catch (SqlException)
             {
                 return rowsAffected;
             }
@@ -113,13 +131,28 @@ namespace Capstone.DAO
                 }
 
             }
-            catch(SqlException)
+            catch (SqlException)
             {
                 return usersPets;
             }
             return usersPets;
 
 
+        }
+
+        public Pet RowToObject(SqlDataReader rdr)
+        {
+            Pet pet = new Pet();
+            pet.PetId = Convert.ToInt32(rdr["pet_id"]);
+            pet.PetName = Convert.ToString(rdr["pet_name"]);
+            pet.Birthday = Convert.ToDateTime(rdr["birthday"]);
+            pet.Sex = Convert.ToChar(rdr["sex"]);
+            pet.PetType = (PetType)Convert.ToInt32(rdr["pet_type_id"]);
+            pet.Breed = Convert.ToString(rdr["pet_breed"]);
+            pet.Color = Convert.ToString(rdr["color"]);
+            pet.Bio = Convert.ToString(rdr["bio"]);
+
+            return pet;
         }
 
     }
