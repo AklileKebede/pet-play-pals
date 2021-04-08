@@ -19,7 +19,7 @@ namespace Capstone.Controllers
         }
 
 
-        [HttpGet("{userId}")]
+        [HttpGet()]
         public ActionResult<List<Pet>> UsersPets(int userId)
         {
             List<Pet> pets = petDAO.GetUserPets(userId);

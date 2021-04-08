@@ -23,6 +23,7 @@ namespace Capstone.DAO
         public Pet RowToObject(SqlDataReader rdr)
         {
             Pet pet = new Pet();
+            pet.PetId = Convert.ToInt32(rdr["pet_id"]);
             pet.PetName = Convert.ToString(rdr["pet_name"]);
             pet.Birthday = Convert.ToDateTime(rdr["birthday"]);
             pet.Sex = Convert.ToChar(rdr["sex"]);

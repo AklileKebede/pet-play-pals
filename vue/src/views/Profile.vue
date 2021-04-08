@@ -18,7 +18,7 @@
 
 <script>
 import PetDetails from "../components/PetDetails.vue";
-import PetService from "@/services/PetsService"
+import PetService from "@/services/PetsService";
 export default {
 	components: { PetDetails },
 	name: "profile",
@@ -32,9 +32,17 @@ export default {
 			return this.$store.state.user;
 		},
 	},
-	methods: {},
+	methods: {
+		getPets() {
+			PetService.getPetsForUser(this.currentUser.userId).then(
+				(response) => {
+					this.pets = response.data;
+				}
+			);
+		},
+	},
 	created() {
-		this.pets = PetService.getPetsForUser(this.currentUser.userId)
+		this.getPets();
 	},
 };
 </script>

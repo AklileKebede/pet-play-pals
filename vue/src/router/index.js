@@ -41,7 +41,7 @@ const router = new Router({
 			}
 		},
 		{
-			path: '/home/profile/:id',
+			path: '/home/profile/',
 			name: 'profile',
 			component: Profile,
 			meta: {
