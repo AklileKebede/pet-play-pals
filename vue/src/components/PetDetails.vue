@@ -9,9 +9,9 @@ export default {
 	data(){
 		return{
 			pet:{
-				name = "",
-				birthday = "",
-				type = "", //dog or cat
+				name : "",
+				birthday : "",
+				type : "", //dog or cat
 				
 			}
 		}
@@ -19,7 +19,7 @@ export default {
 	props:{
 		petId: Number
 	},
-	
+
 
 }
 </script>
