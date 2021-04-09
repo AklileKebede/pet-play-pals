@@ -1,10 +1,10 @@
 <template>
   <div>
     <form class="editPet">
-      <h1>Edit {{ pet.petName }}- Information</h1>
+      <h1>Edit {{ pet.petName }}'s- Information</h1>
       <p>
         Pet Name:
-        <input type="text" v-model="petInfo" placeholder="Pet Name" />
+        <input type="text" v-model="pet.petName" />
       </p>
 
       <li>
@@ -100,7 +100,7 @@
       </li>
     </form>
 
-    <button type="button" @click="getData" class="smallGreenButton">
+    <button type="submit" @click="updatePet" class="smallGreenButton">
       Submit
     </button>
     <router-link
@@ -130,16 +130,21 @@ export default {
     },
   },
   methods: {
-    getPets() {
-      PetService.getPetsForUser(this.currentUser.userId).then((response) => {
-        this.pets = response.data;
+    getPetById() {
+      PetService.getPetById(this.$route.params.petId)
+      .then(response=>{
+        this.pet=response.data;
       });
     },
-    getPetsForUser() {},
-    getPetById() {},
+    updatePet() {
+      PetService.updatePet(this.$route.params.petId, this.pet)
+      .then(response=>{
+        this.pet=response.data;
+      });
+	},
   },
   created() {
-    this.getPets();
+    this.getPetById();
   },
 };
 </script>

@@ -20,6 +20,9 @@ export default {
 	getPetType(){
 		return http.get('/types')
 	},
+	updatePet(petId, pet) {
+	return http.put(`/pets/${petId}`,pet)
+	},
 
 
 
