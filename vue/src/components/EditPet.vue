@@ -1,7 +1,7 @@
 <template>
   <div>
     <form class="editPet">
-      <h1>Edit {{ petName }}- Information</h1>
+      <h1>Edit {{ pet.petName }}- Information</h1>
       <p>
         Pet Name:
         <input type="text" v-model="petInfo" placeholder="Pet Name" />

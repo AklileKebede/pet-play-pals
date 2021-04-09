@@ -11,10 +11,12 @@
 		<ul>
 			<li v-for="pet in pets" v-bind:key="pet.id">
 				<pet-details v-bind:pet="pet"></pet-details>
-				<router-link   v-bind:to="{name: 'EditPet', params:{id: 'pet.id'}}"  tag="button" id="editPet" class="smallGreenButton"
+				<router-link   v-bind:to="{name: 'EditPet', params:{id: `${pet.petId}`}}"  tag="button" id="editPet" class="smallGreenButton"
       >Edit Pet</router-link>
 			</li>
-			
+			<!-- <router-link :to="{path: bus.url + data.item, query: { item: { "id": 1, "bus_number": "xx-xx-xxx", "bus_color": "black" }
+    }
+}"> -->
 		</ul>
 		<router-link to="/PetForm" tag="button" id="petForm" class="smallGreenButton"
       >Add a new Pet!</router-link>
