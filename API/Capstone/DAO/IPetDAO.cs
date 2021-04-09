@@ -12,6 +12,7 @@ namespace Capstone.DAO
         Pet GetPetById(int petId);
         Dictionary<int, string> GetPetTypes();
         List<Pet> GetUserPets(int userId);
+        bool OverwritePetPersonalityByPetId(int petId, int[] personalityIds);
         Pet RowToObject(SqlDataReader rdr);
         Pet UpdatePet(Pet petToUpdate);
     }

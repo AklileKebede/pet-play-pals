@@ -1,5 +1,6 @@
 ﻿using Capstone.DAO;
 using Capstone.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,7 @@ namespace Capstone.Controllers
             else return Ok(pets);
         }
 
+        [AllowAnonymous]
         [HttpPost()]
         public ActionResult<Pet> CreatePet(Pet petToAdd)
         {
