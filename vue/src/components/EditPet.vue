@@ -19,11 +19,10 @@
 					name="petType"
 					id="petType"
 					class="dropdown-content"
-					v-model="pet.petType"
+					v-model="pet.petTypeId"
 				>
 					<option value=""></option>
-					<option value="Dog">Dog</option>
-					<option value="Cat">Cat</option>
+					<option v-for="(item, key) in $store.state.validPetTypes" v-bind:key="key" v-bind:value="key">{{item}}</option>
 				</select>
 			</li>
 
@@ -47,7 +46,7 @@
 				Personality
 				<ul>
 					<li
-						v-for="(item, key) in allPersonalities"
+						v-for="(item, key) in $store.state.validPersonalities"
 						v-bind:key="key"
 					>
 						{{ item }}
@@ -103,11 +102,6 @@ export default {
 					this.pet = response.data;
 				}
 			);
-		},
-		getPersonalities() {
-			PetService.getAllPersonalities().then((response) => {
-				this.allPersonalities = response.data;
-			});
 		},
 	},
 	created() {

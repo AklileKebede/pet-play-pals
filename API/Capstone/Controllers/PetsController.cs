@@ -45,7 +45,6 @@ namespace Capstone.Controllers
             else return Ok(pets);
         }
 
-        [AllowAnonymous]
         [HttpPost()]
         public ActionResult<Pet> CreatePet(Pet petToAdd)
         {

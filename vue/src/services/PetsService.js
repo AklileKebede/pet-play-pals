@@ -17,8 +17,8 @@ export default {
 	getAllPersonalities(){
 		return http.get('/pets/personalities')
 	},
-	getPetType(){
-		return http.get('/types')
+	getAllPetTypes(){
+		return http.get('/pets/types')
 	},
 	updatePet(petId, pet) {
 	return http.put(`/pets/${petId}`,pet)
