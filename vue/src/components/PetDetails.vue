@@ -7,7 +7,11 @@
       <li>Sex: {{ pet.sex }}</li>
       <li>Breed: {{ pet.breed }}</li>
       <li>Color: {{ pet.color }}</li>
-      <li>Personality: {{ pet.personality }}</li>
+      <li>Personality: 
+        <ul>
+          <li v-for="personality in pet.personalities" v-bind:key = "personality">{{personality}}</li>
+        </ul>
+      </li>
     </ul>
   </div>
 </template>
