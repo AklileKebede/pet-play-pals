@@ -14,7 +14,7 @@ namespace Capstone.DAO
         private const string SQL_ADDPETTOUSER = "insert into user_pet(user_id, pet_id) Values(@userId, @petId); select @@IDENTITY";
         private const string SQL_GETUSERPET = "select * from fullPets p join user_pet u_p on u_p.pet_id = p.pet_id where u_p.user_id = @userId";
         private const string SQL_GETALLPERSONALITIES = "select * from personality";
-        private const string SQL_GETPERSONALITIESFORPETBYID = "select personality_name from personality join personality_pet on personality.personality_id = personality_pet.personality_id where personality_pet.pet_id = @petId";
+        private const string SQL_GETPERSONALITIESFORPETBYID = "select personality_name,personality.personality_id from personality join personality_pet on personality.personality_id = personality_pet.personality_id where personality_pet.pet_id = @petId";
         private const string SQL_GETALLPETTYPES = "select * from pet_types";
 
         public PetDAO(string connectionString)
@@ -138,6 +138,27 @@ namespace Capstone.DAO
 
         }
 
+        //edit a pet
+        public Pet updatePet(int petIdToUpdate, Pet petToUpdate)
+        {
+            Pet updatedPet = null;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("eee", conn);
+                }
+
+            } catch (SqlException)
+            {
+                throw;
+            }
+
+            return updatedPet;
+        }
+
 
         // get all pets for a registered user 
         public List<Pet> GetUserPets(int userId)
@@ -170,9 +191,9 @@ namespace Capstone.DAO
 
 
         }
-        public List<string> GetPersonalitiesById(int petId)
+        public Dictionary<int,string> GetPersonalitiesByPetId(int petId)
         {
-            List<string> personalityIds = new List<string>();
+            Dictionary<int, string> personalities = new Dictionary<int, string>();
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -183,7 +204,7 @@ namespace Capstone.DAO
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        personalityIds.Add(Convert.ToString(rdr["personality_name"]));
+                        personalities[Convert.ToInt32(rdr["personality_id"])] =(Convert.ToString(rdr["personality_name"]));
                     }
                 }
 
@@ -192,7 +213,7 @@ namespace Capstone.DAO
                 throw;
             }
 
-            return personalityIds;
+            return personalities;
         }
 
         public Pet RowToObject(SqlDataReader rdr)
@@ -207,7 +228,7 @@ namespace Capstone.DAO
             pet.Breed = Convert.ToString(rdr["pet_breed"]);
             pet.Color = Convert.ToString(rdr["color"]);
             pet.Bio = Convert.ToString(rdr["bio"]);
-            pet.Personalities = GetPersonalitiesById(pet.PetId);
+            pet.Personalities = GetPersonalitiesByPetId(pet.PetId);
 
             return pet;
         }
