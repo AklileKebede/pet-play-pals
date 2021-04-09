@@ -202,7 +202,8 @@ namespace Capstone.DAO
             pet.PetName = Convert.ToString(rdr["pet_name"]);
             pet.Birthday = Convert.ToDateTime(rdr["birthday"]);
             pet.Sex = Convert.ToChar(rdr["sex"]);
-            pet.PetType = (PetType)Convert.ToInt32(rdr["pet_type_id"]);
+            pet.PetTypeId = Convert.ToInt32(rdr["pet_type_id"]);
+            //pet.PetType= Convert.ToString(rdr["pet_type_id"]);
             pet.Breed = Convert.ToString(rdr["pet_breed"]);
             pet.Color = Convert.ToString(rdr["color"]);
             pet.Bio = Convert.ToString(rdr["bio"]);
