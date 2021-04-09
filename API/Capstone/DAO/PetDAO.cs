@@ -12,7 +12,7 @@ namespace Capstone.DAO
         private readonly string connectionString;
         private const string SQL_ADDPET = "insert into pets(pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values (@pet_name, @birthday, @sex, @pet_type_id, @pet_breed, @color, @bio); select @@IDENTITY;";
         private const string SQL_ADDPETTOUSER = "insert into user_pet(user_id, pet_id) Values(@userId, @petId); select @@IDENTITY";
-        private const string SQL_GETUSERPET = "select * from pets p join user_pet u_p on u_p.pet_id = p.pet_id where u_p.user_id = @userId";
+        private const string SQL_GETUSERPET = "select * from fullPets p join user_pet u_p on u_p.pet_id = p.pet_id where u_p.user_id = @userId";
         private const string SQL_GETALLPERSONALITIES = "select * from personality";
         private const string SQL_GETPERSONALITIESFORPETBYID = "select personality_name from personality join personality_pet on personality.personality_id = personality_pet.personality_id where personality_pet.pet_id = @petId";
         private const string SQL_GETALLPETTYPES = "select * from pet_types";
@@ -203,7 +203,7 @@ namespace Capstone.DAO
             pet.Birthday = Convert.ToDateTime(rdr["birthday"]);
             pet.Sex = Convert.ToChar(rdr["sex"]);
             pet.PetTypeId = Convert.ToInt32(rdr["pet_type_id"]);
-            //pet.PetType= Convert.ToString(rdr["pet_type_id"]);
+            pet.PetType= Convert.ToString(rdr["pet_type_name"]);
             pet.Breed = Convert.ToString(rdr["pet_breed"]);
             pet.Color = Convert.ToString(rdr["color"]);
             pet.Bio = Convert.ToString(rdr["bio"]);

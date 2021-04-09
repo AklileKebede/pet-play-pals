@@ -135,6 +135,10 @@ create table playdate_pet(
 	constraint FK_playdate_id foreign key (playdate_id) references playdates (playdate_id),
 	constraint FK_playdate_pet_pet_id foreign key (pet_id) references pets (pet_id)
 )
---
-
 GO
+-- views. We never learned this but thats okay
+create view fullPets as
+select pets.*, pet_types.pet_type_name from pets join pet_types on pets.pet_type_id = pet_types.pet_type_id;
+
+
+
