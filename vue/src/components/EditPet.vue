@@ -12,33 +12,32 @@
         <p style="white-space: pre-line">{{ message }}</p>
 
         <textarea
-          v-model="message"
-          placeholder="Tell us about your pet!"
+          v-model="pet.bio"
         ></textarea>
       </li>
 
       <li>
         Pet Type
-        <select name="petType" id="petType" class="dropdown-content">
+        <select name="petType" id="petType" class="dropdown-content" v-model="pet.petType">
           <option value=""></option>
-          <option value="dog">Dog</option>
-          <option value="cat">Cat</option>
+          <option value="Dog">Dog</option>
+          <option value="Cat">Cat</option>
         </select>
       </li>
 
       <li>
         Pet Sex
-        <select name="petSex" id="petSex" class="dropdown-content">
+        <select name="petSex" id="petSex" class="dropdown-content" v-model="pet.sex">
           <option value=""></option>
-          <option value="female">Female</option>
-          <option value="male">Male</option>
+          <option value="F">Female</option>
+          <option value="M">Male</option>
         </select>
       </li>
       <li>
-        Breed: <input type="text" v-model="location" placeholder="Breed" />
+        Breed: <input type="text" v-model="pet.breed" />
       </li>
       <li>
-        Color: <input type="text" v-model="location" placeholder="Color" />
+        Color: <input type="text" v-model="pet.color" />
       </li>
 
       <li>Personality</li>
