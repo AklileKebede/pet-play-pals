@@ -6,12 +6,12 @@
 </template>
 
 <script>
- //import EditPet from "@/components/EditPet.vue";
+ import EditPet from "@/components/EditPet.vue";
 
 
 export default {
     name: "PetForm",
-    components: {},
+    components: {EditPet},
     data(){
         return{
            
