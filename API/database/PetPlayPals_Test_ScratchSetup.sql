@@ -65,3 +65,5 @@ insert into personality_pet (personality_id, pet_id) values (7, 2);
 
 select personality_name from personality join personality_pet on personality.personality_id = personality_pet.personality_id where personality_pet.pet_id = 1
 select personality.personality_id from personality join personality_pet on personality.personality_id = personality_pet.personality_id where personality_pet.pet_id = 1
+
+select * from pet_types
