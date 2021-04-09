@@ -13,6 +13,14 @@ export default {
 	},
 	getPetsForUser(userId){
 		return http.get(`/pets?userId=${userId}`)
-	}
+	},
+	getAllPersonalities(){
+		return http.get('/personalities')
+	},
+	getPetType(){
+		return http.get('/types')
+	},
+
+
 
 }

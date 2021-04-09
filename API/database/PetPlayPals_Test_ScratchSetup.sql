@@ -24,7 +24,7 @@ insert into pets(pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) va
 insert into pets(pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values ('Maggie', '05-12-2019', 'F', 1, 'Goldendoodle', 'Golden', 'Perfect snuggler'  );
 insert into pets(pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values ('Carl', '01-28-2020', 'M', 1, 'Mix', 'Brown and Black', 'Loud boy');
 insert into pets(pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values ('Hanzo', '01-15-2015', 'M', 2, 'Brown Tabby', 'Brown and Black', 'HAMzo is fat');
-
+insert into pets(pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values ('Pippin', '03-07-2019', 'M', 2, 'American Shorthair', 'White and Gray', 'Catch me if you can');
 
 select * from pets
 
@@ -41,6 +41,7 @@ insert into user_pet(user_id, pet_id) Values(3,4);
 insert into user_pet(user_id, pet_id) Values(4,1);
 insert into user_pet(user_id, pet_id) Values(5,2);
 insert into user_pet(user_id, pet_id) Values(6,3);
+insert into user_pet(user_id, pet_id) Values(3,5);
 
 select * from user_pet 
 
@@ -50,6 +51,7 @@ insert into playdate_pet(playdate_id, pet_id) Values(1,1);
 insert into playdate_pet(playdate_id, pet_id) Values(2,4);
 insert into playdate_pet(playdate_id, pet_id) Values(2,2);
 insert into playdate_pet(playdate_id, pet_id) Values(3,4);
+insert into playdate_pet(playdate_id, pet_id) Values(3,5);
 
 select * from playdate_pet
 
@@ -62,6 +64,7 @@ insert into personality_pet (personality_id, pet_id) values (2, 3);
 insert into personality_pet (personality_id, pet_id) values (1, 4);
 insert into personality_pet (personality_id, pet_id) values (1, 2);
 insert into personality_pet (personality_id, pet_id) values (7, 2);
+insert into personality_pet (personality_id, pet_id) values (1, 5);
 
 select personality_name,personality.personality_id from personality join personality_pet on personality.personality_id = personality_pet.personality_id where personality_pet.pet_id = 2
 select personality.personality_id from personality join personality_pet on personality.personality_id = personality_pet.personality_id where personality_pet.pet_id = 1
