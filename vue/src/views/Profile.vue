@@ -11,7 +11,10 @@
 		<ul>
 			<li v-for="pet in pets" v-bind:key="pet.id">
 				<pet-details v-bind:pet="pet"></pet-details>
+				<router-link to="/EditPet" tag="button" id="editPet" class="smallGreenButton"
+      >Edit Pet</router-link>
 			</li>
+			
 		</ul>
 		<router-link to="/PetForm" tag="button" id="petForm" class="smallGreenButton"
       >Add a new Pet!</router-link>
