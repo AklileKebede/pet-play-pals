@@ -1,4 +1,5 @@
 ﻿using Capstone.Models;
+using Microsoft.EntityFrameworkCore.InMemory.Storage.Internal;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -16,6 +17,9 @@ namespace Capstone.DAO
         private const string SQL_GETALLPERSONALITIES = "select * from personality";
         private const string SQL_GETPERSONALITIESFORPETBYID = "select personality_name,personality.personality_id from personality join personality_pet on personality.personality_id = personality_pet.personality_id where personality_pet.pet_id = @petId";
         private const string SQL_GETALLPETTYPES = "select * from pet_types";
+        private const string SQL_UPDATE_PET_BY_ID_WITH_PERSONALITIES = "begin transaction; update pets set pet_name = @petName, birthday = @birthday, sex = @sex, pet_type_id = @petTypeId, pet_breed = @petBreed, color = @color, bio = @bio; delete from personality_pet where pet_id = @petId; insert into personality_pet select @petId, personality_id from personality where personality_id in ({0}); commit transaction;";
+        private const string SQL_GET_PET_BY_ID = "select * from fullPets where pet_id = @petId";
+
 
         public PetDAO(string connectionString)
         {
@@ -138,8 +142,35 @@ namespace Capstone.DAO
 
         }
 
+        public Pet GetPetById(int petId)
+        {
+            Pet pet = null;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_GET_PET_BY_ID, conn);
+                    cmd.Parameters.AddWithValue("@petId", petId);
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    if (rdr.Read())
+                    {
+                        pet = RowToObject(rdr);
+                    }
+                    
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+
+
+            return pet;
+        }
+
         //edit a pet
-        public Pet updatePet(int petIdToUpdate, Pet petToUpdate)
+        public Pet UpdatePet(Pet petToUpdate)
         {
             Pet updatedPet = null;
 
@@ -148,10 +179,40 @@ namespace Capstone.DAO
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand("eee", conn);
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.Parameters.AddWithValue("@petId", petToUpdate.PetId);
+                    cmd.Parameters.AddWithValue("@petName", petToUpdate.PetName);
+                    cmd.Parameters.AddWithValue("@birthday", petToUpdate.Birthday);
+                    cmd.Parameters.AddWithValue("@sex", petToUpdate.Sex);
+                    cmd.Parameters.AddWithValue("@petTypeId", petToUpdate.PetTypeId);
+                    cmd.Parameters.AddWithValue("@petBreed", petToUpdate.Breed);
+                    cmd.Parameters.AddWithValue("@color", petToUpdate.Color);
+                    cmd.Parameters.AddWithValue("@bio", petToUpdate.Bio);
+
+                    //here we will add 1-by-1 a list of personality IDs to give to the updated Pet
+
+                    //this will hold {"@personalityId0","@personalityId1","@personalityId2"....} as many personalities as there are in the petToUpdate
+                    List<string> personalityIdParamNames = new List<string>();
+                    int i = 0;
+                    foreach (int personalityId in petToUpdate.PersonalityIds)
+                    {
+                        string paramName = $"@personalityId{i}";
+                        cmd.Parameters.AddWithValue(paramName, personalityId);
+                        personalityIdParamNames.Add(paramName);
+                        i++;
+                    }
+                    cmd.CommandText = String.Format(SQL_UPDATE_PET_BY_ID_WITH_PERSONALITIES, string.Join(",", personalityIdParamNames));
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        updatedPet = GetPetById(petToUpdate.PetId);
+                    }
                 }
 
-            } catch (SqlException)
+            }
+            catch (SqlException)
             {
                 throw;
             }
@@ -191,7 +252,7 @@ namespace Capstone.DAO
 
 
         }
-        public Dictionary<int,string> GetPersonalitiesByPetId(int petId)
+        public Dictionary<int, string> GetPersonalitiesByPetId(int petId)
         {
             Dictionary<int, string> personalities = new Dictionary<int, string>();
             try
@@ -204,11 +265,12 @@ namespace Capstone.DAO
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
                     {
-                        personalities[Convert.ToInt32(rdr["personality_id"])] =(Convert.ToString(rdr["personality_name"]));
+                        personalities[Convert.ToInt32(rdr["personality_id"])] = (Convert.ToString(rdr["personality_name"]));
                     }
                 }
 
-                } catch (SqlException)
+            }
+            catch (SqlException)
             {
                 throw;
             }
@@ -224,11 +286,13 @@ namespace Capstone.DAO
             pet.Birthday = Convert.ToDateTime(rdr["birthday"]);
             pet.Sex = Convert.ToChar(rdr["sex"]);
             pet.PetTypeId = Convert.ToInt32(rdr["pet_type_id"]);
-            pet.PetType= Convert.ToString(rdr["pet_type_name"]);
+            pet.PetType = Convert.ToString(rdr["pet_type_name"]);
             pet.Breed = Convert.ToString(rdr["pet_breed"]);
             pet.Color = Convert.ToString(rdr["color"]);
             pet.Bio = Convert.ToString(rdr["bio"]);
-            pet.Personalities = GetPersonalitiesByPetId(pet.PetId);
+            Dictionary<int, string> Personalities = GetPersonalitiesByPetId(pet.PetId);
+            pet.Personalities = Personalities.Values.ToArray();
+            pet.PersonalityIds = Personalities.Keys.ToArray();
 
             return pet;
         }

@@ -59,6 +59,33 @@ namespace Capstone.Controllers
             }
         }
 
+        [HttpPut("{petId}")]
+        public ActionResult<Pet> UpdatePet(int petId, Pet petToUpdate)
+        {
+            //todo: if the pet to update is not owned by the current login user, return 403
+            if (petId != petToUpdate.PetId)
+            {
+                return BadRequest("The PetId and the id of petToUpdate do not match.");
+            } else
+            {
+                Pet updatedPet = petDAO.UpdatePet(petToUpdate);
+                return updatedPet;
+            }
+        }
+
+        [HttpGet("{petId}")]
+        public ActionResult<Pet> GetPetById(int petId)
+        {
+            Pet foundPet = petDAO.GetPetById(petId);
+            if(foundPet == null)
+            {
+                return NotFound();
+            } else
+            {
+                return Ok(foundPet);
+            }
+        }
+
         //get pet by id
 
         //get all pets

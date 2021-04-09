@@ -16,7 +16,8 @@ namespace Capstone.Models
         public string Breed { get; set; }
         public string Color { get; set; }
         public string Bio { get; set; }
-        public Dictionary<int, string> Personalities { get; set; }
+        public int[] PersonalityIds { get; set; }
+        public string[] Personalities { get; set; }
 
     }
 

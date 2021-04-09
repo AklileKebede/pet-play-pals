@@ -9,8 +9,10 @@ namespace Capstone.DAO
         int AddPet(Pet petToAdd);
         int AddPetToUser(int petId, int userId);
         Dictionary<int, string> GetPersonalityTypes();
+        Pet GetPetById(int petId);
         Dictionary<int, string> GetPetTypes();
         List<Pet> GetUserPets(int userId);
         Pet RowToObject(SqlDataReader rdr);
+        Pet UpdatePet(Pet petToUpdate);
     }
 }
