@@ -1,7 +1,7 @@
 <template>
-  <div>
-    <form id="PetForm">
-      <h1>Register Your Pet</h1>
+ <div>
+    <form id="editPet">
+      <h1>Edit</h1>
       <p> Pet Name: 
         <input type="text" v-model="petInfo" placeholder="Pet Name" />
       </p>
@@ -51,42 +51,46 @@
     </form>
      
           <button type="button" @click="getData" class="smallGreenButton">Submit</button>
-        
+        <router-link to="/home/profile" tag="button" id="petForm" class="smallGreenButton"
+      >Cancel</router-link>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+
+//import PetDetails from "../components/PetDetails.vue";
+import PetService from "@/services/PetsService";
 export default {
-    name: "PetForm",
-    props: {},
-    data(){
-        return{
-            pet: {
-                petId:0,
-                petName: "",
-                bio:"",
-                petTypeCheck:[],
-                sex:"",
-                breed:"",
-                color:"",
-                petPersonality:[]
-            }
-        };
+name: "EditPet",
+    components: {},
+ data() {
+		return {
+			pets: {},
+		};
+	},
+	computed: {
+		currentUser() {
+			return this.$store.state.user;
+		},
+	},
+	methods: {
+		getPets() {
+			PetService.getPetsForUser(this.currentUser.userId).then(
+				(response) => {
+					this.pets = response.data;
+				}
+			);
+		},
+        getPetsForUser(){},
+        getPetById(){},
 
-    },
-    methods:{
-        addPet(){
-            // use the service to Add the pet on the server (Post)
-            
-        }
-    },
-    created(){ //post from form to database.
-      const petForm = {title: "Pet Form Update"};
-      axios.post("BASE_URL/home/profile/", petForm).then(response => this.petId = response.data.petId)
+       
 
-    }
-};
+	},
+	created() {
+		this.getPets();
+	},
+}
 </script>
 
 <style scoped>

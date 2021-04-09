@@ -7,8 +7,10 @@ import Register from '@/views/Register.vue'
 import store from '@/store/index'
 import Profile from '@/views/Profile.vue'
 import Playdates from '@/views/Playdates.vue'
-import PlaydateMapView from '@/views/PlaydateMapView'
-import PetForm from '@/components/PetForm'
+import PlaydateMapView from '@/views/PlaydateMapView.vue'
+import PetForm from '@/components/PetForm.vue'
+import EditPet from '@/components/EditPet.vue'
+
 
 Vue.use(Router)
 
@@ -85,6 +87,14 @@ const router = new Router({
 			path: "/PetForm",
 			name: "PetForm",
 			component: PetForm,
+			meta: {
+				requiresAuth: false
+			}
+		},
+		{
+			path: "/EditPet",
+			name: "EditPet",
+			component: EditPet,
 			meta: {
 				requiresAuth: false
 			}
