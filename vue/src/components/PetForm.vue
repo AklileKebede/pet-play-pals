@@ -1,94 +1,142 @@
 <template>
   <div>
-    <form id="PetForm">
+    <form id="PetForm" v-on:submit.prevent="submitForm">
       <h1>Register Your Pet</h1>
-      <p> Pet Name: 
-        <input type="text" v-model="petInfo" placeholder="Pet Name" />
-      </p>
-      
-      <li><span>Your Pets Bio:</span>
-<p style="white-space: pre-line;">{{ message }}</p>
+      <ul>
+        <li>
+          <label for="petName">Pet Name:</label>
+          <input
+            type="text"
+            id="petName"
+            v-model="pet.petName"
+            placeholder="Pet Name"
+          />
+        </li>
+        <li>
+          <label for="bio">Your Pets Bio:</label>
+        </li>
+        <li>
+          <textarea
+            id="bio"
+            v-model="pet.bio"
+            placeholder="Pet Bio"
+            style="width: -webkit-fill-available"
+          ></textarea>
+        </li>
+      </ul>
 
-  <textarea v-model="message" placeholder="Tell us about your pet!"></textarea>
-  </li>
-      
-      <li> Pet Type
-       <select
-            name="petType"
-            id="petType"
-            class="dropdown-content"
-          >
-            <option value=""></option>
-            <option value="dog">Dog</option>
-            <option value="cat">Cat</option>
-            
-          </select>
+      <li>
+        <label for="petType">Pet Type</label>
+
+        <select
+          name="petType"
+          id="petType"
+          v-model="pet.petType"
+          class="dropdown-content"
+        >
+          <option value=""></option>
+          <option value="dog">Dog</option>
+          <option value="cat">Cat</option>
+        </select>
+      </li>
+
+      <li>
+        <label for="petSex">Pet Sex</label>
+        <select
+          name="petSex"
+          id="petSex"
+          v-model="pet.petSex"
+          class="dropdown-content"
+        >
+          <option value=""></option>
+          <option value="female">Female</option>
+          <option value="male">Male</option>
+        </select>
+      </li>
+      <li>
+        <label for="breed">Breed: </label>
+        <input type="text" id="breed" v-model="pet.breed" placeholder="Breed" />
+      </li>
+      <li>
+        <label for="color">Color: </label>
+        <input type="text" id="color" v-model="pet.color" placeholder="Color" />
+      </li>
+      <li>
+        Personality:
+        <ul>
+          <li v-for="(item, key) in allPersonalities" v-bind:key="key">
+            <label v-bind:for="key">{{ item }}</label>
+            <input
+              v-bind:id="key"
+              type="checkbox"
+              v-bind:value="key"
+              v-model="pet.personalityIds"
+            />
           </li>
-     
-      <li> Pet Sex
-       <select
-            name="petSex"
-            id="petSex"
-            class="dropdown-content"
-          >
-            <option value=""></option>
-            <option value="female">Female</option>
-            <option value="male">Male</option>
-            
-          </select>
-          </li>
-      <li>Breed: <input type="text" v-model="location" placeholder="Breed" /></li>
-      <li>Color: <input type="text" v-model="location" placeholder="Color" /></li>
-    
-      <li>Personality</li>
-      <li>Friendly <input type="checkbox" value="Friendly" id="Friendly" v-model="petPersonality"  /></li>
-      <li>Plays Rough <input type="checkbox" value="Plays Rough" id="PlaysRough" v-model="petPersonality"  /></li>
-      <li>Shy <input type="checkbox" value="Shy" id="Shy" v-model="petPersonality"  /></li>
-      <li>Skittish <input type="checkbox" value="Skittish" id="Skittish" v-model="petPersonality"  /></li>
-      <li>High-energy <input type="checkbox" value="High-energy" id="High-energy" v-model="petPersonality"  /></li>
-      <li>Reactive<input type="checkbox" value="Reactive" id="Reactive" v-model="petPersonality"  /></li>
-      <li>Gentle<input type="checkbox" value="Gentle" id="Gentle" v-model="petPersonality"  /></li>
+        </ul>
+      </li>
     </form>
-     
-          <button type="button" @click="getData" class="smallGreenButton">Submit</button>
-        
+    <button type="submit" class="smallGreenButton">
+      Submit
+    </button>
+    <router-link
+      to="/home/profile"
+      tag="button"
+      id="petForm"
+      class="smallGreenButton"
+      >Cancel</router-link
+    >
   </div>
 </template>
 
 <script>
-import axios from 'axios';
+import PetService from "@/services/PetsService";
 export default {
-    name: "PetForm",
-    props: {},
-    data(){
-        return{
-            pet: {
-                petId:0,
-                petName: "",
-                bio:"",
-                petTypeCheck:[],
-                sex:"",
-                breed:"",
-                color:"",
-                petPersonality:[]
-            }
-        };
-
+  name: "PetForm",
+  props: {},
+  data() {
+    return {
+      pet: {
+        petName: "",
+        bio: "",
+        petType: "",
+        sex: "",
+        breed: "",
+        color: "",
+        petPersonality: [],
+      },
+      allPersonalities: {},
+    };
+  },
+  methods: {
+    getPersonalities() {
+      PetService.getAllPersonalities().then((response) => {
+        this.allPersonalities = response.data;
+      });
     },
-    methods:{
-        addPet(){
-            // use the service to Add the pet on the server (Post)
-            
-        }
-    },
-    created(){ //post from form to database.
-      const petForm = {title: "Pet Form Update"};
-      axios.post("BASE_URL/home/profile/", petForm).then(response => this.petId = response.data.petId)
+    submitForm() {
+      // this.isSubmitting = true;
+      // const newPet = {
+      //   petId: Number(this.petId),
+      //   petName: this.pet.petName,
+      //   bio: this.pet.bio,
+      //   petType: this.pet.petType,
+      //   sex: this.pet.sex,
+      //   breed:this.pet.breed,
+      //   color:this.pet.color,
+      //   petPersonality:
+      // };
 
-    }
+      PetService.addNewPet(this.pet).then(() => {
+        this.$router.push({name: "profile"});
+      });
+    },
+  },
+  created() {
+    this.getPersonalities();
+  },
 };
 </script>
 
 <style scoped>
-
 </style>
