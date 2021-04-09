@@ -3,16 +3,28 @@
     <form id="PetForm">
       <h1>Register Your Pet</h1>
       <p> Pet Name: 
-        <input type="text" v-model="location" placeholder="Pet Name" />
+        <input type="text" v-model="petInfo" placeholder="Pet Name" />
       </p>
-      <li>Bio: <input type="text" v-model="location" placeholder="Bio" /></li>
-      <li>Pet Type: <input type="text" v-model="location" placeholder="Pet Type" /></li>
+      
+      <li><span>Your Pets Bio:</span>
+<p style="white-space: pre-line;">{{ message }}</p>
+<br>
+  <textarea v-model="message" placeholder="Tell us about your pet!"></textarea></li>
+      <li>Dog <input type="checkbox" value="Dog" v-model="petTypeCheck" place  /></li>
+      <!-- <label for="Dog">Dog</label> -->
+      <li>Cat <input type="checkbox" value="Cat" v-model="petTypeCheck"  /></li>
       <li>Sex: <input type="text" v-model="location" placeholder="Sex" /></li>
       <li>Breed: <input type="text" v-model="location" placeholder="Breed" /></li>
       <li>Color: <input type="text" v-model="location" placeholder="Color" /></li>
-      <!-- /*TODO add check box for personality. using info from the database*/ -->
-      <!-- TODO find a job in the backend -->
-      <li>Personality: <input type="text" v-model="location" placeholder="Personality" /></li>
+    
+      <li>Personality</li>
+      <li>Friendly <input type="checkbox" value="Friendly" id="Friendly" v-model="petPersonality"  /></li>
+      <li>Plays Rough <input type="checkbox" value="Plays Rough" id="PlaysRough" v-model="petPersonality"  /></li>
+      <li>Shy <input type="checkbox" value="Shy" id="Shy" v-model="petPersonality"  /></li>
+      <li>Skittish <input type="checkbox" value="Skittish" id="Skittish" v-model="petPersonality"  /></li>
+      <li>High-energy <input type="checkbox" value="High-energy" id="High-energy" v-model="petPersonality"  /></li>
+      <li>Reactive<input type="checkbox" value="Reactive" id="Reactive" v-model="petPersonality"  /></li>
+      <li>Gentle<input type="checkbox" value="Gentle" id="Gentle" v-model="petPersonality"  /></li>
     </form>
   </div>
 </template>
@@ -28,13 +40,14 @@ export default {
                 petId:0,
                 petName: "",
                 bio:"",
-                petType:"",
+                petTypeCheck:[],
                 sex:"",
                 breed:"",
                 color:"",
-                personality:""
+                petPersonality:[]
             }
         };
+
     },
     methods:{
         addPet(){
@@ -51,4 +64,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>

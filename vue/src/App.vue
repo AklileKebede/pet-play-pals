@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <header>
-      <div class="left-nav">
+        <div class="left-nav">
         <router-link
           id="home-nav"
           v-bind:to="{ name: 'home' }"
@@ -53,12 +53,14 @@
 <style scoped>
 header {
   grid-area: header;
+  background-color:#0D7685 ;
 }
 aside {
   grid-area: aside;
 }
 body {
   grid-area: body;
+  
 }
 footer {
   grid-area: footer;

@@ -13,7 +13,7 @@
 				<pet-details v-bind:pet="pet"></pet-details>
 			</li>
 		</ul>
-		<router-link to="/PetForm" tag="button" id="petForm"
+		<router-link to="/PetForm" tag="button" id="petForm" class="smallGreenButton"
       >Add a new Pet!</router-link>
 	</div>
 </template>
@@ -48,3 +48,18 @@ export default {
 	},
 };
 </script>
+<style scoped>
+.smallGreenButton {
+    background: #69c181;
+    border-radius: 11px;
+    width: 100px;
+    height: 25px;
+    color: #ffffff;
+    display: inline-block;
+    font: normal bold 12px/25px "Open Sans", sans-serif;
+    text-align: center;
+    text-decoration: none;
+    margin: 6px;
+    border: none;
+}
+</style>
