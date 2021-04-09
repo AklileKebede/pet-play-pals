@@ -17,7 +17,7 @@ namespace Capstone.DAO
         private const string SQL_GETALLPERSONALITIES = "select * from personality";
         private const string SQL_GETPERSONALITIESFORPETBYID = "select personality_name,personality.personality_id from personality join personality_pet on personality.personality_id = personality_pet.personality_id where personality_pet.pet_id = @petId";
         private const string SQL_GETALLPETTYPES = "select * from pet_types";
-        private const string SQL_UPDATE_PET_BY_ID_WITH_PERSONALITIES = "begin transaction; update pets set pet_name = @petName, birthday = @birthday, sex = @sex, pet_type_id = @petTypeId, pet_breed = @petBreed, color = @color, bio = @bio; delete from personality_pet where pet_id = @petId; insert into personality_pet select @petId, personality_id from personality where personality_id in ({0}); commit transaction;";
+        private const string SQL_UPDATE_PET_BY_ID_WITH_PERSONALITIES = "begin transaction; update pets set pet_name = @petName, birthday = @birthday, sex = @sex, pet_type_id = @petTypeId, pet_breed = @petBreed, color = @color, bio = @bio where pet_id = @petId; delete from personality_pet where pet_id = @petId; insert into personality_pet select @petId, personality_id from personality where personality_id in ({0}); commit transaction;";
         private const string SQL_GET_PET_BY_ID = "select * from fullPets where pet_id = @petId";
 
 

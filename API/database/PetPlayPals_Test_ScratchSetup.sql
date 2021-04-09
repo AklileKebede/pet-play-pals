@@ -68,7 +68,5 @@ insert into personality_pet (personality_id, pet_id) values (1, 5);
 
 select * from fullPets
 
-select personality_name,personality.personality_id from personality join personality_pet on personality.personality_id = personality_pet.personality_id where personality_pet.pet_id = 2
 
-
-
+begin transaction; update pets set pet_name = @petName, birthday = @birthday, sex = @sex, pet_type_id = @petTypeId, pet_breed = @petBreed, color = @color, bio = @bio where pet_id = @petId; delete from personality_pet where pet_id = @petId; insert into personality_pet select @petId, personality_id from personality where personality_id in ({0}); commit transaction;";
