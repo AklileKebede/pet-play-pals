@@ -1,22 +1,20 @@
 <template>
-<div>
-	make me a new playdate
+	<div>
+		<!-- make me a new playdate
 	location
 	map
 	playdate organizer
 	time
 	whoch pet
-</div>
-	
+	pet types acceptable
+	delet
+	-->
+	</div>
 </template>
 
 <script>
-export default {
-
-
-}
+export default {};
 </script>
 
 <style>
-
 </style>
