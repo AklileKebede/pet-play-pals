@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 namespace Capstone.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     [ApiController]
     public class PetsController : AuthorizedControllerBase
     {

@@ -55,8 +55,7 @@ create table pet_types(
 -- populate the pet types table
 insert into pet_types(pet_type_name) values 
 	('Dog'),
-	('Cat'),
-	('fish')
+	('Cat')
 
 --personality table
 create table personality(

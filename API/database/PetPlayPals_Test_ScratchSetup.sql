@@ -61,4 +61,4 @@ insert into personality_pet (personality_id, pet_id) values (1, 5);
 
 select * from fullPets
 
-select * from fullPets where user_id = @userId
+select * from pet_types where pet_type_name = 'dog'
