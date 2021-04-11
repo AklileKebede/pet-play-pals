@@ -47,14 +47,10 @@ margin: 6px;
 .container {
   display: grid;
   justify-items: center;
-  background-color: #f2f3f4;
   grid-template-areas:
     "title"
     "slogan"
     "search";
 }
-/* div.container{
-  background-color: #F2F3F4;
-} */
 
 </style>

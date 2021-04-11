@@ -52,7 +52,7 @@
 <script>
 import PlaydateList from "@/components/PlaydateList.vue";
 import api from "@/services/AuthService.js";
-import "@/css/style.css"
+import "@/cssStyles/style.css"
 
 export default {
   name: "playdates",
