@@ -18,7 +18,7 @@ export default {
 		return axios.get('/pets/types')
 	},
 	updatePet(petId, pet) {
-	return axios.put(`/pets/${petId}`,pet)
+		return axios.put(`/pets/${petId}`,pet)
 	},
 	addNewPet(pet) {
 		return axios.post("/pets", pet);

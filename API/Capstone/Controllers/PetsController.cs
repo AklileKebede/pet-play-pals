@@ -36,7 +36,7 @@ namespace Capstone.Controllers
 
 
         [HttpGet()]
-        public ActionResult<List<Pet>> UsersPets(int userId = -1)
+        public ActionResult<List<Pet>> GetPets(int userId = -1)
         {
 
             List<Pet> pets = new List<Pet>();

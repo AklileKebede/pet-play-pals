@@ -24,7 +24,7 @@ insert into playdates(date,user_id,location_id) values
 	('11-11-2021',3,3)
 
 
-select * from playdates
+select * from fullPlaydates
 
 
 
@@ -61,6 +61,3 @@ insert into personality_pet (personality_id, pet_id) values (1, 2);
 insert into personality_pet (personality_id, pet_id) values (7, 2);
 insert into personality_pet (personality_id, pet_id) values (1, 5);
 
-select * from fullPets
-
-select * from pet_types where pet_type_name = 'dog'

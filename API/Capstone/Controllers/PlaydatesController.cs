@@ -27,9 +27,21 @@ namespace Capstone.Controllers
         /// <returns>a list of all <see cref="Playdate"/> objects in the database</returns>
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult<List<Playdate>> getAllPlaydates()
+        public ActionResult<List<Playdate>> getPlaydates(int userId = -1)
         {
-            List<Playdate> playdates = playdateDao.GetAllPlaydates();
+            List<Playdate> playdates = new List<Playdate>();
+            if (userId == -1)
+            {
+                playdates = playdateDao.GetAllPlaydates(); ;
+            }
+            else
+            {
+                playdates = playdateDao.GetPlaydatesByUserId(userId);
+            }
+            if (playdates == null)
+            {
+                return NoContent();
+            }
             return Ok(playdates);
         }
 

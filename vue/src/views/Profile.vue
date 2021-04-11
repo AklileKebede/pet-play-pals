@@ -25,9 +25,6 @@
 							>Edit Pet</router-link
 						>
 					</li>
-					
-    
-
 				</ul>
 				<router-link
 					to="/PetForm"
@@ -62,14 +59,16 @@
 <script>
 import PetDetails from "../components/PetDetails.vue";
 import PetService from "@/services/PetsService";
-import PlaydateDetails from '../components/PlaydateDetails.vue';
+import PlaydatesService from "@/services/PlaydatesService";
+import PlaydateDetails from "@/components/PlaydateDetails.vue";
 export default {
-	components: { PetDetails, PlaydateDetails }, 
+	components: { PetDetails, PlaydateDetails },
 	name: "profile",
 	data() {
 		return {
 			pets: {},
-		}
+			playdates: {}
+		};
 	},
 	computed: {
 		currentUser() {
@@ -84,29 +83,34 @@ export default {
 				}
 			);
 		},
-		
-
+		getPlaydates() {
+			PlaydatesService.getPlaydatesForUser(this.currentUser.userId).then(
+				(response) => {
+					this.playdates = response.data;
+				}
+			);
+		},
 	},
 	created() {
 		this.getPets();
+		this.getPlaydates();
 	},
 };
 </script>
 <style scoped>
-#userDetails{
+#userDetails {
 	grid-area: userDetails;
 }
-#playdateList{
+#playdateList {
 	grid-area: playdateList;
 }
-#petList{
+#petList {
 	grid-area: petList;
 }
-div#profileDetails{
-	display:grid;
+div#profileDetails {
+	display: grid;
 	grid-template-columns: 1fr 1fr 1fr;
-	grid-template-areas: 
-	"userDetails petList playdateList";
+	grid-template-areas: "userDetails petList playdateList";
 	grid-gap: 10px;
 }
 </style>

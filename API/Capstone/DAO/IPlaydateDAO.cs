@@ -8,5 +8,6 @@ namespace Capstone.DAO
         int AddPlaydate(Playdate playdateToAdd);
         List<Playdate> GetAllPlaydates();
         Playdate GetPlaydateById(int playdateId);
+        List<Playdate> GetPlaydatesByUserId(int userId);
     }
 }
