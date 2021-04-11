@@ -31,7 +31,7 @@
 		<aside class="bubble foggy-gray-bg">
 			<router-link v-bind:to="{ name: 'playdates' }" id="search" class="green-button">Search Playdates</router-link>
 			<router-link v-bind:to="{ name: '???' }" id="forum" class="green-button" v-if="$store.state.token != ''">Forum</router-link>
-			<router-link v-bind:to="{ name: '???' }" id="schedule" class="green-button" v-if="$store.state.token != ''">Schedule Playdate</router-link>
+			<router-link v-bind:to="{ name: 'createPlaydate' }" id="schedule" class="green-button" v-if="$store.state.token != ''">Schedule Playdate</router-link>
 		</aside>
 		<main class="bubble foggy-gray-bg">
 			<router-view class="main" />
