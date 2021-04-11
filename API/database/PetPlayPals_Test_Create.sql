@@ -137,9 +137,9 @@ GO
 -- views. We never learned this but thats okay
 create view fullPets as
 select pets.*, pet_types.pet_type_name from pets join pet_types on pets.pet_type_id = pet_types.pet_type_id;
-
-create view fullPlaydate as 
-select p.*, l.name, address, lat, lng  from playdates as p join locations as l on p.location_id = l.location_id
-
+go
+create view fullPlaydates as 
+select p.*, l.name as location_name, address, lat, lng from playdates as p join locations as l on p.location_id = l.location_id;
+go
 
 

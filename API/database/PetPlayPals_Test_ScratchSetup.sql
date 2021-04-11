@@ -9,22 +9,24 @@ insert into locations(name,address,lat,lng) values
 
 select * from locations
 
---insert a playdate
-insert into playdates(date,location_id) values
-	('04-20-2021',1),
-	('05-12-2021',2),
-	('11-11-2021',3)
-
-
-select * from playdates
-
 --creating users from web app
 INSERT INTO users (username, password_hash, salt, user_role) VALUES ('brandon', 'V0lRjxFQxgKeP+/h5IbKqnAPQoU=', 'Rz+Z8yMoqIg=', 'user');
 insert into users (username, password_hash, salt, user_role) values ('rosa', 'EBbMAfKO8NXslvRz6GCCVmeV6ig=', 'ybDc/+RXVqs=', 'user');
 insert into users (username, password_hash, salt, user_role) values ('paul', 'fp9wBngxMgdo2HIcts7YLBJdhyU=', 'Sqzc1pc53es=', 'user');
-insert into users (username, password_hash, salt, user_role)values ('aklile', 'HqkX65RZf4sM+SaOwjcVhDKJgvY=', 'v7N29suiPBA=', 'user');
+insert into users (username, password_hash, salt, user_role) values ('aklile', 'HqkX65RZf4sM+SaOwjcVhDKJgvY=', 'v7N29suiPBA=', 'user');
 
 select * from users
+
+--insert a playdate
+insert into playdates(date,user_id,location_id) values
+	('04-20-2021',5,1),
+	('05-12-2021',4,2),
+	('11-11-2021',3,3)
+
+
+select * from playdates
+
+
 
 
 --insert a pet 

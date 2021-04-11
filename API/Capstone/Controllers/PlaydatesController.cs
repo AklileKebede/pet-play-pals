@@ -14,10 +14,12 @@ namespace Capstone.Controllers
     [ApiController]
     public class PlaydatesController : AuthorizedControllerBase
     {
-        private readonly IPlaydateDAO DAO;
-        public PlaydatesController(IPlaydateDAO playdateDAO)
+        private readonly IPlaydateDAO playdateDao;
+        private readonly ILocationDAO locationDao;
+        public PlaydatesController(IPlaydateDAO playdateDAO, ILocationDAO locationDAO)
         {
-            this.DAO = playdateDAO;
+            this.playdateDao = playdateDAO;
+            this.locationDao = locationDAO;
         }
         /// <summary>
         /// Gets all playdates that are in the database
@@ -27,18 +29,24 @@ namespace Capstone.Controllers
         [HttpGet]
         public ActionResult<List<Playdate>> getAllPlaydates()
         {
-            List<Playdate> playdates = DAO.GetAllPlaydates();
+            List<Playdate> playdates = playdateDao.GetAllPlaydates();
             return Ok(playdates);
         }
 
+        /// <summary>
+        /// Gets a playdate by ID
+        /// </summary>
+        /// <param name="id">The Id of the playdate to get</param>
+        /// <returns>a <see cref="Playdate"/> object</returns>
         [HttpGet("{id}")]
         public ActionResult<Playdate> getPlaydateById(int id)
         {
-            Playdate playdate = DAO.GetPlaydateById(id);
+            Playdate playdate = playdateDao.GetPlaydateById(id);
             if (playdate != null)
             {
                 return Ok(playdate);
-            } else
+            }
+            else
             {
                 return NotFound();
             }
@@ -48,10 +56,26 @@ namespace Capstone.Controllers
         [HttpPost()]
         public ActionResult<Playdate> CreatePlaydate(Playdate playdateToAdd)
         {
-            int playdateId = DAO.AddPlaydate(playdateToAdd);
+
+            //if a location ID was not specified, but location data was, we need to check if a similar location already exists in the DB
+            if (playdateToAdd.location.LocationId == -1)
+            {
+                //lets look for a similar location
+                int LocationIdOnDB = locationDao.GetIdByLocation(playdateToAdd.location);
+                if (LocationIdOnDB == -1)
+                {
+                    //this means that the location is NOT in the database, so we must add it
+                    LocationIdOnDB = locationDao.AddLocation(playdateToAdd.location);
+                }
+                playdateToAdd.location.LocationId = LocationIdOnDB;
+
+            }
+            //now the location of the playdate should be properly in the DB
+
+            int playdateId = playdateDao.AddPlaydate(playdateToAdd);
             if (playdateId < 1)
             {
-                return BadRequest();
+                return StatusCode(500, "Something went wrong when trying to add your new playdate!");
             }
             else return Ok(playdateToAdd);
         }

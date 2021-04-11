@@ -10,6 +10,9 @@ namespace Capstone.DAO
     public class LocationSqlDAO : ILocationDAO
     {
         private const string SQL_GET_ALL_LOCATIONS = "select * from locations";
+        private const string SQL_GET_LOCATION_BY_ID = "select * from locations where location_id = @locationId";
+        private const string SQL_GET_ID_BY_LOCATION = "select location_id from locations where name = @name AND address = @address AND lat = @lat AND lng = @lng";
+        private const string SQL_ADD_NEW_LOCATION = "insert into locations(name,address,lat,lng) values(@name,@address,@lat,@lng); select @@IDENTITY;";
         private readonly string connectionString;
         public LocationSqlDAO(string connectionString)
         {
@@ -58,7 +61,7 @@ namespace Capstone.DAO
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand("select * from locations where location_id = @locationId", conn);
+                    SqlCommand cmd = new SqlCommand(SQL_GET_LOCATION_BY_ID, conn);
                     cmd.Parameters.AddWithValue("@locationId", locationId);
                     SqlDataReader rdr = cmd.ExecuteReader();
                     if (rdr.Read())
@@ -73,6 +76,69 @@ namespace Capstone.DAO
                 throw;
             }
             return location;
+        }
+
+        /// <summary>
+        /// Given a location object, find it's location_id in the database. If no such location exists, return -1.
+        /// The purpose of this method is to prevent duplicate locations from being added to the DB.
+        /// </summary>
+        /// <param name="location">The location.</param>
+        /// <returns>the location_id of the location, or -1 if not found</returns>
+        public int GetIdByLocation(Location location)
+        {
+            int locationId = -1;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_GET_ID_BY_LOCATION, conn);
+                    cmd.Parameters.AddWithValue("@name", location.Name);
+                    cmd.Parameters.AddWithValue("@address", location.Address);
+                    cmd.Parameters.AddWithValue("@lat", location.Lat);
+                    cmd.Parameters.AddWithValue("@lng", location.Lng);
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    if (rdr.Read())
+                    {
+                        locationId = Convert.ToInt32(rdr["location_id"]);
+                    }
+                }
+
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            return locationId;
+        }
+
+        /// <summary>
+        /// Adds a new location into the database
+        /// </summary>
+        /// <param name="locationToAdd">The location to add.</param>
+        /// <returns>the ID of the newly added location</returns>
+        public int AddLocation(Location locationToAdd)
+        {
+            int locationId = -1;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_ADD_NEW_LOCATION, conn);
+                    cmd.Parameters.AddWithValue("@name", locationToAdd.Name);
+                    cmd.Parameters.AddWithValue("@address", locationToAdd.Address);
+                    cmd.Parameters.AddWithValue("@lat", locationToAdd.Lat);
+                    cmd.Parameters.AddWithValue("@lng", locationToAdd.Lng);
+                    locationId = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            return locationId;
         }
 
         private Location rowToObject(SqlDataReader rdr)

@@ -7,7 +7,7 @@ namespace Capstone.Models
 {
     public class Location
     {
-        public int LocationId { get; set; }
+        public int LocationId { get; set; } = -1;
         public string Address { get; set; }
         public float Lat { get; set; }
         public float Lng { get; set; }

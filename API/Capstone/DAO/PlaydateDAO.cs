@@ -12,22 +12,14 @@ namespace Capstone.DAO
         private readonly string connectionString;
         private const string SQL_GET_ALL_PLAYDATES = "select * from fullPlaydates;";
         private const string SQL_GETPLAYDATEBYID = "select * from fullPlaydates where playdate_id = @playdate_id;";
-        private const string SQL_ADDPLAYDATE = "insert into playdates (date, location_id) values (@date, @location_id); select @@IDENTITY;";
+        private const string SQL_ADDPLAYDATE = "insert into playdates (date, user_id, location_id) values (@date, @userId, @location_id); select @@IDENTITY;";
 
         public PlaydateDAO(string connectionString)
         {
             this.connectionString = connectionString;
         }
 
-        private Playdate RowToObject(SqlDataReader rdr)
-        {
-            Playdate playdate = new Playdate();
-            playdate.PlaydateId = Convert.ToInt32(rdr["playdate_id"]);
-            playdate.Date = Convert.ToDateTime(rdr["date"]);
-            playdate.LocationId = Convert.ToInt32(rdr["location_id"]);
 
-            return playdate;
-        }
 
         //get a list of all playdates 
         public List<Playdate> GetAllPlaydates()
@@ -99,7 +91,8 @@ namespace Capstone.DAO
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(SQL_ADDPLAYDATE, conn);
                     cmd.Parameters.AddWithValue("@date", playdateToAdd.Date);
-                    cmd.Parameters.AddWithValue("@location_id", playdateToAdd.LocationId);
+                    cmd.Parameters.AddWithValue("@userId", playdateToAdd.UserId);
+                    cmd.Parameters.AddWithValue("@location_id", playdateToAdd.location.LocationId);
                     playdateId = Convert.ToInt32(cmd.ExecuteScalar());
                     playdateToAdd.PlaydateId = playdateId;
 
@@ -112,6 +105,28 @@ namespace Capstone.DAO
 
             return playdateId;
 
+        }
+
+
+        private Playdate RowToObject(SqlDataReader rdr)
+        {
+            Playdate playdate = new Playdate()
+            {
+                PlaydateId = Convert.ToInt32(rdr["playdate_id"]),
+                Date = Convert.ToDateTime(rdr["date"]),
+                UserId = Convert.ToInt32(rdr["user_id"]),
+                location = new Location()
+                {
+                    LocationId = Convert.ToInt32(rdr["location_id"]),
+                    Name = Convert.ToString(rdr["location_name"]),
+                    Address = Convert.ToString(rdr["address"]),
+                    Lat = Convert.ToSingle(rdr["lat"]),
+                    Lng = Convert.ToSingle(rdr["lng"])
+                }
+            };
+
+
+            return playdate;
         }
 
 
