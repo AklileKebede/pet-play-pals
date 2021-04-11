@@ -22,7 +22,13 @@
 					v-model="pet.petTypeId"
 				>
 					<option value=""></option>
-					<option v-for="(item, key) in $store.state.validPetTypes" v-bind:key="key" v-bind:value="key">{{item}}</option>
+					<option
+						v-for="(item, key) in $store.state.validPetTypes"
+						v-bind:key="key"
+						v-bind:value="key"
+					>
+						{{ item }}
+					</option>
 				</select>
 			</li>
 
@@ -52,25 +58,22 @@
 						{{ item }}
 						<input
 							type="checkbox"
-							v-bind:value = "key"
+							v-bind:value="key"
 							v-model="pet.personalityIds"
 						/>
 					</li>
 				</ul>
 			</li>
+
+			<button type="submit" class="smallGreenButton">Submit</button>
+			<router-link
+				v-bind:to="{ name: 'profile' }"
+				tag="button"
+				id="petForm"
+				class="smallGreenButton"
+				>Cancel</router-link
+			>
 		</form>
-
-		<button type="submit"  class="smallGreenButton">
-			Submit
-		</button>
-		<router-link
-			v-bind:to="{name: 'profile'}"
-
-			tag="button"
-			id="petForm"
-			class="smallGreenButton"
-			>Cancel</router-link
-		>
 	</div>
 </template>
 
@@ -103,7 +106,7 @@ export default {
 					this.pet = response.data;
 				}
 			);
-			this.$router.push({name: "profile"})
+			this.$router.push({ name: "profile" });
 		},
 	},
 	created() {

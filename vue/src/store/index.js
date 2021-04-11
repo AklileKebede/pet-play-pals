@@ -31,7 +31,6 @@ export default new Vuex.Store({
 			state.token = token;
 			localStorage.setItem('token', token);
 			axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-			alert("token changed")
 		},
 		SET_USER(state, user) {
 			state.user = user;

@@ -12,6 +12,7 @@ export default {
 	getPetById(petId){
 		return http.get(`/pets/${petId}`)
 	},
+	// todo: make this NOT cache
 	getPetsForUser(userId){
 		return http.get(`/pets?userId=${userId}`)
 	},
