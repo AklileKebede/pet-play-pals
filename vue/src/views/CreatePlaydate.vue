@@ -9,6 +9,7 @@
 	pet types acceptable
 	delet
 	-->
+	
 	</div>
 </template>
 

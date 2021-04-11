@@ -25,9 +25,9 @@
 							>Edit Pet</router-link
 						>
 					</li>
-					<!-- <router-link :to="{path: bus.url + data.item, query: { item: { "id": 1, "bus_number": "xx-xx-xxx", "bus_color": "black" }
-    }
-}"> -->
+					
+    
+
 				</ul>
 				<router-link
 					to="/PetForm"
@@ -39,6 +39,23 @@
 			</div>
 			<div id="playdateList" class="bubble foggy-gray-bg">
 				<h2>My Playdates</h2>
+				<ul>
+					<li v-for="playdate in playdates" v-bind:key="playdate.id">
+						<playdate-details v-bind:playdate="playdate"></playdate-details>
+						<!-- <router-link
+							v-bind:to="{
+								name: 'EditPlaydate',
+								params: {  },
+							}"
+							tag="button"
+							id="editPlaydate"
+							class="smallGreenButton"
+							>Edit Playdate</router-link
+						> -->
+					</li>
+					
+    
+
 			</div>
 		</div>
 	</div>
@@ -47,13 +64,14 @@
 <script>
 import PetDetails from "../components/PetDetails.vue";
 import PetService from "@/services/PetsService";
+import PlaydateDetails from '../components/PlaydateDetails.vue';
 export default {
-	components: { PetDetails },
+	components: { PetDetails, PlaydateDetails }, 
 	name: "profile",
 	data() {
 		return {
 			pets: {},
-		};
+		}
 	},
 	computed: {
 		currentUser() {
@@ -68,6 +86,8 @@ export default {
 				}
 			);
 		},
+		
+
 	},
 	created() {
 		this.getPets();
