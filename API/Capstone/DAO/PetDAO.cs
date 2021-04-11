@@ -11,9 +11,8 @@ namespace Capstone.DAO
     public class PetDAO : IPetDAO
     {
         private readonly string connectionString;
-        private const string SQL_ADDPET = "insert into pets(pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values (@petName, @birthday, @sex, @petTypeId, @petBreed, @color, @bio); select @@IDENTITY;";
-        private const string SQL_ADDPETTOUSER = "insert into user_pet(user_id, pet_id) Values(@userId, @petId); select @@IDENTITY";
-        private const string SQL_GETUSERPET = "select * from fullPets p join user_pet u_p on u_p.pet_id = p.pet_id where u_p.user_id = @userId";
+        private const string SQL_ADDPET = "insert into pets(user_id, pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values (@userId, @petName, @birthday, @sex, @petTypeId, @petBreed, @color, @bio); select @@IDENTITY;";
+        private const string SQL_GET_PETS_BY_USERID = "select * from fullPets where user_id = @userId";
         private const string SQL_GETALLPERSONALITIES = "select * from personality";
         private const string SQL_GETPERSONALITIESFORPETBYID = "select personality_name,personality.personality_id from personality join personality_pet on personality.personality_id = personality_pet.personality_id where personality_pet.pet_id = @petId";
         private const string SQL_GETALLPETTYPES = "select * from pet_types";
@@ -21,6 +20,7 @@ namespace Capstone.DAO
         private const string SQL_GET_PET_BY_ID = "select * from fullPets where pet_id = @petId";
         private const string SQL_OVERWRITE_PET_PERSONALITIES = "begin transaction; delete from personality_pet where pet_id = @petId; insert into personality_pet select @petId, personality_id from personality where personality_id in ({0}); commit transaction;";
         private const string SQL_UPDATE_PET_BY_ID = "update pets set pet_name = @petName, birthday = @birthday, sex = @sex, pet_type_id = @petTypeId, pet_breed = @petBreed, color = @color, bio = @bio where pet_id = @petId;";
+        private const string SQL_GET_PETTYPE_ID_BY_PETTYPE = "select * from pet_types where pet_type_name = @petType";
 
         public PetDAO(string connectionString)
         {
@@ -89,33 +89,6 @@ namespace Capstone.DAO
             return petTypes;
         }
 
-       
-
-        public int AddPetToUser(int petId, int userId)
-        {
-            int rowsAffected = 0;
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand(SQL_ADDPETTOUSER, conn);
-                    cmd.Parameters.AddWithValue("@userId", userId);
-                    cmd.Parameters.AddWithValue("@petId", petId);
-                    rowsAffected = cmd.ExecuteNonQuery();
-
-                }
-
-            }
-            catch (SqlException)
-            {
-                return rowsAffected;
-            }
-            return rowsAffected;
-
-        }
-
         public Pet GetPetById(int petId)
         {
             Pet pet = null;
@@ -159,6 +132,7 @@ namespace Capstone.DAO
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(SQL_ADDPET, conn);
+                    cmd.Parameters.AddWithValue("@userId", petToAdd.UserId);
                     cmd.Parameters.AddWithValue("@petId", petToAdd.PetId);
                     cmd.Parameters.AddWithValue("@petName", petToAdd.PetName);
                     cmd.Parameters.AddWithValue("@birthday", petToAdd.Birthday);
@@ -192,7 +166,7 @@ namespace Capstone.DAO
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand(SQL_UPDATE_PET_BY_ID,conn);
+                    SqlCommand cmd = new SqlCommand(SQL_UPDATE_PET_BY_ID, conn);
                     cmd.Parameters.AddWithValue("@petId", petToUpdate.PetId);
                     cmd.Parameters.AddWithValue("@petName", petToUpdate.PetName);
                     cmd.Parameters.AddWithValue("@birthday", petToUpdate.Birthday);
@@ -213,7 +187,7 @@ namespace Capstone.DAO
                     }
                 }
 
-                
+
             }
             catch (SqlException)
             {
@@ -269,7 +243,7 @@ namespace Capstone.DAO
         }
 
         // get all pets for a registered user 
-        public List<Pet> GetUserPets(int userId)
+        public List<Pet> GetPetsByUserId(int userId)
         {
 
             List<Pet> usersPets = new List<Pet>();
@@ -279,7 +253,7 @@ namespace Capstone.DAO
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand(SQL_GETUSERPET, conn);
+                    SqlCommand cmd = new SqlCommand(SQL_GET_PETS_BY_USERID, conn);
                     cmd.Parameters.AddWithValue("@userId", userId);
                     SqlDataReader rdr = cmd.ExecuteReader();
                     while (rdr.Read())
@@ -297,6 +271,38 @@ namespace Capstone.DAO
             }
             return usersPets;
 
+
+        }
+
+        /// <summary>
+        /// Given a pet type name (i.e. "Dog", "Cat" etc.) return it's corresponding petTypeId from the database.
+        /// </summary>
+        /// <param name="petType">Type of pet as a string</param>
+        /// <returns>the id of that pet type, or -1 if not found</returns>
+        public int GetPetTypeId(string petType)
+        {
+            int petTypeId = -1;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_GET_PETTYPE_ID_BY_PETTYPE, conn);
+                    cmd.Parameters.AddWithValue("@petType", petType);
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        petTypeId = Convert.ToInt32(rdr["pet_type_id"]);
+                    }
+
+                }
+
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            return petTypeId;
 
         }
         public Dictionary<int, string> GetPersonalitiesByPetId(int petId)
@@ -328,6 +334,7 @@ namespace Capstone.DAO
         public Pet RowToObject(SqlDataReader rdr)
         {
             Pet pet = new Pet();
+            pet.UserId = Convert.ToInt32(rdr["user_id"]);
             pet.PetId = Convert.ToInt32(rdr["pet_id"]);
             pet.PetName = Convert.ToString(rdr["pet_name"]);
             pet.Birthday = Convert.ToDateTime(rdr["birthday"]);

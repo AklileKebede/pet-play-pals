@@ -79,7 +79,7 @@ insert into personality(personality_name) values
 --pets table
 create table pets(
 	pet_id int identity(1,1) NOT NULL,
-	--user_id int NOT NULL,
+	user_id int NOT NULL,
 	pet_name varchar(20) NOT NULL,
 	birthday Date NOT NULL,
 	sex char NOT NULL,
@@ -91,7 +91,7 @@ create table pets(
 
 	constraint PK_pet primary key (pet_id),
 	constraint FK_pet_type_id foreign key (pet_type_id) references pet_types (pet_type_id),
-	--constraint FK_pet_user_id foreign key (user_id) references users (user_id),
+	constraint FK_pet_user_id foreign key (user_id) references users (user_id),
 	constraint CHK_sex check (sex in ('M','F'))
 )
 
@@ -104,13 +104,13 @@ create table pet_images(
 	constraint FK_pet_images_pet_id foreign key (pet_id) references pets (pet_id)
 )
 
---owner_pet relator table
-create table user_pet(
-	user_id int not null,
-	pet_id int not null,
-	constraint FK_user_pet_user_id foreign key (user_id) references users (user_id),
-	constraint FK_user_pet_pet_id foreign key (pet_id) references pets (pet_id),
-)
+----owner_pet relator table
+--create table user_pet(
+--	user_id int not null,
+--	pet_id int not null,
+--	constraint FK_user_pet_user_id foreign key (user_id) references users (user_id),
+--	constraint FK_user_pet_pet_id foreign key (pet_id) references pets (pet_id),
+--)
 
 --personality_pet relator table
 create table personality_pet(

@@ -1,5 +1,18 @@
-use PetPlayPals_Test
-go
+--delete from all tables
+delete from playdate_pet
+delete from personality_pet
+delete from pet_images
+delete from pets
+delete from playdates
+delete from locations
+delete from users
+
+--reset IDs
+DBCC CHECKIDENT ('pet_images', RESEED, 0)  
+DBCC CHECKIDENT ('pets', RESEED, 0)  
+DBCC CHECKIDENT ('playdates', RESEED, 0)  
+DBCC CHECKIDENT ('locations', RESEED, 0) 
+DBCC CHECKIDENT ('users', RESEED, 0) 
 
 --insert a location
 insert into locations(name,address,lat,lng) values
@@ -19,6 +32,8 @@ insert into playdates(date,location_id) values
 select * from playdates
 
 --creating users from web app
+INSERT INTO users (username, password_hash, salt, user_role) VALUES ('user','Jg45HuwT7PZkfuKTz6IB90CtWY4=','LHxP4Xh7bN0=','user');
+INSERT INTO users (username, password_hash, salt, user_role) VALUES ('admin','YhyGVQ+Ch69n4JMBncM4lNF/i9s=', 'Ar/aB2thQTI=','admin');
 INSERT INTO users (username, password_hash, salt, user_role) VALUES ('brandon', 'V0lRjxFQxgKeP+/h5IbKqnAPQoU=', 'Rz+Z8yMoqIg=', 'user');
 insert into users (username, password_hash, salt, user_role) values ('rosa', 'EBbMAfKO8NXslvRz6GCCVmeV6ig=', 'ybDc/+RXVqs=', 'user');
 insert into users (username, password_hash, salt, user_role) values ('paul', 'fp9wBngxMgdo2HIcts7YLBJdhyU=', 'Sqzc1pc53es=', 'user');
@@ -60,5 +75,3 @@ insert into personality_pet (personality_id, pet_id) values (7, 2);
 insert into personality_pet (personality_id, pet_id) values (1, 5);
 
 select * from fullPets
-
-select * from fullPets where user_id = @userId
