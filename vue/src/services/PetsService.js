@@ -1,32 +1,27 @@
 import axios from 'axios';
 
-
-const http = axios.create(
-	{// Base URL of every endpoint that we will be calling
-		baseURL: process.env.VUE_APP_REMOTE_API,
-	});
 export default {
 	getAllPets() {
-		return http.get('/pets');
+		return axios.get('/pets');
 	},
 	getPetById(petId){
-		return http.get(`/pets/${petId}`)
+		return axios.get(`/pets/${petId}`)
 	},
 	// todo: make this NOT cache
 	getPetsForUser(userId){
-		return http.get(`/pets?userId=${userId}`)
+		return axios.get(`/pets?userId=${userId}`)
 	},
 	getAllPersonalities(){
-		return http.get('/pets/personalities')
+		return axios.get('/pets/personalities')
 	},
 	getAllPetTypes(){
-		return http.get('/pets/types')
+		return axios.get('/pets/types')
 	},
 	updatePet(petId, pet) {
-	return http.put(`/pets/${petId}`,pet)
+	return axios.put(`/pets/${petId}`,pet)
 	},
 	addNewPet(pet) {
-		return http.post("/pets", pet);
+		return axios.post("/pets", pet);
 	},
 
 

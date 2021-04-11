@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace Capstone.Controllers
 {
     [Route("[controller]")]
-    
+    [Authorize]
     [ApiController]
     public class PetsController : AuthorizedControllerBase
     {
@@ -53,7 +53,7 @@ namespace Capstone.Controllers
         /// </summary>
         /// <param name="petToAdd">a pet object to add to the database</param>
         /// <returns>that same pet object, but with it's petID and userID values populated</returns>
-        [Authorize]
+        
         [HttpPost()]
         public ActionResult<Pet> CreatePet(Pet petToAdd)
         {
