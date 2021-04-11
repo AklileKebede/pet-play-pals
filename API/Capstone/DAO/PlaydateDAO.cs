@@ -10,8 +10,8 @@ namespace Capstone.DAO
     public class PlaydateDAO : IPlaydateDAO
     {
         private readonly string connectionString;
-        private const string SQL_GETALLPLAYDATES = "select * from playdates;";
-        private const string SQL_GETPLAYDATEBYID = "select * from playdates where playdate_id = @playdate_id;";
+        private const string SQL_GET_ALL_PLAYDATES = "select * from fullPlaydates;";
+        private const string SQL_GETPLAYDATEBYID = "select * from fullPlaydates where playdate_id = @playdate_id;";
         private const string SQL_ADDPLAYDATE = "insert into playdates (date, location_id) values (@date, @location_id); select @@IDENTITY;";
 
         public PlaydateDAO(string connectionString)
@@ -39,7 +39,7 @@ namespace Capstone.DAO
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand(SQL_GETALLPLAYDATES, conn);
+                    SqlCommand cmd = new SqlCommand(SQL_GET_ALL_PLAYDATES, conn);
                     SqlDataReader rdr = cmd.ExecuteReader();
 
                     while (rdr.Read())

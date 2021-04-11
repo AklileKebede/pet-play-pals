@@ -103,13 +103,6 @@ create table pet_images(
 	constraint FK_pet_images_pet_id foreign key (pet_id) references pets (pet_id)
 )
 
-----owner_pet relator table
---create table user_pet(
---	user_id int not null,
---	pet_id int not null,
---	constraint FK_user_pet_user_id foreign key (user_id) references users (user_id),
---	constraint FK_user_pet_pet_id foreign key (pet_id) references pets (pet_id),
---)
 
 --personality_pet relator table
 create table personality_pet(
@@ -124,10 +117,13 @@ create table personality_pet(
 create table playdates(
 	playdate_id int identity(1,1) not null,
 	date Date not null,
+	user_id int not null,
 	location_id int not null,
 
+
 	constraint PK_playdate primary key (playdate_id),
-	constraint FK_playdate_location foreign key (location_id) references locations (location_id)
+	constraint FK_playdate_location foreign key (location_id) references locations (location_id),
+	constraint FK_playdate_user_id foreign key (user_id) references users (user_id)
 )
 
 --playdate_pet relator table
@@ -141,6 +137,9 @@ GO
 -- views. We never learned this but thats okay
 create view fullPets as
 select pets.*, pet_types.pet_type_name from pets join pet_types on pets.pet_type_id = pet_types.pet_type_id;
+
+create view fullPlaydate as 
+select p.*, l.name, address, lat, lng  from playdates as p join locations as l on p.location_id = l.location_id
 
 
 

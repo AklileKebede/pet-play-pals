@@ -10,7 +10,9 @@ namespace Capstone.Models
         public int PlaydateId { get; set; }
 
         public DateTime Date { get; set; }
+        public int UserId { get; set; }
         public int LocationId { get; set; }
+        public Location location { get; set; }
 
 
 
