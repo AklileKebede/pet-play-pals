@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<form class="editPet">
+		<form class="editPet" v-on:submit.prevent="updatePet">
 			<h1>Edit {{ pet.petName }}'s- Information</h1>
 			<p>
 				Pet Name:
@@ -60,11 +60,12 @@
 			</li>
 		</form>
 
-		<button type="submit" @click="updatePet" class="smallGreenButton">
+		<button type="submit"  class="smallGreenButton">
 			Submit
 		</button>
 		<router-link
-			to="/home/profile"
+			v-bind:to="{name: 'profile'}"
+
 			tag="button"
 			id="petForm"
 			class="smallGreenButton"
@@ -102,6 +103,7 @@ export default {
 					this.pet = response.data;
 				}
 			);
+			this.$router.push({name: "profile"})
 		},
 	},
 	created() {
