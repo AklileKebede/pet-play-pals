@@ -15,5 +15,6 @@ namespace Capstone.DAO
         Pet RowToObject(SqlDataReader rdr);
         Pet UpdatePet(Pet petToUpdate);
         int GetPetTypeId(string petType);
+        List<Pet> GetAllPets();
     }
 }

@@ -45,19 +45,16 @@
     </table>
     <h2>Search Results</h2>
     <!-- Shows below the list of playdates , TODO need to change to show on a search page-->
-    <playdate-list :playdates="playdates"></playdate-list>
   </div>
 </template>
 
 <script>
-import PlaydateList from "@/components/PlaydateList.vue";
 import api from "@/services/AuthService.js";
 import "@/cssStyles/style.css"
 
 export default {
   name: "playdates",
   components: {
-    "playdate-list": PlaydateList,
   },
   data() {
     return {

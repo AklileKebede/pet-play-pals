@@ -36,9 +36,18 @@ namespace Capstone.Controllers
 
 
         [HttpGet()]
-        public ActionResult<List<Pet>> UsersPets(int userId)
+        public ActionResult<List<Pet>> UsersPets(int userId = -1)
         {
-            List<Pet> pets = petDAO.GetPetsByUserId(userId);
+
+            List<Pet> pets = new List<Pet>();
+            if (userId == -1)
+            {
+                pets = petDAO.GetAllPets();
+            }
+            else
+            {
+                pets = petDAO.GetPetsByUserId(userId);
+            }
             if (pets == null)
             {
                 return NoContent();
@@ -53,7 +62,7 @@ namespace Capstone.Controllers
         /// </summary>
         /// <param name="petToAdd">a pet object to add to the database</param>
         /// <returns>that same pet object, but with it's petID and userID values populated</returns>
-        
+
         [HttpPost()]
         public ActionResult<Pet> CreatePet(Pet petToAdd)
         {

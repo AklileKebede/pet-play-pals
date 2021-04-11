@@ -13,6 +13,7 @@ namespace Capstone.DAO
         private readonly string connectionString;
         private const string SQL_ADDPET = "insert into pets(user_id, pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values (@userId, @petName, @birthday, @sex, @petTypeId, @petBreed, @color, @bio); select @@IDENTITY;";
         private const string SQL_GET_PETS_BY_USERID = "select * from fullPets where user_id = @userId";
+        private const string SQL_GET_ALL_PETS = "select * from fullPets";
         private const string SQL_GETALLPERSONALITIES = "select * from personality";
         private const string SQL_GETPERSONALITIESFORPETBYID = "select personality_name,personality.personality_id from personality join personality_pet on personality.personality_id = personality_pet.personality_id where personality_pet.pet_id = @petId";
         private const string SQL_GETALLPETTYPES = "select * from pet_types";
@@ -21,6 +22,7 @@ namespace Capstone.DAO
         private const string SQL_OVERWRITE_PET_PERSONALITIES = "begin transaction; delete from personality_pet where pet_id = @petId; insert into personality_pet select @petId, personality_id from personality where personality_id in ({0}); commit transaction;";
         private const string SQL_UPDATE_PET_BY_ID = "update pets set pet_name = @petName, birthday = @birthday, sex = @sex, pet_type_id = @petTypeId, pet_breed = @petBreed, color = @color, bio = @bio where pet_id = @petId;";
         private const string SQL_GET_PETTYPE_ID_BY_PETTYPE = "select * from pet_types where pet_type_name = @petType";
+
 
         public PetDAO(string connectionString)
         {
@@ -87,6 +89,36 @@ namespace Capstone.DAO
             }
 
             return petTypes;
+        }
+
+        /// <summary>
+        /// gets all the pets on the database
+        /// </summary>
+        public List<Pet> GetAllPets()
+        {
+            List<Pet> usersPets = new List<Pet>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_GET_ALL_PETS, conn);
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        Pet pet = RowToObject(rdr);
+                        usersPets.Add(pet);
+                    }
+
+                }
+
+            }
+            catch (SqlException)
+            {
+                return usersPets;
+            }
+            return usersPets;
         }
 
         public Pet GetPetById(int petId)

@@ -111,7 +111,6 @@ export default {
 	},
 	created() {
 		this.getPetById();
-		this.getPersonalities();
 	},
 };
 </script>

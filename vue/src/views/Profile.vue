@@ -53,9 +53,7 @@
 							>Edit Playdate</router-link
 						> -->
 					</li>
-					
-    
-
+				</ul>
 			</div>
 		</div>
 	</div>
