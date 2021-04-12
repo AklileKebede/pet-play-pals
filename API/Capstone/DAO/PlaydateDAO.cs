@@ -48,23 +48,31 @@ namespace Capstone.DAO
                     queryBuilder.Append("(@userId = -1 OR user_id = @userId)");
                     cmd.Parameters.AddWithValue("@userId", filter.userId);
 
-                    #region filter on allowedpetTypeID
+                    #region filter on requiredpetTypeID
                     //filter on allowed petTypes
-                    string allowedPetTypesSnippett = " and (playdate_id in (select playdate_id from playdateIdsAndPetTypeIds where( (pet_type_id in ({0})) or (-1 in ({0})) ) ))";
-                    
-                    //here we will add 1-by-1 a list of pet type IDs we want to filter on
-                    List<string> petTypeIdParamNames = new List<string>();
-                    //loop through each petType that we want to add
-                    int i = 0;
-                    foreach (int petTypeId in filter.allowedPetTypes)
-                    {
-                        string paramName = $"@petTypeId{i}";//create a prepared variable param for the SQL command
-                        cmd.Parameters.AddWithValue(paramName, petTypeId);//add the variable
-                        petTypeIdParamNames.Add(paramName);//...and add the variable to a list as well
-                        i++;
-                    }
-                    queryBuilder.Append(String.Format(allowedPetTypesSnippett, string.Join(",", petTypeIdParamNames)));
+                    string requiredPetTypesSnippett = " and (playdate_id in (select playdate_id from playdateIdsAndPetTypes where( (pet_type_id in ({0})) or (-1 in ({0})) ) ))";
+                    /*this code is a workaround to functionality that really should be built into SQL.
+                     * I.e. the ability to parameterize an array of values for use in an IN select statement
+                     */
+                    ParameterizedSqlArray<int> requiredPetTypesArray = new ParameterizedSqlArray<int>(
+                        requiredPetTypesSnippett,
+                        filter.requiredPetTypes,
+                        "allowedPetTypeId");
+                    queryBuilder.Append(requiredPetTypesArray.Snippet);
+                    cmd.Parameters.AddRange(requiredPetTypesArray.Parameters);
                     #endregion
+
+                    #region filter on disallowedpetTypeID
+                    
+                    string disallowedPetTypesSnippett = "and (playdate_id not in (select playdate_id from playdateIdsAndPetTypes where( pet_type_id in ({0}))))";
+                    ParameterizedSqlArray<int> disallowedPetTypesArray = new ParameterizedSqlArray<int>(
+                        disallowedPetTypesSnippett,
+                        filter.disallowedPetTypes,
+                        "disallowedPetTypeId");
+                    queryBuilder.Append(disallowedPetTypesArray.Snippet);
+                    cmd.Parameters.AddRange(disallowedPetTypesArray.Parameters);
+                    #endregion
+
 
                     //end the big ol' where clause
                     queryBuilder.Append(");");
@@ -206,8 +214,8 @@ namespace Capstone.DAO
 
         }
 
-        
-        
+
+
 
 
         private Playdate RowToObject(SqlDataReader rdr)
@@ -235,5 +243,5 @@ namespace Capstone.DAO
 
     }
 
-    
+
 }

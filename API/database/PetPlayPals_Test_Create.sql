@@ -143,10 +143,10 @@ create view fullPlaydates as
 select p.*, l.name as location_name, address, lat, lng from playdates as p join locations as l on p.location_id = l.location_id;
 go
 
-create view playdateIdsAndPetTypeIds as 
-select distinct fullPlaydates.playdate_id,fullPets.pet_type_id  from
+create view playdateIdsAndPetTypes as 
+select distinct fullPlaydates.playdate_id,fullPets.pet_type_id,pet_type_name  from
 	fullPlaydates join playdate_pet as pp on fullPlaydates.playdate_id = pp.playdate_id
 	join fullPets on pp.pet_id = fullPets.pet_id
 go
-select * from playdateIdsAndPetTypeIds
+select * from playdateIdsAndPetTypes
 
