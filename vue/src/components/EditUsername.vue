@@ -38,12 +38,13 @@ export default {
   },
   methods: {
         updateUsernameByUserId() {
-                        EditUsername.updateUsernameByUserId(this.$route.params.userId, this.user). then(
-                            (response) => {
-                                this.user = response.data;
-                            }
-                        );
-                        this.$router.push({ name: "profile" });
+          EditUsername.updateUsernameByUserId(this.$route.params.userId, this.user)
+           .then(
+              (response) => {
+                  this.user = response.data;
+              }
+          );
+          this.$router.push({ name: "profile" });
     }
   },
 };
