@@ -61,8 +61,5 @@ insert into personality_pet (personality_id, pet_id) values (1, 2);
 insert into personality_pet (personality_id, pet_id) values (7, 2);
 insert into personality_pet (personality_id, pet_id) values (1, 5);
 
---given a playdate ID, get all the pets that are participating in that playdate
-select pp.playdate_id,p.* from playdate_pet as pp join fullPets as p on pp.pet_id = p.pet_id where playdate_id = 1
 
-select * from fullPlaydates where (@userId = -1 OR user_id = @userId);
 
