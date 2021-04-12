@@ -17,6 +17,10 @@ a:visited{
 	padding: 10px;
 	border-radius: 10px;
 }
+img.bubble{
+	padding: 0px;
+}
+
 .foggy-gray-bg{
 	background-color: #92878749;
 }
