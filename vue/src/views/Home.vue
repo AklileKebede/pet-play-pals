@@ -6,6 +6,7 @@
       >Search Playdates</router-link>
 
     <p id="description">short descriptions</p>
+    
   </body>
 </template>
 
@@ -34,6 +35,7 @@ border: none;
 margin: 6px;
 }
 /*Assigning each area to a grid location*/
+
 #h1 {
   grid-area: title;
 }
