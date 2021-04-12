@@ -16,7 +16,7 @@ namespace Capstone.DAO
             connectionString = dbConnectionString;
         }
 
-        public int UpdateUsername(string username, int userId)
+        public int UpdateUsername(string newUsername, int userId)
         {
             int rowsAffected = 0;
 
@@ -25,9 +25,9 @@ namespace Capstone.DAO
                 using (SqlConnection conn =  new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand("update users set username = @username where user_id = @userId");
-                    cmd.Parameters.AddWithValue("@username", username);
-                    cmd.Parameters.AddWithValue("@user_id", userId);
+                    SqlCommand cmd = new SqlCommand("update users set username = @username where user_id = @userId", conn);
+                    cmd.Parameters.AddWithValue("@username", newUsername);
+                    cmd.Parameters.AddWithValue("@userId", userId);
                     rowsAffected = cmd.ExecuteNonQuery();
 
                 }
@@ -41,9 +41,9 @@ namespace Capstone.DAO
             return rowsAffected;
         }
 
-        public User GetUserById(int userId)
+        public User GetUsernameById(int userId)
         {
-            User returnUser = null;
+            User returnUser = new User();
 
             try
             {
@@ -51,13 +51,13 @@ namespace Capstone.DAO
                 {
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("SELECT user_id, username, password_hash, salt, user_role FROM users WHERE user_id = @userId", conn);
+                    SqlCommand cmd = new SqlCommand("SELECT username FROM users WHERE user_id = @userId", conn);
                     cmd.Parameters.AddWithValue("@userId", userId);
-                    SqlDataReader reader = cmd.ExecuteReader();
+                    SqlDataReader rdr = cmd.ExecuteReader();
 
-                    if (reader.HasRows && reader.Read())
+                    if (rdr.HasRows && rdr.Read())
                     {
-                        returnUser = GetUserFromReader(reader);
+                        returnUser.Username = Convert.ToString(rdr["username"]);
                     }
                 }
             }

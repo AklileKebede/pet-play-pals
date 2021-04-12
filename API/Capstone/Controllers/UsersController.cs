@@ -22,13 +22,13 @@ namespace Capstone.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult<User> UpdateUsername(int userId, string username)
+        public ActionResult<User> UpdateUsername(int id, ReturnUser user)
         {
             User updatedUser = null;
 
-            if (userDAO.UpdateUsername(username, userId) == 1)
+            if (userDAO.UpdateUsername(user.Username, id) == 1)
             {
-                updatedUser = userDAO.GetUserById(userId);
+                updatedUser = userDAO.GetUsernameById(id);
                 return Ok(updatedUser); 
             }
             
@@ -37,7 +37,7 @@ namespace Capstone.Controllers
                 return BadRequest();
             }
 
-        }
+        }                                         
 
     }
 }
