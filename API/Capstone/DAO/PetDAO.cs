@@ -22,7 +22,7 @@ namespace Capstone.DAO
         private const string SQL_OVERWRITE_PET_PERSONALITIES = "begin transaction; delete from personality_pet where pet_id = @petId; insert into personality_pet select @petId, personality_id from personality where personality_id in ({0}); commit transaction;";
         private const string SQL_UPDATE_PET_BY_ID = "update pets set pet_name = @petName, birthday = @birthday, sex = @sex, pet_type_id = @petTypeId, pet_breed = @petBreed, color = @color, bio = @bio where pet_id = @petId;";
         private const string SQL_GET_PETTYPE_ID_BY_PETTYPE = "select * from pet_types where pet_type_name = @petType";
-
+        private const string SQL_GET_PETS_FOR_PLAYDATEID = "select pp.playdate_id,p.* from playdate_pet as pp join fullPets as p on pp.pet_id = p.pet_id where playdate_id = @playdateId";
 
         public PetDAO(string connectionString)
         {
@@ -361,6 +361,39 @@ namespace Capstone.DAO
             }
 
             return personalities;
+        }
+
+
+        /// <summary>
+        /// Given a playdateId, get a list of pets that participate in that playdate. If no such playdate exists, returns an empty list.
+        /// </summary>
+        /// <param name="playdateId">the playdate id</param>
+        /// <returns>a list of <see cref="Pet">Pets</see> that are participating in that playdate</returns>
+        public List<Pet> GetParticipantPetsByPlaydateId(int playdateId)
+        {
+            List<Pet> participants = new List<Pet>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_GET_PETS_FOR_PLAYDATEID, conn);
+                    cmd.Parameters.AddWithValue("@playdateId", playdateId);
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        participants.Add(RowToObject(rdr));
+                    }
+
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+
+            return participants;
         }
 
         public Pet RowToObject(SqlDataReader rdr)

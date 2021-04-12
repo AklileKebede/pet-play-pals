@@ -16,18 +16,18 @@ namespace Capstone.Controllers
     {
         private readonly IPlaydateDAO playdateDao;
         private readonly ILocationDAO locationDao;
-        public PlaydatesController(IPlaydateDAO playdateDAO, ILocationDAO locationDAO)
+        public PlaydatesController(IPlaydateDAO playdateDAO, ILocationDAO locationDAO, IPetDAO petDAO)
         {
             this.playdateDao = playdateDAO;
             this.locationDao = locationDAO;
         }
         /// <summary>
-        /// Gets a list of playdates that meet the search criteria. If a search criteria is left blank, it it not used.
+        /// Gets a list of playdates that meet the search criteria. If a search criteria is left blank, it is not used.
         /// </summary>
         /// <returns>a list of all <see cref="Playdate"/> objects in the database</returns>
         [AllowAnonymous]
         [HttpGet]
-        public ActionResult<List<Playdate>> getPlaydates(int userId = -1)
+        public ActionResult<List<Playdate>> getPlaydates(int userId = -1, int[]allowedPetTypeIds = null)
         {
             List<Playdate> playdates = new List<Playdate>();
             if (userId == -1)
