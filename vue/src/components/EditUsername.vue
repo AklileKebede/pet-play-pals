@@ -43,6 +43,7 @@ export default {
                                 this.user = response.data;
                             }
                         );
+                        this.$router.push({ name: "profile" });
     }
   },
 };
