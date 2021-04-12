@@ -22,7 +22,7 @@ namespace Capstone.Controllers
             this.locationDao = locationDAO;
         }
         /// <summary>
-        /// Gets all playdates that are in the database
+        /// Gets a list of playdates that meet the search criteria. If a search criteria is left blank, it it not used.
         /// </summary>
         /// <returns>a list of all <see cref="Playdate"/> objects in the database</returns>
         [AllowAnonymous]

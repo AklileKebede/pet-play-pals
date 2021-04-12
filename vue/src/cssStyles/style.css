@@ -14,7 +14,7 @@ a:visited{
 
 /*<Paul's Styles> */
 .bubble {
-	
+	padding: 10px;
 	border-radius: 10px;
 }
 .foggy-gray-bg{
