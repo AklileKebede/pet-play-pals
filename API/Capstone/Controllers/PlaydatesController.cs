@@ -32,7 +32,7 @@ namespace Capstone.Controllers
             List<Playdate> playdates = new List<Playdate>();
             if (userId == -1)
             {
-                playdates = playdateDao.GetAllPlaydates(); ;
+                playdates = playdateDao.GetAllPlaydates(); 
             }
             else
             {
@@ -60,7 +60,7 @@ namespace Capstone.Controllers
             }
             else
             {
-                return NotFound();
+                return NoContent();
             }
         }
 

@@ -103,7 +103,7 @@ namespace Capstone.DAO
             }
             catch (SqlException)
             {
-                throw;
+                return playdate;
             }
 
             return playdate;
