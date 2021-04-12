@@ -10,7 +10,9 @@ namespace Capstone.DAO
     public class PlaydateDAO : IPlaydateDAO
     {
         private readonly string connectionString;
+        private IPetDAO petDAO;
         private const string SQL_GET_ALL_PLAYDATES = "select * from fullPlaydates;";
+        private const string SQL_GET_PLAYDATES_FILTERED = "select * from fullPlaydates where ((@userId = -1 OR user_id = @userId) and (@petTypeIds = null))";
         private const string SQL_GETPLAYDATEBYID = "select * from fullPlaydates where playdate_id = @playdate_id;";
         private const string SQL_ADDPLAYDATE = "insert into playdates (date, user_id, location_id) values (@date, @userId, @location_id); select @@IDENTITY;";
         private const string SQL_GET_PLAYDATES_BY_USERID = "select * from fullPlaydates where user_id = @userId;";
@@ -18,7 +20,39 @@ namespace Capstone.DAO
         public PlaydateDAO(string connectionString)
         {
             this.connectionString = connectionString;
+            this.petDAO = new PetDAO(connectionString);
         }
+
+        public List<Playdate> GetPlaydates(int userId =-1, int[] allowedPetTypeIds = null)
+        {
+            List<Playdate> playdates = new List<Playdate>();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_GET_PLAYDATES_FILTERED, conn);
+                    cmd.Parameters.AddWithValue("@userId", userId);
+                    cmd.Parameters.AddWithValue("@userId", userId);
+                    SqlDataReader rdr = cmd.ExecuteReader();
+
+                    while (rdr.Read())
+                    {
+                        Playdate playdate = RowToObject(rdr);
+                        playdates.Add(playdate);
+                    }
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+
+            return playdates;
+        }
+
+
 
 
 
@@ -136,12 +170,16 @@ namespace Capstone.DAO
 
         }
 
+        
+        
+
 
         private Playdate RowToObject(SqlDataReader rdr)
         {
+            int playdateId = Convert.ToInt32(rdr["playdate_id"]);
             Playdate playdate = new Playdate()
             {
-                PlaydateId = Convert.ToInt32(rdr["playdate_id"]),
+                PlaydateId = playdateId,
                 Date = Convert.ToDateTime(rdr["date"]),
                 UserId = Convert.ToInt32(rdr["user_id"]),
                 location = new Location()
@@ -151,14 +189,15 @@ namespace Capstone.DAO
                     Address = Convert.ToString(rdr["address"]),
                     Lat = Convert.ToSingle(rdr["lat"]),
                     Lng = Convert.ToSingle(rdr["lng"])
-                }
+                },
+                Participants = petDAO.GetParticipantPetsByPlaydateId(playdateId)
             };
 
 
             return playdate;
         }
 
-
-
     }
+
+    
 }

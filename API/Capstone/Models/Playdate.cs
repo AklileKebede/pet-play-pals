@@ -12,6 +12,7 @@ namespace Capstone.Models
         public DateTime Date { get; set; }
         public int UserId { get; set; }
         public Location location { get; set; }
+        public List<Pet> Participants { get; set; }
 
 
 
