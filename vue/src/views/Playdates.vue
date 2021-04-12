@@ -72,7 +72,6 @@ export default {
 		return {
 			searchPetType: "",
 			searchPersonality: "",
-			playdates: [],
 			location: "",
 			playdates: {},
 

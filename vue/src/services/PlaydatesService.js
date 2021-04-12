@@ -1,11 +1,8 @@
 import axios from 'axios';
 
 export default {
-	getAllPlaydates() {
-		return axios.get("/playdates")
-	},
-	getPlaydatesForUser(userId) {
-		return axios.get(`/playdates?userId=${userId}`)
+	getPlaydates(filterParams){
+		return axios.get("/playdates", {params:filterParams})
 	},
 	updatePlaydate(playdateId, playdate) {
 		return axios.put(`/playdates/${playdateId}`, playdate)

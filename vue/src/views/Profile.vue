@@ -77,14 +77,14 @@ export default {
 	},
 	methods: {
 		getPets() {
-			PetService.getPetsForUser(this.currentUser.userId).then(
+			PetService.getPets({userId:this.currentUser.userId}).then(
 				(response) => {
 					this.pets = response.data;
 				}
 			);
 		},
 		getPlaydates() {
-			PlaydatesService.getPlaydatesForUser(this.currentUser.userId).then(
+			PlaydatesService.getPlaydates({userId:this.currentUser.userId}).then(
 				(response) => {
 					this.playdates = response.data;
 				}

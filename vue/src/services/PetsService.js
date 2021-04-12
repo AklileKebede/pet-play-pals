@@ -1,16 +1,13 @@
 import axios from 'axios';
 
 export default {
-	getAllPets() {
-		return axios.get('/pets');
+	getPets(filterParams) {
+		return axios.get('/pets',{params:filterParams});
 	},
 	getPetById(petId){
 		return axios.get(`/pets/${petId}`)
 	},
 	// todo: make this NOT cache
-	getPetsForUser(userId){
-		return axios.get(`/pets?userId=${userId}`)
-	},
 	getAllPersonalities(){
 		return axios.get('/pets/personalities')
 	},
