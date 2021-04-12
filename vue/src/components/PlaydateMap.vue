@@ -39,9 +39,6 @@ export default {
 	name: "playdate-map",
 	methods: {
 		getPlaydates() {
-			PlaydatesService.getAllPlaydates().then((response) => {
-				this.playdates = response.data;
-			});
 		},
 		async initMap() {
 			//iniialize the google maps api
@@ -118,7 +115,7 @@ export default {
 			});
 		},
 		addMarkers() {
-			PlaydatesService.getAllPlaydates().then((response) => {
+			PlaydatesService.getPlaydates().then((response) => {
 				this.playdates = response.data;
 				for (let playdate of this.playdates) {
 					this.markers.push(
@@ -133,7 +130,6 @@ export default {
 		},
 	},
 	created() {
-		this.getPlaydates();
 		this.initMap();
 		this.addMarkers();
 	},
