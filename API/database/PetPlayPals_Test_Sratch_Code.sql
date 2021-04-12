@@ -11,15 +11,19 @@ select distinct fullPlaydates.*, fullPets.pet_type_id  from
 
 
 select * from playdateIdsAndPetTypeIds
-declare @disallowedPetTypeID as int=(select pet_type_id from pet_types where pet_type_name = 'Cat');
+declare @disallowedPetTypeID as int=(select pet_type_id from pet_types where pet_type_name = 'Dog');
 
 declare @disallowedPetTypeID as int=-1;
---select playdate_id from playdateIdsAndPetTypeIds where( (pet_type_id  in (@disallowedPetTypeID)))
+--select playdate_id from playdateIdsAndPetTypes where( (pet_type_id  in (@disallowedPetTypeID)))
 
-select fullPlaydates.*,pet_types.pet_type_name from	fullPlaydates
-	full join playdateIdsAndPetTypeIds as pdpt on fullPlaydates.playdate_id = pdpt.pet_type_id
+select fullPlaydates.*,pet_types.* from	fullPlaydates
+	join playdateIdsAndPetTypes as pdpt on fullPlaydates.playdate_id = pdpt.playdate_id
 	join pet_types on pdpt.pet_type_id = pet_types.pet_type_id
-	where (fullPlayDates.playdate_id not in (select playdate_id from playdateIdsAndPetTypeIds where( (pet_type_id  in (@disallowedPetTypeID))) )
+	where (fullPlayDates.playdate_id not in (select playdate_id from playdateIdsAndPetTypes where( (pet_type_id  in (@disallowedPetTypeID))) )
 )
 
 select * from fullPlaydates
+select * from playdateIdsAndPetTypes
+
+select * from pets
+select * from fullPets
