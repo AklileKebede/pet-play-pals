@@ -29,7 +29,7 @@
 			</div>
 		</header>
 		<aside class="bubble foggy-gray-bg">
-			<img id="logo" src="./../img/logo.png" alt="pet play pals logo">
+			<img id="logo" src="./../img/logo.png" alt="pet play pals logo" class="bubble">
 			<router-link v-bind:to="{ name: 'playdates' }" id="search" class="green-button">Search Playdates</router-link>
 			<router-link v-bind:to="{ name: '???' }" id="forum" class="green-button" v-if="$store.state.token != ''">Forum</router-link>
 			<router-link v-bind:to="{ name: 'createPlaydate' }" id="schedule" class="green-button" v-if="$store.state.token != ''">Schedule Playdate</router-link>
@@ -58,7 +58,7 @@ export default {
 #logo{
 	height: 250px;
 	width: 250px;
-	margin: auto;
+	margin: 6px;
 }
 header {
 	grid-area: header;
@@ -75,7 +75,7 @@ footer {
 
 #app {
 	display: grid;
-	grid-template-columns: 1fr 2fr 2fr;
+	grid-template-columns: auto 1fr 1fr;
 	grid-template-areas:
 		"header header header"
 		"aside main main"
