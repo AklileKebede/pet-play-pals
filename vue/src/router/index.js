@@ -11,6 +11,7 @@ import createPlaydate from '@/views/CreatePlaydate'
 import PlaydateMapView from '@/views/PlaydateMapView.vue'
 import PetForm from '@/components/PetForm.vue'
 import EditPet from '@/components/EditPet.vue'
+import EditUsername from '@/components/EditUsername.vue'
 
 
 Vue.use(Router)
@@ -104,6 +105,17 @@ const router = new Router({
 			meta: {
 				requiresAuth: false
 			}
+		},
+		{
+			path:"/EditUsername/:userId",
+			name: "EditUsername",
+			component: EditUsername,
+			meta: {
+				requiresAuth: false
+			}
+
+
+
 		},
 	]
 })

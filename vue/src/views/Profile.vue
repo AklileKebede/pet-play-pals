@@ -5,7 +5,19 @@
 			<div id="userDetails" class="bubble foggy-gray-bg">
 				<h2>My Info</h2>
 				<!-- <p>These are your profile details:</p> -->
-				<p>User Name: {{ currentUser.username }}</p>
+				<p>Username: {{ currentUser.username }}</p>
+				<p>
+						<router-link
+							v-bind:to="{
+								name: 'EditUsername',
+								
+							}"
+							tag="button"
+							id="editusername"
+							class="smallGreenButton"
+							>Edit Username</router-link
+						>
+				</p>
 			</div>
 			<!-- <p>User Id: {{currentUser.userId}}</p> -->
 			<!-- <p>Role: {{currentUser.role}}</p> -->
@@ -25,6 +37,7 @@
 							>Edit Pet</router-link
 						>
 					</li>
+					
 				</ul>
 				<router-link
 					to="/PetForm"

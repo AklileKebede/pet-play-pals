@@ -21,7 +21,7 @@ namespace Capstone.Controllers
             this.userDAO = userDAO;
         }
 
-        [HttpPost("{id}")]
+        [HttpPut("{id}")]
         public ActionResult<User> UpdateUsername(int userId, string username)
         {
             User updatedUser = null;
@@ -29,9 +29,13 @@ namespace Capstone.Controllers
             if (userDAO.UpdateUsername(username, userId) == 1)
             {
                 updatedUser = userDAO.GetUserById(userId);
+                return Ok(updatedUser); 
             }
-
-            return updatedUser;
+            
+            else
+            {
+                return BadRequest();
+            }
 
         }
 
