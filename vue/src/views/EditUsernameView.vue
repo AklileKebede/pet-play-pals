@@ -11,6 +11,13 @@
 
 export default {
     name: "EditUsername",
+    data(){
+        return{
+            user: {
+                username: "",
+            }
+        }
+    },
     components: {EditUsername},
     data(){
         return{
