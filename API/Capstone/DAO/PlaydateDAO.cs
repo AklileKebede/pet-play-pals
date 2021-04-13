@@ -25,7 +25,7 @@ namespace Capstone.DAO
         private const string SQL_GET_PLAYDATE_IDS_BY_PROHIBITED_PET_TYPES_ARRAY = "select distinct playdate.playdate_id from playdate join playdate_pet_type_permitted as ppp on playdate.playdate_id = ppp.playdate_id where (((pet_type_id_is_permitted = 0) and (pet_type_id in ({0}))) or (-1 in ({0})))";
         private const string SQL_GET_PLAYDATE_IDS_BY_PERMITTED_PERSONALITIES_ARRAY = "select distinct playdate.playdate_id from playdate join playdate_personality_permitted as ppp on playdate.playdate_id = ppp.playdate_id where (((personality_id_is_permitted = 1) and(personality_id in ({0}))) or(-1 in ({0})))";
         private const string SQL_GET_PLAYDATE_IDS_BY_PROHIBITED_PERSONALITIES_ARRAY = "select distinct playdate.playdate_id from playdate join playdate_personality_permitted as ppp on playdate.playdate_id = ppp.playdate_id where (((personality_id_is_permitted = 0) and(personality_id in ({0}))) or(-1 in ({0})))";
-        
+        private const string SQL_GET_PLAYDATE_IDS_AND_DISTANCES_FROM_CENTER_POINT = "select playdate_id,distance_km,distance_mi from (select *, (distance_km * 0.62137)as distance_mi from (select *,dbo.Haversine_km(@centerLat,@centerLng,lat,lng) as distance_km from fullPlaydate)as km) as fullPlaydate_and_distance";
         public PlaydateDAO(string connectionString)
         {
             this.connectionString = connectionString;
@@ -97,6 +97,11 @@ namespace Capstone.DAO
                     #endregion
 
                     #region filter by location
+                    queryBuilder.Append($"and (playdate_id in ({SQL_GET_PLAYDATE_IDS_AND_DISTANCES_FROM_CENTER_POINT} where distance_km <= @radius))");
+                    cmd.Parameters.AddWithValue("@centerLat", filter.searchCenter.Lat);
+                    cmd.Parameters.AddWithValue("@centerLng", filter.searchCenter.Lng);
+                    cmd.Parameters.AddWithValue("@radius", filter.searchRadius);
+                    //todo: add -1 override for no radius
 
                     #endregion
 
