@@ -96,6 +96,9 @@ namespace Capstone.DAO
 
                     #endregion
 
+                    #region filter by location
+
+                    #endregion
 
                     //end the big ol' where clause
                     queryBuilder.Append(");");

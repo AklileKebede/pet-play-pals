@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Capstone.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace Capstone.Controllers.searchfilters
                 if (personalites.Count == 0) { personalites.Add(-1); };
                 return personalites;
             }
-            
+
         }
 
         public List<int> disallowedPersonalities
@@ -59,7 +60,12 @@ namespace Capstone.Controllers.searchfilters
             }
         }
 
+        // Search Radius 
 
+        public float searchRadius { set; get; } = -1;
+
+        // Search Center (zip=> lat., lng.)
+        public Location searchCenter { get; set; }
 
     }
 }
