@@ -26,11 +26,6 @@ import EditUsername from "@/services/EditUsername";
 export default {
   name: "EditUsername",
   components: {},
-  data() {
-    return {
-      user: {},
-    };
-  },
   computed: {
     currentUser() {
       return this.$store.state.user;
@@ -38,12 +33,14 @@ export default {
   },
   methods: {
         updateUsernameByUserId() {
-                        EditUsername.updateUsernameByUserId(this.$route.params.userId, this.user). then(
-                            (response) => {
-                                this.user = response.data;
-                            }
-                        );
-                        this.$router.push({ name: "profile" });
+          //this works but the route doesn't change when directed to edit username page
+          EditUsername.updateUsernameByUserId(this.$store.state.user.userId, this.$store.state.user)
+           .then(
+              (response) => {
+                  this.user = response.data;//this.user doesn't exist?
+                  this.$router.push({ name: "profile" });
+              }
+          );
     }
   },
 };
