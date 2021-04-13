@@ -5,12 +5,18 @@
     <router-link to="/playdates" tag="button" id="search"
       >Search Playdates</router-link>
 
-    <p id="description">short descriptions</p>
+    <p id="description">short descriptions
+      
+    </p>
+
+ 
+
     
   </body>
 </template>
 
 <script>
+
 export default {
   name: "home",
   computed: {
