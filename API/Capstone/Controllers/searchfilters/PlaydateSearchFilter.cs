@@ -65,7 +65,7 @@ namespace Capstone.Controllers.searchfilters
         public float searchRadius { set; get; } = -1;
 
         // Search Center (zip=> lat., lng.)
-        public Location searchCenter { get; set; }
+        public Location searchCenter { get; set; } = new Location() { Lat = 0, Lng = 0 };
 
     }
 }

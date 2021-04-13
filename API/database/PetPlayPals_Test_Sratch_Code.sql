@@ -23,6 +23,6 @@ select * from playdate_personality_permitted where playdate_id = 2
 
 declare @centerLat as float=41.5;
 declare @centerLng as float=-81.5;
-declare @radius as float=5
+declare @radius as float=-1
 
-select playdate_id,distance_km,distance_mi from (select *, (distance_km * 0.62137)as distance_mi from (select *,dbo.Haversine_km(@centerLat,@centerLng,lat,lng) as distance_km from fullPlaydate)as km) as fullPlaydate_and_distance where distance_km <= @radius
+select playdate_id,distance_km,distance_mi from (select *, (distance_km * 0.62137)as distance_mi from (select *,dbo.Haversine_km(@centerLat,@centerLng,lat,lng) as distance_km from fullPlaydate)as km) as fullPlaydate_and_distance where( (distance_km <= @radius) or (@radius =-1) )
