@@ -29,17 +29,22 @@ insert into playdate(start_date_time,end_date_time,user_id,location_id) values
 select * from fullPlaydate
 
 --insert into playdate_allowed_personalities
-insert into playdate_allowed_personality(playdate_id,personality_id) values
-	(1,1),
-	(1,3),
-	(1,5),
-	(2,3),
-	(2,7),
-	(3,1),
-	(3,7)
+insert into playdate_personality_permitted(playdate_id,personality_id,personality_id_is_permitted) values
+	(1,1,1),
+	(1,2,0),
+	(1,3,1),
+	(1,5,1),
+	(2,3,1),
+	(2,7,1),
+	(3,1,1),
+	(3,7,1)
 
-
-
+--insert into playdate_pet_type_permitted
+insert into playdate_pet_type_permitted(playdate_id,pet_type_id,pet_type_id_is_permitted) values 
+	(1,1,1),
+	(2,1,1),
+	(2,2,1),
+	(3,2,1)
 
 --insert a pet 
 insert into pet(user_id, pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values (4,'Ramona', '12-02-2018', 'F', 1, 'Mix', 'Spotted', 'A goofy lass');

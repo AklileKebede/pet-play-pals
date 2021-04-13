@@ -121,6 +121,7 @@ create table playdate(
 	end_date_time dateTime not null,
 	user_id int not null,
 	location_id int not null,
+	description varchar(300),
 
 
 	constraint PK_playdate primary key (playdate_id),
@@ -135,12 +136,23 @@ create table playdate_pet(
 	constraint FK_playdate_id foreign key (playdate_id) references playdate (playdate_id),
 	constraint FK_playdate_pet_pet_id foreign key (pet_id) references pet (pet_id)
 )
---playdate_allowed_personality relator table
-create table playdate_allowed_personality(
+--playdate_personality_permitted relator table
+create table playdate_personality_permitted(
 	playdate_id int not null,
 	personality_id int not null,
-	constraint FK_playdate_allowed_personalities_playdate_id foreign key (playdate_id) references playdate (playdate_id),
-	constraint FK_playdate_allowed_personalities_personality_id foreign key (personality_id) references personality (personality_id)
+	personality_id_is_permitted bit not null, 
+	constraint FK_playdate_personality_permitted_playdate_id foreign key (playdate_id) references playdate (playdate_id),
+	constraint FK_playdate_personality_permitted_personality_id foreign key (personality_id) references personality (personality_id),
+	constraint UC_playdate_personality_permitted_playdate_id_personality_id unique (playdate_id, personality_id)
+)
+
+create table playdate_pet_type_permitted(
+	playdate_id int not null,
+	pet_type_id int not null,
+	pet_type_id_is_permitted bit not null, 
+	constraint FK_playdate_pet_type_permitted_playdate_id foreign key (playdate_id) references playdate (playdate_id),
+	constraint FK_playdate_pet_type_permitted_pet_type_id foreign key (pet_type_id) references pet_type (pet_type_id),
+	constraint UC_playdate_pet_type_permitted_playdate_id_pet_type_id unique (playdate_id,pet_type_id)
 )
 
 GO
@@ -158,5 +170,4 @@ select distinct playdate.playdate_id ,fullPet.pet_type_id,pet_type_name  from
 	playdate join playdate_pet as pp on playdate.playdate_id = pp.playdate_id
 	join fullPet on pp.pet_id = fullPet.pet_id
 go
-select * from playdateIdAndPetType
 

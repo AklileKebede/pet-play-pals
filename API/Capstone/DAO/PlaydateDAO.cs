@@ -17,7 +17,15 @@ namespace Capstone.DAO
         private const string SQL_GETPLAYDATEBYID = "select * from fullPlaydate where playdate_id = @playdate_id;";
         private const string SQL_ADDPLAYDATE = "insert into playdate (start_date_time, end_date_time user_id, location_id) values (@startDateTime, @endDateTime, @userId, @location_id); select @@IDENTITY;";
         private const string SQL_GET_PLAYDATES_BY_USERID = "select * from fullPlaydate where user_id = @userId;";
-
+        //used to help builda fully featured playdate object
+        private const string SQL_GET_PET_TYPES_PERMITTED_BY_PLAYDATE_ID = "select * from playdate_pet_type_permitted where playdate_id = @playdateId";
+        private const string SQL_GET_PERSONALITIES_PERMITTED_BY_PLAYDATE_ID = "select * from playdate_personality_permitted where playdate_id = @playdateId";
+        //these are for playdate filtering. They will need to be parameterized first before you can actually use them
+        private const string SQL_GET_PLAYDATE_IDS_BY_PERMITTED_PET_TYPES_ARRAY = "select distinct playdate.playdate_id from playdate join playdate_pet_type_permitted as ppp on playdate.playdate_id = ppp.playdate_id where (((pet_type_id_is_permitted = 1) and (pet_type_id in ({0}))) or (-1 in ({0})))";
+        private const string SQL_GET_PLAYDATE_IDS_BY_PROHIBITED_PET_TYPES_ARRAY = "select distinct playdate.playdate_id from playdate join playdate_pet_type_permitted as ppp on playdate.playdate_id = ppp.playdate_id where (((pet_type_id_is_permitted = 0) and (pet_type_id in ({0}))) or (-1 in ({0})))";
+        private const string SQL_GET_PLAYDATE_IDS_BY_PERMITTED_PERSONALITIES_ARRAY = "select distinct playdate.playdate_id from playdate join playdate_personality_permitted as ppp on playdate.playdate_id = ppp.playdate_id where (((personality_id_is_permitted = 1) and(personality_id in ({0}))) or(-1 in ({0})))";
+        private const string SQL_GET_PLAYDATE_IDS_BY_PROHIBITED_PERSONALITIES_ARRAY = "select distinct playdate.playdate_id from playdate join playdate_personality_permitted as ppp on playdate.playdate_id = ppp.playdate_id where (((personality_id_is_permitted = 0) and(personality_id in ({0}))) or(-1 in ({0})))";
+        
         public PlaydateDAO(string connectionString)
         {
             this.connectionString = connectionString;
@@ -44,51 +52,47 @@ namespace Capstone.DAO
                     queryBuilder.Append("(@userId = -1 OR user_id = @userId)");
                     cmd.Parameters.AddWithValue("@userId", filter.userId);
 
-                    #region filter on requiredpetTypeID
-                    string requiredPetTypesSnippett = " and (playdate_id in (select playdate_id from playdateIdsAndPetTypes where( (pet_type_id in ({0})) or (-1 in ({0})) ) ))";
-                    /*this code is a workaround to functionality that really should be built into SQL.
-                     * I.e. the ability to parameterize an array of values for use in an IN select statement
-                     */
-                    ParameterizedSqlArray<int> requiredPetTypesArray = new ParameterizedSqlArray<int>(
-                        requiredPetTypesSnippett,
-                        filter.requiredPetTypes,
-                        "allowedPetTypeId");
-                    queryBuilder.Append(requiredPetTypesArray.Snippet);
-                    cmd.Parameters.AddRange(requiredPetTypesArray.Parameters);
+                    #region filter on allowed personalities
+                    ParameterizedSqlArray<int> allowedPersonalitiesArray = new ParameterizedSqlArray<int>(
+                        $"and (playdate_id in ({SQL_GET_PLAYDATE_IDS_BY_PERMITTED_PERSONALITIES_ARRAY}))",
+                        filter.allowedPersonalities,
+                        "allowedPersonalities"
+                        );
+                    queryBuilder.Append(allowedPersonalitiesArray.Snippet);
+                    cmd.Parameters.AddRange(allowedPersonalitiesArray.Parameters);
+
                     #endregion
 
-                    #region filter on allowed pet types
+                    #region filter on disallowed personalities
+                    ParameterizedSqlArray<int> disallowedPersonalitiesArray = new ParameterizedSqlArray<int>(
+                        $"and (playdate_id in ({SQL_GET_PLAYDATE_IDS_BY_PROHIBITED_PERSONALITIES_ARRAY}))",
+                        filter.disallowedPersonalities,
+                        "disallowedPersonalities"
+                        );
+                    queryBuilder.Append(disallowedPersonalitiesArray.Snippet);
+                    cmd.Parameters.AddRange(disallowedPersonalitiesArray.Parameters);
 
-                    string allowedPetTypesSnippet = "and ()";
+                    #endregion
+
+                    #region filter on allowed petTypes
                     ParameterizedSqlArray<int> allowedPetTypesArray = new ParameterizedSqlArray<int>(
-                        allowedPetTypesSnippet,
+                        $"and (playdate_id in ({SQL_GET_PLAYDATE_IDS_BY_PERMITTED_PET_TYPES_ARRAY}))",
                         filter.allowedPetTypes,
-                        "allowedPetTypeId"
+                        "allowedPetTypes"
                         );
                     queryBuilder.Append(allowedPetTypesArray.Snippet);
                     cmd.Parameters.AddRange(allowedPetTypesArray.Parameters);
 
                     #endregion
 
-                    #region filter on disallowedpetTypeID
-
-                    string disallowedPetTypesSnippett = "and (playdate_id not in (select playdate_id from playdateIdsAndPetTypes where( pet_type_id in ({0}))))";
+                    #region filter on disallowed petTypes
                     ParameterizedSqlArray<int> disallowedPetTypesArray = new ParameterizedSqlArray<int>(
-                        disallowedPetTypesSnippett,
+                        $"and (playdate_id in ({SQL_GET_PLAYDATE_IDS_BY_PROHIBITED_PET_TYPES_ARRAY}))",
                         filter.disallowedPetTypes,
-                        "disallowedPetTypeId");
+                        "disallowedPetTypes"
+                        );
                     queryBuilder.Append(disallowedPetTypesArray.Snippet);
                     cmd.Parameters.AddRange(disallowedPetTypesArray.Parameters);
-                    #endregion
-
-                    #region filter on allowed personalities
-                    string requiredPersonalitesSnippett = "";
-                    ParameterizedSqlArray<int> requiredPersonalitesArray = new ParameterizedSqlArray<int>(
-                        requiredPersonalitesSnippett,
-                        filter.allowedPersonalities,
-                        "allowedPersonalityId");
-                    queryBuilder.Append(requiredPersonalitesArray.Snippet);
-                    cmd.Parameters.AddRange(requiredPersonalitesArray.Parameters);
 
                     #endregion
 
@@ -200,7 +204,7 @@ namespace Capstone.DAO
             }
             catch (SqlException)
             {
-                return playdate;
+                throw;
             }
 
             return playdate;
@@ -234,6 +238,65 @@ namespace Capstone.DAO
 
         }
 
+        //get petTypes permitted by playdateId
+        public Dictionary<int, bool> GetPetTypesPermittedByPlaydateId(int playdateId)
+        {
+            Dictionary<int, bool> petTypesPermitted = new Dictionary<int, bool>();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_GET_PET_TYPES_PERMITTED_BY_PLAYDATE_ID, conn);
+                    cmd.Parameters.AddWithValue("@playdateId", playdateId);
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        int key = Convert.ToInt32(rdr["pet_type_id"]);
+                        bool value = Convert.ToBoolean(rdr["pet_type_id_is_permitted"]);
+                        petTypesPermitted[key] = value;
+                    }
+
+                }
+
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+
+            return petTypesPermitted;
+        }
+
+        //get personalities permitted by playdateId
+        public Dictionary<int, bool> GetPersonalitiesPermittedByPlaydateId(int playdateId)
+        {
+            Dictionary<int, bool> personalitiesPermitted = new Dictionary<int, bool>();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_GET_PERSONALITIES_PERMITTED_BY_PLAYDATE_ID, conn);
+                    cmd.Parameters.AddWithValue("@playdateId", playdateId);
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    while (rdr.Read())
+                    {
+                        int key = Convert.ToInt32(rdr["personality_id"]);
+                        bool value = Convert.ToBoolean(rdr["personality_id_is_permitted"]);
+                        personalitiesPermitted[key] = value;
+                    }
+
+                }
+
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+
+            return personalitiesPermitted;
+        }
 
 
 
@@ -255,6 +318,9 @@ namespace Capstone.DAO
                     Lat = Convert.ToSingle(rdr["lat"]),
                     Lng = Convert.ToSingle(rdr["lng"])
                 },
+                Description = Convert.ToString(rdr["description"]),
+                petTypesPermitted = GetPetTypesPermittedByPlaydateId(playdateId),
+                personalitiesPermitted = GetPersonalitiesPermittedByPlaydateId(playdateId),
                 Participants = petDAO.GetParticipantPetsByPlaydateId(playdateId)
             };
 
