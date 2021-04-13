@@ -11,7 +11,7 @@ namespace Capstone.DAO
         public string Snippet = "";
         private readonly List<SqlParameter> parameters = new List<SqlParameter>();
         public SqlParameter[] Parameters { get { return this.parameters.ToArray(); } }
-        public ParameterizedSqlArray(string snippet, arrayType[] values, string uniquePrefix)
+        public ParameterizedSqlArray(string snippet, List<arrayType> values, string uniquePrefix)
         {
             //this will hold our return value: a parameterized snippit of a SQL command, and a dict of params and valyes to add to your SqlCommand
             List<string> paramNames = new List<string>();
