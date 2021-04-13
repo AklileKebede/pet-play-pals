@@ -23,6 +23,9 @@ select fullPlaydates.*,pet_types.* from	fullPlaydates
 )
 
 select * from fullPlaydates
+	join playdate_pet on fullPlaydates.playdate_id = playdate_pet.playdate_id
+	join personality_pet on playdate_pet.pet_id = personality_pet.pet_id
+	where personality_pet.personality_id in (1)
 select * from playdateIdsAndPetTypes
 
 select * from pets

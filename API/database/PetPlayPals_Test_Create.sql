@@ -116,7 +116,8 @@ create table personality_pet(
 -- ####### playdate stuff #########
 create table playdates(
 	playdate_id int identity(1,1) not null,
-	date Date not null,
+	start_date_time dateTime not null,
+	end_date_time dateTime not null,
 	user_id int not null,
 	location_id int not null,
 
@@ -133,6 +134,14 @@ create table playdate_pet(
 	constraint FK_playdate_id foreign key (playdate_id) references playdates (playdate_id),
 	constraint FK_playdate_pet_pet_id foreign key (pet_id) references pets (pet_id)
 )
+--playdate_allowed_personality relator table
+create table playdate_allowed_personalities(
+	playdate_id int not null,
+	personality_id int not null,
+	constraint FK_playdate_allowed_personalities_playdate_id foreign key (playdate_id) references playdates (playdate_id),
+	constraint FK_playdate_allowed_personalities_personality_id foreign key (personality_id) references personality (personality_id)
+)
+
 GO
 -- views. We never learned this but thats okay
 create view fullPets as

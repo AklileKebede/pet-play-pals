@@ -22,13 +22,27 @@ namespace Capstone.Controllers
             this.playdateDao = playdateDAO;
             this.locationDao = locationDAO;
         }
+        [AllowAnonymous]
+        [HttpGet]
+        public ActionResult<List<Playdate>> GetAllPlaydates()
+        {
+            List<Playdate> playdates = playdateDao.GetAllPlaydates();
+
+
+            if (playdates == null)
+            {
+                return NoContent();
+            }
+            return Ok(playdates);
+        }
+    
         /// <summary>
         /// Gets a list of playdates that meet the search criteria. If a search criteria is left blank, it is not used.
         /// </summary>
         /// <returns>a list of all <see cref="Playdate"/> objects in the database</returns>
         [AllowAnonymous]
-        [HttpGet]
-        public ActionResult<List<Playdate>> getPlaydates(PlaydateSearchFilter filter)
+        [HttpGet("search")]
+        public ActionResult<List<Playdate>> GetPlaydates(PlaydateSearchFilter filter)
         {
             List<Playdate> playdates = playdateDao.GetPlaydates(filter);
 

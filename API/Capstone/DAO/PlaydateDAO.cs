@@ -16,7 +16,7 @@ namespace Capstone.DAO
         private const string SQL_GET_ALL_PLAYDATES = "select * from fullPlaydates";
         private const string SQL_GET_PLAYDATES_FILTERED = "select * from fullPlaydates where ((@userId = -1 OR user_id = @userId) and (@petTypeIds = null or ))";
         private const string SQL_GETPLAYDATEBYID = "select * from fullPlaydates where playdate_id = @playdate_id;";
-        private const string SQL_ADDPLAYDATE = "insert into playdates (date, user_id, location_id) values (@date, @userId, @location_id); select @@IDENTITY;";
+        private const string SQL_ADDPLAYDATE = "insert into playdates (start_date_time, end_date_time user_id, location_id) values (@startDateTime, @endDateTime, @userId, @location_id); select @@IDENTITY;";
         private const string SQL_GET_PLAYDATES_BY_USERID = "select * from fullPlaydates where user_id = @userId;";
 
         public PlaydateDAO(string connectionString)
@@ -27,6 +27,7 @@ namespace Capstone.DAO
 
         public List<Playdate> GetPlaydates(PlaydateSearchFilter filter)
         {
+
             //allowedPetTypes = allowedPetTypes ?? new int[] { -1 };
             //disallowedPetTypeIds = disallowedPetTypeIds ?? new int[] { -1 };
 
@@ -49,7 +50,6 @@ namespace Capstone.DAO
                     cmd.Parameters.AddWithValue("@userId", filter.userId);
 
                     #region filter on requiredpetTypeID
-                    //filter on allowed petTypes
                     string requiredPetTypesSnippett = " and (playdate_id in (select playdate_id from playdateIdsAndPetTypes where( (pet_type_id in ({0})) or (-1 in ({0})) ) ))";
                     /*this code is a workaround to functionality that really should be built into SQL.
                      * I.e. the ability to parameterize an array of values for use in an IN select statement
@@ -63,7 +63,7 @@ namespace Capstone.DAO
                     #endregion
 
                     #region filter on disallowedpetTypeID
-                    
+
                     string disallowedPetTypesSnippett = "and (playdate_id not in (select playdate_id from playdateIdsAndPetTypes where( pet_type_id in ({0}))))";
                     ParameterizedSqlArray<int> disallowedPetTypesArray = new ParameterizedSqlArray<int>(
                         disallowedPetTypesSnippett,
@@ -71,6 +71,17 @@ namespace Capstone.DAO
                         "disallowedPetTypeId");
                     queryBuilder.Append(disallowedPetTypesArray.Snippet);
                     cmd.Parameters.AddRange(disallowedPetTypesArray.Parameters);
+                    #endregion
+
+                    #region filter on allowed personalities
+                    string requiredPersonalitesSnippett = "";
+                    ParameterizedSqlArray<int> requiredPersonalitesArray = new ParameterizedSqlArray<int>(
+                        requiredPersonalitesSnippett,
+                        filter.allowedPersonalities,
+                        "allowedPersonalityId");
+                    queryBuilder.Append(requiredPersonalitesArray.Snippet);
+                    cmd.Parameters.AddRange(requiredPersonalitesArray.Parameters);
+
                     #endregion
 
 
@@ -197,7 +208,8 @@ namespace Capstone.DAO
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(SQL_ADDPLAYDATE, conn);
-                    cmd.Parameters.AddWithValue("@date", playdateToAdd.Date);
+                    cmd.Parameters.AddWithValue("@startDateTime", playdateToAdd.StartDateTime);
+                    cmd.Parameters.AddWithValue("@endDateTime", playdateToAdd.EndDateTime);
                     cmd.Parameters.AddWithValue("@userId", playdateToAdd.UserId);
                     cmd.Parameters.AddWithValue("@location_id", playdateToAdd.location.LocationId);
                     playdateId = Convert.ToInt32(cmd.ExecuteScalar());
@@ -224,7 +236,8 @@ namespace Capstone.DAO
             Playdate playdate = new Playdate()
             {
                 PlaydateId = playdateId,
-                Date = Convert.ToDateTime(rdr["date"]),
+                StartDateTime = Convert.ToDateTime(rdr["start_date_time"]),
+                EndDateTime = Convert.ToDateTime(rdr["end_date_time"]),
                 UserId = Convert.ToInt32(rdr["user_id"]),
                 location = new Location()
                 {
