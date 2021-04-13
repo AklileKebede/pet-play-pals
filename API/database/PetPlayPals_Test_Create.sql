@@ -121,6 +121,7 @@ create table playdate(
 	end_date_time dateTime not null,
 	user_id int not null,
 	location_id int not null,
+	description varchar(300),
 
 
 	constraint PK_playdate primary key (playdate_id),

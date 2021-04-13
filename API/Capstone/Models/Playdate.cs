@@ -13,6 +13,7 @@ namespace Capstone.Models
         public DateTime EndDateTime { get; set; }
         public int UserId { get; set; }
         public Location location { get; set; }
+        public string Description { get; set; }
         public Dictionary<int, bool> petTypesPermitted { get; set; }
         public Dictionary<int, bool> personalitiesPermitted { get; set; }
         public List<Pet> Participants { get; set; }

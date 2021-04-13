@@ -318,6 +318,7 @@ namespace Capstone.DAO
                     Lat = Convert.ToSingle(rdr["lat"]),
                     Lng = Convert.ToSingle(rdr["lng"])
                 },
+                Description = Convert.ToString(rdr["description"]),
                 petTypesPermitted = GetPetTypesPermittedByPlaydateId(playdateId),
                 personalitiesPermitted = GetPersonalitiesPermittedByPlaydateId(playdateId),
                 Participants = petDAO.GetParticipantPetsByPlaydateId(playdateId)
