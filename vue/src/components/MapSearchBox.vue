@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<!-- <input
+		<input
 			id="pac-input"
 			class="controls"
 			type="text"
@@ -9,8 +9,8 @@
 		<div id="infowindow-content">
 			<span id="place-name" class="title"></span><br />
 			<span id="place-address"></span>
-		</div> -->
-		<div class="map" id="map" />
+		</div>
+		<!-- <div class="map" id="map" /> --> 
 		<!-- <div>
 			
 			<p id='lat'>Current Lat: {{currentLocation.lat}}</p>
@@ -128,6 +128,7 @@ export default {
 				}
 			});
 		},
+        
 	},
 	created() {
 		this.initMap();

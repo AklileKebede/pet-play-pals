@@ -23,7 +23,8 @@ export default new Vuex.Store({
 		token: currentToken || '',
 		user: currentUser || {},
 		validPersonalities: {},
-		validPetTypes: {}
+		validPetTypes: {},
+		// currentMapMarker: {} || lan && lat
 
 	},
 	mutations: {
@@ -46,6 +47,9 @@ export default new Vuex.Store({
 		INITIALIZE_LOCAL_STATIC_DB_CACHE(state) {
 			PetsService.getAllPersonalities().then((response) => {state.validPersonalities = response.data;});
 			PetsService.getAllPetTypes().then((response) => {state.validPetTypes = response.data;});
+		},
+		SET_CURRENT_MAP_MARKER(state,latLanLocation) {
+			state.currentMapMarker = latLanLocation;
 		}
 	},
 })
