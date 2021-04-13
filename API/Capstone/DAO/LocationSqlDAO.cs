@@ -9,10 +9,10 @@ namespace Capstone.DAO
 {
     public class LocationSqlDAO : ILocationDAO
     {
-        private const string SQL_GET_ALL_LOCATIONS = "select * from locations";
-        private const string SQL_GET_LOCATION_BY_ID = "select * from locations where location_id = @locationId";
-        private const string SQL_GET_ID_BY_LOCATION = "select location_id from locations where name = @name AND address = @address AND lat = @lat AND lng = @lng";
-        private const string SQL_ADD_NEW_LOCATION = "insert into locations(name,address,lat,lng) values(@name,@address,@lat,@lng); select @@IDENTITY;";
+        private const string SQL_GET_ALL_LOCATIONS = "select * from location";
+        private const string SQL_GET_LOCATION_BY_ID = "select * from location where location_id = @locationId";
+        private const string SQL_GET_ID_BY_LOCATION = "select location_id from location where name = @name AND address = @address AND lat = @lat AND lng = @lng";
+        private const string SQL_ADD_NEW_LOCATION = "insert into location(name,address,lat,lng) values(@name,@address,@lat,@lng); select @@IDENTITY;";
         private readonly string connectionString;
         public LocationSqlDAO(string connectionString)
         {

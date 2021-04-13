@@ -9,6 +9,7 @@ namespace Capstone.Controllers.searchfilters
     {
         public int userId { get; set; } = -1;
         public int[] requiredPetTypes { get; set; } = new int[] { -1 };
+        public int[] allowedPetTypes { get; set; } = new int[] { -1 };
         public int[] disallowedPetTypes { get; set; } = new int[] { -1 };
         public int[] allowedPersonalities { get; set; } = new int[] { -1 };
         public int[] disallowedPersonalities { get; set; } = new int[] { -1 };

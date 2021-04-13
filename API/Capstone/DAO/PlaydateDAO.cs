@@ -13,11 +13,10 @@ namespace Capstone.DAO
     {
         private readonly string connectionString;
         private IPetDAO petDAO;
-        private const string SQL_GET_ALL_PLAYDATES = "select * from fullPlaydates";
-        private const string SQL_GET_PLAYDATES_FILTERED = "select * from fullPlaydates where ((@userId = -1 OR user_id = @userId) and (@petTypeIds = null or ))";
-        private const string SQL_GETPLAYDATEBYID = "select * from fullPlaydates where playdate_id = @playdate_id;";
-        private const string SQL_ADDPLAYDATE = "insert into playdates (start_date_time, end_date_time user_id, location_id) values (@startDateTime, @endDateTime, @userId, @location_id); select @@IDENTITY;";
-        private const string SQL_GET_PLAYDATES_BY_USERID = "select * from fullPlaydates where user_id = @userId;";
+        private const string SQL_GET_ALL_PLAYDATES = "select * from fullPlaydate";
+        private const string SQL_GETPLAYDATEBYID = "select * from fullPlaydate where playdate_id = @playdate_id;";
+        private const string SQL_ADDPLAYDATE = "insert into playdate (start_date_time, end_date_time user_id, location_id) values (@startDateTime, @endDateTime, @userId, @location_id); select @@IDENTITY;";
+        private const string SQL_GET_PLAYDATES_BY_USERID = "select * from fullPlaydate where user_id = @userId;";
 
         public PlaydateDAO(string connectionString)
         {
@@ -27,10 +26,6 @@ namespace Capstone.DAO
 
         public List<Playdate> GetPlaydates(PlaydateSearchFilter filter)
         {
-
-            //allowedPetTypes = allowedPetTypes ?? new int[] { -1 };
-            //disallowedPetTypeIds = disallowedPetTypeIds ?? new int[] { -1 };
-
             List<Playdate> playdates = new List<Playdate>();
 
             try
@@ -60,6 +55,19 @@ namespace Capstone.DAO
                         "allowedPetTypeId");
                     queryBuilder.Append(requiredPetTypesArray.Snippet);
                     cmd.Parameters.AddRange(requiredPetTypesArray.Parameters);
+                    #endregion
+
+                    #region filter on allowed pet types
+
+                    string allowedPetTypesSnippet = "and ()";
+                    ParameterizedSqlArray<int> allowedPetTypesArray = new ParameterizedSqlArray<int>(
+                        allowedPetTypesSnippet,
+                        filter.allowedPetTypes,
+                        "allowedPetTypeId"
+                        );
+                    queryBuilder.Append(allowedPetTypesArray.Snippet);
+                    cmd.Parameters.AddRange(allowedPetTypesArray.Parameters);
+
                     #endregion
 
                     #region filter on disallowedpetTypeID

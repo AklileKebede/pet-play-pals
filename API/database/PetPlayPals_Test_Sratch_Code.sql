@@ -30,3 +30,7 @@ select * from playdateIdsAndPetTypes
 
 select * from pets
 select * from fullPets
+
+--filter on allowed pet types
+select * from playdates
+	join playdate_allowed_personalities as pap on playdates.playdate_id

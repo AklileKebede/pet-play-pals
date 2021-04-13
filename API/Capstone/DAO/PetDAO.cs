@@ -11,18 +11,18 @@ namespace Capstone.DAO
     public class PetDAO : IPetDAO
     {
         private readonly string connectionString;
-        private const string SQL_ADDPET = "insert into pets(user_id, pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values (@userId, @petName, @birthday, @sex, @petTypeId, @petBreed, @color, @bio); select @@IDENTITY;";
-        private const string SQL_GET_PETS_BY_USERID = "select * from fullPets where user_id = @userId";
-        private const string SQL_GET_ALL_PETS = "select * from fullPets";
+        private const string SQL_ADDPET = "insert into pet(user_id, pet_name, birthday, sex, pet_type_id, pet_breed, color, bio) values (@userId, @petName, @birthday, @sex, @petTypeId, @petBreed, @color, @bio); select @@IDENTITY;";
+        private const string SQL_GET_PETS_BY_USERID = "select * from fullPet where user_id = @userId";
+        private const string SQL_GET_ALL_PETS = "select * from fullPet";
         private const string SQL_GETALLPERSONALITIES = "select * from personality";
         private const string SQL_GETPERSONALITIESFORPETBYID = "select personality_name,personality.personality_id from personality join personality_pet on personality.personality_id = personality_pet.personality_id where personality_pet.pet_id = @petId";
-        private const string SQL_GETALLPETTYPES = "select * from pet_types";
+        private const string SQL_GETALLPETTYPES = "select * from pet_type";
         //private const string SQL_UPDATE_PET_BY_ID_WITH_PERSONALITIES = "begin transaction; update pets set pet_name = @petName, birthday = @birthday, sex = @sex, pet_type_id = @petTypeId, pet_breed = @petBreed, color = @color, bio = @bio where pet_id = @petId; delete from personality_pet where pet_id = @petId; insert into personality_pet select @petId, personality_id from personality where personality_id in ({0}); commit transaction;";
-        private const string SQL_GET_PET_BY_ID = "select * from fullPets where pet_id = @petId";
+        private const string SQL_GET_PET_BY_ID = "select * from fullPet where pet_id = @petId";
         private const string SQL_OVERWRITE_PET_PERSONALITIES = "begin transaction; delete from personality_pet where pet_id = @petId; insert into personality_pet select @petId, personality_id from personality where personality_id in ({0}); commit transaction;";
-        private const string SQL_UPDATE_PET_BY_ID = "update pets set pet_name = @petName, birthday = @birthday, sex = @sex, pet_type_id = @petTypeId, pet_breed = @petBreed, color = @color, bio = @bio where pet_id = @petId;";
-        private const string SQL_GET_PETTYPE_ID_BY_PETTYPE = "select * from pet_types where pet_type_name = @petType";
-        private const string SQL_GET_PETS_FOR_PLAYDATEID = "select pp.playdate_id,p.* from playdate_pet as pp join fullPets as p on pp.pet_id = p.pet_id where playdate_id = @playdateId";
+        private const string SQL_UPDATE_PET_BY_ID = "update pet set pet_name = @petName, birthday = @birthday, sex = @sex, pet_type_id = @petTypeId, pet_breed = @petBreed, color = @color, bio = @bio where pet_id = @petId;";
+        private const string SQL_GET_PETTYPE_ID_BY_PETTYPE = "select * from pet_type where pet_type_name = @petType";
+        private const string SQL_GET_PETS_FOR_PLAYDATEID = "select pp.playdate_id,p.* from playdate_pet as pp join fullPet as p on pp.pet_id = p.pet_id where playdate_id = @playdateId";
 
         public PetDAO(string connectionString)
         {

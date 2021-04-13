@@ -17,7 +17,7 @@ GO
 --create tables
 
 --locations table
-create table locations (
+create table location (
 	location_id int identity(1,1) not null,
 	name varchar(60) null,
 	address varchar(80) null,
@@ -28,7 +28,7 @@ create table locations (
 )
 
 --user table
-CREATE TABLE users (
+CREATE TABLE "user" (
 	user_id int IDENTITY(1,1) NOT NULL,
 	username varchar(50) NOT NULL,
 	password_hash varchar(200) NOT NULL,
@@ -38,14 +38,15 @@ CREATE TABLE users (
 	CONSTRAINT PK_user PRIMARY KEY (user_id)
 )
 
+
 --populate default data
-INSERT INTO users (username, password_hash, salt, user_role) VALUES ('user','Jg45HuwT7PZkfuKTz6IB90CtWY4=','LHxP4Xh7bN0=','user');
-INSERT INTO users (username, password_hash, salt, user_role) VALUES ('admin','YhyGVQ+Ch69n4JMBncM4lNF/i9s=', 'Ar/aB2thQTI=','admin');
+INSERT INTO "user" (username, password_hash, salt, user_role) VALUES ('user','Jg45HuwT7PZkfuKTz6IB90CtWY4=','LHxP4Xh7bN0=','user');
+INSERT INTO "user" (username, password_hash, salt, user_role) VALUES ('admin','YhyGVQ+Ch69n4JMBncM4lNF/i9s=', 'Ar/aB2thQTI=','admin');
 
 -- ######## pet stuff ############
 
 --pet_type table
-create table pet_types(
+create table pet_type(
 	pet_type_id int identity(1,1) NOT NULL,
 	pet_type_name varchar(10) NOT NULL,
 
@@ -53,7 +54,7 @@ create table pet_types(
 )
 
 -- populate the pet types table
-insert into pet_types(pet_type_name) values 
+insert into pet_type(pet_type_name) values 
 	('Dog'),
 	('Cat')
 
@@ -76,7 +77,7 @@ insert into personality(personality_name) values
 
 
 --pets table
-create table pets(
+create table pet(
 	pet_id int identity(1,1) NOT NULL,
 	user_id int NOT NULL,
 	pet_name varchar(20) NOT NULL,
@@ -89,18 +90,18 @@ create table pets(
 
 
 	constraint PK_pet primary key (pet_id),
-	constraint FK_pet_type_id foreign key (pet_type_id) references pet_types (pet_type_id),
-	constraint FK_pet_user_id foreign key (user_id) references users (user_id),
+	constraint FK_pet_type_id foreign key (pet_type_id) references pet_type (pet_type_id),
+	constraint FK_pet_user_id foreign key (user_id) references "user" (user_id),
 	constraint CHK_sex check (sex in ('M','F'))
 )
 
 --pet pictures
-create table pet_images(
+create table pet_image(
 	pet_image_id int identity(1,1) not null,
 	pet_image_data varbinary(max)not null,
 	pet_id int not null,
-	constraint PK_pet_images primary key (pet_image_id),
-	constraint FK_pet_images_pet_id foreign key (pet_id) references pets (pet_id)
+	constraint PK_pet_image primary key (pet_image_id),
+	constraint FK_pet_image_pet_id foreign key (pet_id) references pet (pet_id)
 )
 
 
@@ -108,13 +109,13 @@ create table pet_images(
 create table personality_pet(
 	pet_id int not null,
 	personality_id int not null,
-	constraint FK_personality_pet_pet_id foreign key (pet_id) references pets (pet_id),
+	constraint FK_personality_pet_pet_id foreign key (pet_id) references pet (pet_id),
 	constraint FK_personality_pet_personality_id foreign key (personality_id) references personality (personality_id),
 	constraint UC_personality_pet unique (personality_id,pet_id)
 )
 
 -- ####### playdate stuff #########
-create table playdates(
+create table playdate(
 	playdate_id int identity(1,1) not null,
 	start_date_time dateTime not null,
 	end_date_time dateTime not null,
@@ -123,39 +124,39 @@ create table playdates(
 
 
 	constraint PK_playdate primary key (playdate_id),
-	constraint FK_playdate_location foreign key (location_id) references locations (location_id),
-	constraint FK_playdate_user_id foreign key (user_id) references users (user_id)
+	constraint FK_playdate_location foreign key (location_id) references location (location_id),
+	constraint FK_playdate_user_id foreign key (user_id) references "user" (user_id)
 )
 
 --playdate_pet relator table
 create table playdate_pet(
 	playdate_id int not null,
 	pet_id int not null,
-	constraint FK_playdate_id foreign key (playdate_id) references playdates (playdate_id),
-	constraint FK_playdate_pet_pet_id foreign key (pet_id) references pets (pet_id)
+	constraint FK_playdate_id foreign key (playdate_id) references playdate (playdate_id),
+	constraint FK_playdate_pet_pet_id foreign key (pet_id) references pet (pet_id)
 )
 --playdate_allowed_personality relator table
-create table playdate_allowed_personalities(
+create table playdate_allowed_personality(
 	playdate_id int not null,
 	personality_id int not null,
-	constraint FK_playdate_allowed_personalities_playdate_id foreign key (playdate_id) references playdates (playdate_id),
+	constraint FK_playdate_allowed_personalities_playdate_id foreign key (playdate_id) references playdate (playdate_id),
 	constraint FK_playdate_allowed_personalities_personality_id foreign key (personality_id) references personality (personality_id)
 )
 
 GO
 -- views. We never learned this but thats okay
-create view fullPets as
-select pets.*, pet_types.pet_type_name from pets join pet_types on pets.pet_type_id = pet_types.pet_type_id;
+create view fullPet as
+select pet.*, pet_type.pet_type_name from pet join pet_type on pet.pet_type_id = pet_type.pet_type_id;
 go
 
-create view fullPlaydates as 
-select p.*, l.name as location_name, address, lat, lng from playdates as p join locations as l on p.location_id = l.location_id;
+create view fullPlaydate as 
+select p.*, l.name as location_name, address, lat, lng from playdate as p join location as l on p.location_id = l.location_id;
 go
 
-create view playdateIdsAndPetTypes as 
-select distinct fullPlaydates.playdate_id,fullPets.pet_type_id,pet_type_name  from
-	fullPlaydates join playdate_pet as pp on fullPlaydates.playdate_id = pp.playdate_id
-	join fullPets on pp.pet_id = fullPets.pet_id
+create view playdateIdAndPetType as 
+select distinct playdate.playdate_id ,fullPet.pet_type_id,pet_type_name  from
+	playdate join playdate_pet as pp on playdate.playdate_id = pp.playdate_id
+	join fullPet on pp.pet_id = fullPet.pet_id
 go
-select * from playdateIdsAndPetTypes
+select * from playdateIdAndPetType
 
