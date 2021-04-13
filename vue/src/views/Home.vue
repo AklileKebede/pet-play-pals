@@ -4,14 +4,7 @@
     <h2 id="h2">Finding your bestfriend's bestfriend</h2>
     <router-link to="/playdates" tag="button" id="search"
       >Search Playdates</router-link>
-
-    <p id="description">short descriptions
-      
-    </p>
-
- 
-
-    
+    <p id="description">short descriptions</p>
   </body>
 </template>
 
@@ -53,6 +46,7 @@ margin: 6px;
 } */
 
 .container {
+  height: 80vh;
   display: grid;
   justify-items: center;
   grid-template-areas:
@@ -60,5 +54,16 @@ margin: 6px;
     "slogan"
     "search";
 }
+body{
+  color: #0d7685;
+  background-image: url('../../img/dogsplaying.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size:cover;
+  
+  
+}
+
+
 
 </style>
