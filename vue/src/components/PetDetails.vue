@@ -1,5 +1,5 @@
 <template>
-	<div class="petDetails">
+	<div class="petDetails bubble">
 		<ul>
 			<li>Name: {{ pet.petName }}</li>
 			<li>Bio: {{ pet.bio }}</li>
@@ -21,7 +21,7 @@
 			<!--this is for adding the pet images -->
 			<li>
 				<img
-					class="profilePic"
+					class="profilePic bubble"
 					v-bind:src="pet.imgUrl"
 					alt="pet profile pic"
 				/>
@@ -43,12 +43,22 @@ export default {
 </script>
 
 <style scoped>
-.petDetails {
-	background-color: rgb(80, 66, 19);
-	color: burlywood;
+.petDetails{
+    height: fit-content;
+    width: fit-content;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    padding: 20px;
+    background-color: #0D7685;
 }
 .profilePic {
 	max-height: 200px;
 	max-width: 200px;
+  margin: 10px;
 }
+ul{
+  list-style: none;
+}
+
 </style>
