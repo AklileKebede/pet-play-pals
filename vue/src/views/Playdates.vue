@@ -15,10 +15,12 @@
 							v-bind:value="key"
 						>
 							{{ item }}
-							<select v-model="filterParams.petTypesPermitted[key]" v-bind:onChange="alert('change'); if (value == '') {delete filterParams.petTypesPermitted[key]; alert('blank')}">
-								<option value=True>Allowed</option>
-								<option value=''>-</option>
-								<option value=False>Disallowed</option>
+							<select
+								v-model="filterParams.petTypesPermitted[key]"
+							>
+								<option value="True">Allowed</option>
+								<option value="null">-</option>
+								<option value="False">Disallowed</option>
 							</select>
 						</li>
 					</ul>
@@ -35,11 +37,14 @@
 							v-bind:key="key"
 						>
 							{{ item }}
-							<input
-								type="checkbox"
-								v-bind:value="key"
-								v-model="filterParams.personalityIds"
-							/>
+							<select
+								v-model="filterParams.personalitiesPermitted[key]"
+							>
+								<option value="True">Allowed</option>
+								<option value="null">-</option>
+								<option value="False">Disallowed</option>
+							</select>
+
 						</li>
 					</ul>
 				</td>
@@ -63,6 +68,13 @@
 					<button type="button" @click="getData" class="green-button">
 						Search
 					</button>
+					<!-- <button
+						type="button"
+						@click="stripNullKeys"
+						class="green-button"
+					>
+						Clean up filter
+					</button> -->
 				</tr>
 			</table>
 		</div>
@@ -104,13 +116,28 @@ export default {
 	},
 	methods: {
 		getData() {
+			this.stripNullKeys();
 			this.playdates = {};
 			this.filterParams.searchCenter = this.$store.state.currentMapMarker;
 			PlaydatesService.getPlaydates(this.filterParams).then((resp) => {
 				this.playdates = resp.data;
 			});
 		},
+		stripNullKeys() {
+			for (let dict of [
+				this.filterParams.petTypesPermitted,
+				this.filterParams.personalitiesPermitted,
+			]) {
+				for (let key in dict) {
+					if (dict[key] == "null") {
+						delete dict[key];
+					}
+				}
+			}
+		},
 	},
+	computed: {},
+
 	created() {
 		// this.searchPetType = this.$route.query.petType;
 		// this.searchPersonality = this.$route.query.personality;
