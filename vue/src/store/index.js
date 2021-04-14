@@ -50,7 +50,7 @@ export default new Vuex.Store({
 		},
 		SET_CURRENT_MAP_MARKER(state,latLanLocation) {
 			state.currentMapMarker = latLanLocation;
-			
+
 		}
 	},
 })

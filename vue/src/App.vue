@@ -46,6 +46,10 @@ import "./cssStyles/header.css";
 import "./cssStyles/leftBar.css";
 export default {
 	created() {
+				// INITIALIZE_LOCAL_STATIC_DB_CACHE(state) {
+		// 	// PetsService.getAllPersonalities().then((response) => {state.validPersonalities = response.data;}).catch((error) => {alert(`Error getting pet personalities:${error}. Is the backend running?`)});
+		// 	// PetsService.getAllPetTypes().then((response) => {state.validPetTypes = response.data;}).catch((error) => {alert(`Error getting pet types:${error}. Is the backend running?`)});
+		// },
 		this.$store.commit("INITIALIZE_LOCAL_STATIC_DB_CACHE");
 	},
 };
