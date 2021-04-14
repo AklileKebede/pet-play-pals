@@ -148,8 +148,13 @@ namespace Capstone.Controllers
             }
             #endregion
 
-            //update participants
-
+            #region update participants
+            bool successfulParticipantUpdate = playdateDao.OverwritePlaydatePetByPlaydateId(playdateId, playdateToUpdate.Participants.Select(pet => pet.PetId).ToList());//yeah lambda!
+            if (!successfulParticipantUpdate)
+            {
+                return StatusCode(500, "Internal Error. Something went wrong when trying to update your playdate! (unsuccessful participant update)");
+            }
+            #endregion
 
             //finally, re-read the playdate from the DB and send it back
 

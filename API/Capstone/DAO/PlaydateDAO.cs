@@ -34,6 +34,8 @@ namespace Capstone.DAO
         private const string SQL_IS_PET_ATTENDING_PLAYDATE = "select * from playdate_pet where playdate_id = @playdateId and pet_id = @petId;";
         private const string SQL_ADD_PET_TO_PLAYDATE = "insert into playdate_pet(playdate_id, pet_id) Values(@playdateId, @petId);";
         private const string SQL_REMOVE_PET_FROM_PLAYDATE = "delete from playdate_pet where playdate_id = @playdateId and pet_id = @petId;";
+        private const string SQL_OVERWRITE_PLAYDATE_PET_BY_PLAYDATE_ID = "begin transaction; delete from playdate_pet where playdate_id = @playdateId; insert into playdate_pet (playdate_id, pet_id) values {0}; commit transaction";
+
         //update playdate
 
         public PlaydateDAO(string connectionString)
@@ -473,8 +475,7 @@ namespace Capstone.DAO
         }
 
         //overwrites the playdate_pet_type_permitted table with provided values
-        public bool OverwritePlaydatePetTypePermittedByPlaydateId(int playdateId, Dictionary<int, bool> petTypesPermitted
-            )
+        public bool OverwritePlaydatePetTypePermittedByPlaydateId(int playdateId, Dictionary<int, bool> petTypesPermitted)
         {
             bool isSuccessful = false;
             try
@@ -507,6 +508,41 @@ namespace Capstone.DAO
             return isSuccessful;
         }
 
+        //overwrite the playdate_pet table with the provided valyes. basically adding particiapnt pets to the playdate
+        public bool OverwritePlaydatePetByPlaydateId(int playdateId, List<int> petIds)
+        {
+            bool isSuccessful = false;
+            try
+            {
+
+                //;
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.Parameters.AddWithValue("@playdateId", playdateId);
+                    List<string> sqlValuesToInsert = new List<string>();
+                    int i = 0;
+                    foreach (int petId in petIds)
+                    {
+                        sqlValuesToInsert.Add($"(@playdateId,@petId{i})");
+                        cmd.Parameters.AddWithValue($"@petId{i}", petId);
+                        i++;
+                    }
+                    cmd.CommandText = String.Format(SQL_OVERWRITE_PLAYDATE_PET_BY_PLAYDATE_ID, string.Join(",", sqlValuesToInsert));
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected > 0) { isSuccessful = true; }
+                }
+
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            return isSuccessful;
+        }
 
         private Playdate RowToObject(SqlDataReader rdr)
         {

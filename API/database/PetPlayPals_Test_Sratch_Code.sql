@@ -45,3 +45,10 @@ begin transaction;delete from playdate_pet_type_permitted where playdate_id = @p
 select * from playdate_pet where playdate_id = @playdateId and pet_id = @petId;
 
 delete from playdate_pet where playdate_id = @playdateId and pet_id = @petId;
+
+select * from fullPlaydate
+select * from playdate
+
+--update playdate by ID
+select * from playdate_pet
+begin transaction; delete from playdate_pet where playdate_id = @playdateId; insert into playdate_pet (playdate_id, pet_id) values {0}; commit transaction;
