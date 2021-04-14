@@ -436,7 +436,7 @@ namespace Capstone.DAO
             pet.Breed = Convert.ToString(rdr["pet_breed"]);
             pet.Color = Convert.ToString(rdr["color"]);
             pet.Bio = Convert.ToString(rdr["bio"]);
-            pet.PetImageUrl = Convert.ToString(rdr["pet_image_url"]);
+            pet.imgUrl = Convert.ToString(rdr["pet_image_url"]);
             Dictionary<int, string> Personalities = GetPersonalitiesByPetId(pet.PetId);
             pet.Personalities = Personalities.Values.ToArray();
             pet.PersonalityIds = Personalities.Keys.ToArray();

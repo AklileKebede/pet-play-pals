@@ -87,7 +87,7 @@ create table pet(
 	pet_breed varchar(20),
 	color varchar(20) null,
 	bio varchar(300),
-	pet_image_url varchar(50),
+	pet_image_url varchar(2000),
 
 
 	constraint PK_pet primary key (pet_id),
