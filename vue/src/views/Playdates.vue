@@ -86,9 +86,9 @@
 			<h2>Search Results</h2>
 			<ul>
 				<li v-for="playdate in playdates" v-bind:key="playdate.id">
-					<playdate-details
+					<playdate-preview
 						v-bind:playdate="playdate"
-					></playdate-details>
+					></playdate-preview>
 				</li>
 			</ul>
 
@@ -103,11 +103,11 @@ import PlaydatesService from "@/services/PlaydatesService";
 import "@/cssStyles/style.css";
 // import PlaydateMap from "../components/PlaydateMap.vue";
 import MapSearchbox from "../components/MapSearchBox.vue";
-import PlaydateDetails from "../components/PlaydateDetails.vue";
+import PlaydatePreview from "../components/PlaydatePreview.vue";
 
 export default {
 	name: "playdates",
-	components: { MapSearchbox, PlaydateDetails },
+	components: { MapSearchbox, PlaydatePreview },
 	data() {
 		return {
 			playdates: {},

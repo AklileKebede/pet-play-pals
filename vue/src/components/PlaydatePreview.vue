@@ -7,8 +7,8 @@
 			<li>
 				Participating Pets:
 				<ul>
-					<li v-for="pet in playdate.pets" v-bind:key="pet">
-						{{ pet.petName }}|{{ pet.petType }}
+					<li v-for="(pet) in playdate.participants" v-bind:key="pet">
+						<pet-details v-bind:pet="pet"></pet-details>
 					</li>
 				</ul>
 			</li>
@@ -19,11 +19,13 @@
 </template>
 
 <script>
+import PetDetails from './PetDetails.vue';
 export default {
+	components: { PetDetails },
 	data() {
 		return {};
 	},
-	name: "playdate-details",
+	name: "playdate-preview",
 	props: {
 		playdate: Object,
 	},

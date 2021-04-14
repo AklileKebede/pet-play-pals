@@ -49,7 +49,7 @@
         <h2>My Playdates</h2>
         <ul>
           <li v-for="playdate in playdates" v-bind:key="playdate.id">
-            <playdate-details v-bind:playdate="playdate"></playdate-details>
+            <playdate-preview v-bind:playdate="playdate"></playdate-preview>
             <!-- <router-link
 							v-bind:to="{
 								name: 'EditPlaydate',
@@ -71,11 +71,11 @@
 import PetDetails from "../components/PetDetails.vue";
 import PetService from "@/services/PetsService";
 import PlaydatesService from "@/services/PlaydatesService";
-import PlaydateDetails from "@/components/PlaydateDetails.vue";
+import PlaydatePreview from "@/components/PlaydatePreview.vue";
 
 
 export default {
-  components: { PetDetails, PlaydateDetails},
+  components: { PetDetails, PlaydatePreview},
   name: "profile",
   data() {
     return {
