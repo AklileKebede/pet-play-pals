@@ -15,11 +15,11 @@
 							v-bind:value="key"
 						>
 							{{ item }}
-							<input
-								type="checkbox"
-								v-bind:value="key"
-								v-model="filterParams.petTypesPermitted[key]"
-							/>
+							<select v-model="filterParams.petTypesPermitted[key]" onChange="if (this.value == '') {}">
+								<option value=True>Allowed</option>
+								<option value="">-</option>
+								<option value=False>Disallowed</option>
+							</select>
 						</li>
 					</ul>
 				</td>
@@ -74,9 +74,10 @@
 			<h2>Search Results</h2>
 			<ul>
 				<li v-for="playdate in playdates" v-bind:key="playdate.id">
-					<playdate-details v-bind:playdate="playdate"></playdate-details>
+					<playdate-details
+						v-bind:playdate="playdate"
+					></playdate-details>
 				</li>
-
 			</ul>
 
 			<!-- Shows below the list of playdates , TODO need to change to show on a search page-->
@@ -90,7 +91,7 @@ import PlaydatesService from "@/services/PlaydatesService";
 import "@/cssStyles/style.css";
 // import PlaydateMap from "../components/PlaydateMap.vue";
 import MapSearchbox from "../components/MapSearchBox.vue";
-import PlaydateDetails from '../components/PlaydateDetails.vue';
+import PlaydateDetails from "../components/PlaydateDetails.vue";
 
 export default {
 	name: "playdates",
@@ -103,7 +104,7 @@ export default {
 	},
 	methods: {
 		getData() {
-			this.playdates = {}
+			this.playdates = {};
 			this.filterParams.searchCenter = this.$store.state.currentMapMarker;
 			PlaydatesService.getPlaydates(this.filterParams).then((resp) => {
 				this.playdates = resp.data;
