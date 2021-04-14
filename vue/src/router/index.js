@@ -38,6 +38,14 @@ const router = new Router({
 			}
 		},
 		{
+			path: '/playdates/:playdateId',
+			name: 'playdates',
+			component: Playdates,
+			meta: {
+				requiresAuth: false
+			}
+		},
+		{
 			path: '/createPlaydate',
 			name: 'createPlaydate',
 			component: CreatePlaydate,
