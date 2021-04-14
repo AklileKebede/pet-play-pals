@@ -7,7 +7,7 @@ import Register from '@/views/Register.vue'
 import store from '@/store/index'
 import Profile from '@/views/Profile.vue'
 import Playdates from '@/views/Playdates.vue'
-import createPlaydate from '@/views/CreatePlaydate'
+import CreatePlaydate from '@/views/CreatePlaydate'
 import PlaydateMapView from '@/views/PlaydateMapView.vue'
 import PetForm from '@/components/PetForm.vue'
 import EditPet from '@/components/EditPet.vue'
@@ -40,7 +40,10 @@ const router = new Router({
 		{
 			path: '/createPlaydate',
 			name: 'createPlaydate',
-			component: createPlaydate
+			component: CreatePlaydate,
+			meta: {
+				requiresAuth: false
+			}
 		},
 		{
 			path: '/',
