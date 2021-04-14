@@ -45,8 +45,8 @@ export default new Vuex.Store({
 			axios.defaults.headers.common = {};
 		},
 		INITIALIZE_LOCAL_STATIC_DB_CACHE(state) {
-			PetsService.getAllPersonalities().then((response) => {state.validPersonalities = response.data;});
-			PetsService.getAllPetTypes().then((response) => {state.validPetTypes = response.data;});
+			PetsService.getAllPersonalities().then((response) => {state.validPersonalities = response.data;}).catch((error) => {alert(`Error getting pet personalities. Is the backend running?`)});
+			PetsService.getAllPetTypes().then((response) => {state.validPetTypes = response.data;}).catch((error) => {alert(`Error getting pet types. Is the backend running?`});
 		},
 		SET_CURRENT_MAP_MARKER(state,latLanLocation) {
 			state.currentMapMarker = latLanLocation;
