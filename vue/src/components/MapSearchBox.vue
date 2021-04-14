@@ -101,7 +101,7 @@ export default {
 				}
 				marker.setPosition(place.geometry.location);
 				//when the marker is changed, lets update our displayed coords in the HTML
-				this.$store.commit("SET_CURRENT_MAP_MARKER",{lat:place.geometry.location.lat(),lng:place.geometry.location.lng()},address:);
+				this.$store.commit("SET_CURRENT_MAP_MARKER",{lat:place.geometry.location.lat(),lng:place.geometry.location.lng(),address:place.adr_address(),name:place.name()});
 				this.currentLocation.lat = place.geometry.location.lat();
 				this.currentLocation.lng = place.geometry.location.lng();
 				marker.setVisible(true);
