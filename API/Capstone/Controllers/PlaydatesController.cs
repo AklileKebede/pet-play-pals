@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 namespace Capstone.Controllers
 {
     [Route("[controller]")]
+    [Authorize]
     [ApiController]
     public class PlaydatesController : AuthorizedControllerBase
     {
@@ -96,6 +97,9 @@ namespace Capstone.Controllers
                 playdateToAdd.location.LocationId = LocationIdOnDB;
 
             }
+            //set the userID of the new playdate to the currently logged in user
+            playdateToAdd.UserId = this.UserId;
+
             //now the location of the playdate should be properly in the DB
 
             int playdateId = playdateDao.AddPlaydate(playdateToAdd);

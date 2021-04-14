@@ -15,7 +15,7 @@ namespace Capstone.DAO
         private IPetDAO petDAO;
         private const string SQL_GET_ALL_PLAYDATES = "select * from fullPlaydate";
         private const string SQL_GETPLAYDATEBYID = "select * from fullPlaydate where playdate_id = @playdate_id;";
-        private const string SQL_ADDPLAYDATE = "insert into playdate (start_date_time, end_date_time user_id, location_id) values (@startDateTime, @endDateTime, @userId, @location_id); select @@IDENTITY;";
+        private const string SQL_ADDPLAYDATE = "insert into playdate (start_date_time, end_date_time, user_id, location_id) values (@startDateTime, @endDateTime, @userId, @location_id); select @@IDENTITY;";
         private const string SQL_GET_PLAYDATES_BY_USERID = "select * from fullPlaydate where user_id = @userId;";
         //used to help builda fully featured playdate object
         private const string SQL_GET_PET_TYPES_PERMITTED_BY_PLAYDATE_ID = "select * from playdate_pet_type_permitted where playdate_id = @playdateId";
@@ -249,7 +249,7 @@ namespace Capstone.DAO
             }
             catch (SqlException)
             {
-                return playdateId;
+                throw;
             }
 
             return playdateId;
@@ -333,7 +333,7 @@ namespace Capstone.DAO
                     int i = 0;
                     foreach(KeyValuePair<int,bool> kvp in personalitiesPermitted)
                     {
-                        sqlValuesToInsert.Add($"@playdateId,@personalityId{i},@personalityIdIsPermitted{i}");
+                        sqlValuesToInsert.Add($"(@playdateId,@personalityId{i},@personalityIdIsPermitted{i})");
                         cmd.Parameters.AddWithValue($"@personalityId{i}", kvp.Key);
                         cmd.Parameters.AddWithValue($"@personalityIdIsPermitted{i}", kvp.Value);
                         i++;
@@ -368,7 +368,7 @@ namespace Capstone.DAO
                     int i = 0;
                     foreach (KeyValuePair<int, bool> kvp in petTypesPermitted)
                     {
-                        sqlValuesToInsert.Add($"@playdateId,@petTypeId{i},@petTypeIdIsPermitted{i}");
+                        sqlValuesToInsert.Add($"(@playdateId,@petTypeId{i},@petTypeIdIsPermitted{i})");
                         cmd.Parameters.AddWithValue($"@petTypeId{i}", kvp.Key);
                         cmd.Parameters.AddWithValue($"@petTypeIdIsPermitted{i}", kvp.Value);
                         i++;
