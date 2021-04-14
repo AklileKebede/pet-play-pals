@@ -26,3 +26,12 @@ declare @centerLng as float=-81.5;
 declare @radius as float=-1
 
 select playdate_id,distance_km,distance_mi from (select *, (distance_km * 0.62137)as distance_mi from (select *,dbo.Haversine_km(@centerLat,@centerLng,lat,lng) as distance_km from fullPlaydate)as km) as fullPlaydate_and_distance where( (distance_km <= @radius) or (@radius =-1) )
+
+
+--overwrite playdate_personality_Permitted
+
+declare @playdateId as int=1;
+declare @permitted as bit=1;
+begin transaction;delete from playdate_personality_permitted where playdate_id = @playdateId;insert into playdate_personality_permitted (playdate_id,personality_id,personality_id_is_permitted) values {0};commit transaction;
+--overwrite playdate_pet_type_permitted
+begin transaction;delete from playdate_pet_type_permitted where playdate_id = @playdateId;insert into playdate_pet_type_permitted (playdate_id, pet_type_id, pet_type_id_is_permitted) values {0};commit transaction;

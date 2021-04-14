@@ -26,6 +26,10 @@ namespace Capstone.DAO
         private const string SQL_GET_PLAYDATE_IDS_BY_PERMITTED_PERSONALITIES_ARRAY = "select distinct playdate.playdate_id from playdate join playdate_personality_permitted as ppp on playdate.playdate_id = ppp.playdate_id where (((personality_id_is_permitted = 1) and(personality_id in ({0}))) or(-1 in ({0})))";
         private const string SQL_GET_PLAYDATE_IDS_BY_PROHIBITED_PERSONALITIES_ARRAY = "select distinct playdate.playdate_id from playdate join playdate_personality_permitted as ppp on playdate.playdate_id = ppp.playdate_id where (((personality_id_is_permitted = 0) and(personality_id in ({0}))) or(-1 in ({0})))";
         private const string SQL_GET_PLAYDATE_IDS_BY_DISTANCE_FROM_CENTER_POINT = "select playdate_id from (select *, (distance_km * 0.62137)as distance_mi from (select *,dbo.Haversine_km(@centerLat,@centerLng,lat,lng) as distance_km from fullPlaydate)as km) as fullPlaydate_and_distance where( (distance_km <= @radius) or (@radius =-1) )";//todo: maybe make this only use km on backend. we can convert to miles on front end
+        //these are for inserting the restructions for pet types and personalities
+        private const string SQL_OVERWRITE_PLAYDATE_PERSONALITY_PERMITTED_BY_PLAYDATE_ID = "begin transaction;delete from playdate_personality_permitted where playdate_id = @playdateId;insert into playdate_personality_permitted (playdate_id,personality_id,personality_id_is_permitted) values {0};commit transaction;";
+        private const string SQL_OVERWRITE_PLAYDATE_PET_TYPE_PERMITTED_BY_PLAYDATE_ID = "begin transaction;delete from playdate_pet_type_permitted where playdate_id = @playdateId;insert into playdate_pet_type_permitted (playdate_id, pet_type_id, pet_type_id_is_permitted) values {0};commit transaction;";
+
         public PlaydateDAO(string connectionString)
         {
             this.connectionString = connectionString;
@@ -101,7 +105,7 @@ namespace Capstone.DAO
                     cmd.Parameters.AddWithValue("@centerLat", filter.searchCenter.Lat);
                     cmd.Parameters.AddWithValue("@centerLng", filter.searchCenter.Lng);
                     cmd.Parameters.AddWithValue("@radius", filter.searchRadius);
-        
+
 
                     #endregion
 
@@ -234,6 +238,12 @@ namespace Capstone.DAO
                     cmd.Parameters.AddWithValue("@location_id", playdateToAdd.location.LocationId);
                     playdateId = Convert.ToInt32(cmd.ExecuteScalar());
                     playdateToAdd.PlaydateId = playdateId;
+                    bool petTypeSuccess = OverwritePlaydatePetTypePermittedByPlaydateId(playdateId, playdateToAdd.petTypesPermitted);
+                    bool personalitySuccess = OverwritePlaydatePersonalityPermittedByPlaydateId(playdateId, playdateToAdd.personalitiesPermitted);
+                    if (!petTypeSuccess || !personalitySuccess)
+                    {
+                        playdateId = -1;
+                    }
 
                 }
             }
@@ -306,7 +316,74 @@ namespace Capstone.DAO
             return personalitiesPermitted;
         }
 
+        //overwrites the playdate_personaliy_permitted table with provided valyes
+        public bool OverwritePlaydatePersonalityPermittedByPlaydateId(int playdateId, Dictionary<int, bool> personalitiesPermitted)
+        {
+            bool isSuccessful = false;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.Parameters.AddWithValue("@playdateId", playdateId);
+                    List<string> sqlValuesToInsert = new List<string>();
+                    int i = 0;
+                    foreach(KeyValuePair<int,bool> kvp in personalitiesPermitted)
+                    {
+                        sqlValuesToInsert.Add($"@playdateId,@personalityId{i},@personalityIdIsPermitted{i}");
+                        cmd.Parameters.AddWithValue($"@personalityId{i}", kvp.Key);
+                        cmd.Parameters.AddWithValue($"@personalityIdIsPermitted{i}", kvp.Value);
+                        i++;
+                    }
+                    cmd.CommandText= String.Format(SQL_OVERWRITE_PLAYDATE_PERSONALITY_PERMITTED_BY_PLAYDATE_ID, string.Join(",", sqlValuesToInsert));
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected > 0) { isSuccessful = true; }
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            return isSuccessful;
+        }
 
+        //overwrites the playdate_pet_type_permitted table with provided values
+        public bool OverwritePlaydatePetTypePermittedByPlaydateId(int playdateId, Dictionary<int, bool> petTypesPermitted
+            )
+        {
+            bool isSuccessful = false;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand();
+                    cmd.Connection = conn;
+                    cmd.CommandType = System.Data.CommandType.Text;
+                    cmd.Parameters.AddWithValue("@playdateId", playdateId);
+                    List<string> sqlValuesToInsert = new List<string>();
+                    int i = 0;
+                    foreach (KeyValuePair<int, bool> kvp in petTypesPermitted)
+                    {
+                        sqlValuesToInsert.Add($"@playdateId,@petTypeId{i},@petTypeIdIsPermitted{i}");
+                        cmd.Parameters.AddWithValue($"@petTypeId{i}", kvp.Key);
+                        cmd.Parameters.AddWithValue($"@petTypeIdIsPermitted{i}", kvp.Value);
+                        i++;
+                    }
+                    cmd.CommandText = String.Format(SQL_OVERWRITE_PLAYDATE_PET_TYPE_PERMITTED_BY_PLAYDATE_ID, string.Join(",", sqlValuesToInsert));
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected > 0) { isSuccessful = true; }
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            return isSuccessful;
+        }
 
 
         private Playdate RowToObject(SqlDataReader rdr)
