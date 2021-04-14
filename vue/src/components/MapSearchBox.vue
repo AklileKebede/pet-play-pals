@@ -101,6 +101,7 @@ export default {
 				}
 				marker.setPosition(place.geometry.location);
 				//when the marker is changed, lets update our displayed coords in the HTML
+				this.$store.commit("SET_CURRENT_MAP_MARKER",{lat:place.geometry.location.lat(),lng:place.geometry.location.lng()});
 				this.currentLocation.lat = place.geometry.location.lat();
 				this.currentLocation.lng = place.geometry.location.lng();
 				marker.setVisible(true);
@@ -110,8 +111,6 @@ export default {
 					place.formatted_address;
 				infowindow.open(this.map, marker);
 
-				//add many markers
-				this.getPlaydates();
 			});
 		},
 		addMarkers() {
@@ -133,6 +132,8 @@ export default {
 	created() {
 		this.initMap();
 		this.addMarkers();
+		//on map load, we need to clear out the current map marker from the store
+		this.$store.commit("SET_CURRENT_MAP_MARKER",{});
 	},
 };
 </script>

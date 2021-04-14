@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export default {
 	getPlaydates(filterParams){
-		return axios.get("/playdates", {params:filterParams})
+		return axios.post("/playdates/search", filterParams)
 	},
 	updatePlaydate(playdateId, playdate) {
 		return axios.put(`/playdates/${playdateId}`, playdate)

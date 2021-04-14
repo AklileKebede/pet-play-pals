@@ -41,7 +41,7 @@ namespace Capstone.Controllers
         /// </summary>
         /// <returns>a list of all <see cref="Playdate"/> objects in the database</returns>
         [AllowAnonymous]
-        [HttpGet("search")]
+        [HttpPost("search")]
         public ActionResult<List<Playdate>> GetPlaydates(PlaydateSearchFilter filter)
         {
             List<Playdate> playdates = playdateDao.GetPlaydates(filter);
