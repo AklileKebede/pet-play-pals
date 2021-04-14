@@ -15,9 +15,9 @@
 							v-bind:value="key"
 						>
 							{{ item }}
-							<select v-model="filterParams.petTypesPermitted[key]" onChange="if (this.value == '') {}">
+							<select v-model="filterParams.petTypesPermitted[key]" v-bind:onChange="alert('change'); if (value == '') {delete filterParams.petTypesPermitted[key]; alert('blank')}">
 								<option value=True>Allowed</option>
-								<option value="">-</option>
+								<option value=''>-</option>
 								<option value=False>Disallowed</option>
 							</select>
 						</li>
