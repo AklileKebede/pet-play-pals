@@ -1,7 +1,16 @@
 <template>
-  <div>
-    <form id="creatPlaydate" v-on:submit.prevent="submitForm">
+  <div id="createPlaydate">
+    <form id="playdateForm" v-on:submit.prevent="submitForm">
       <h1>Create New Playdate</h1>
+      <li>
+        <label for="description">Playdate Discription:</label>
+        <textarea
+          id="description"
+          v-model="playdate.description"
+          placeholder="Please add playdate description (including but not limited to arrival details, changes to playdate, activity details, and etc."
+          style="width: -webkit-fill-available"
+        ></textarea>
+      </li>
       <li>
         Pet Type Allowed:
         <ul>
@@ -40,28 +49,28 @@
         <map-searchbox></map-searchbox>
       </li>
       <button type="submit" class="smallGreenButton">Submit</button>
+      <router-link
+        to="/home/profile"
+        tag="button"
+        id="creatPlaydate"
+        class="smallGreenButton"
+        >Cancel</router-link
+      >
     </form>
-    <router-link
-      to="/home/profile"
-      tag="button"
-      id="creatPlaydate"
-      class="smallGreenButton"
-      >Cancel</router-link
-    >
+
     <div id="searchMap" class="bubble foggy-gray-bg">
-      <!-- <playdate-map></playdate-map> -->
       <div class="map" id="map" />
     </div>
   </div>
 
   <!-- make me a new playdate
-	location
-	map
+	location +
+	map +
 	playdate organizer
-	time
+	time 
 	whoch pet
-	pet types acceptable
-	delet
+	pet types acceptable +
+	delete
 	-->
 </template>
 
@@ -101,5 +110,21 @@ input:invalid + span:after {
 input:valid + span:after {
   content: "✓";
   padding-left: 5px;
+}
+
+#playdateForm {
+  grid-area: playdateForm;
+}
+#searchMap {
+  grid-area: searchMap;
+}
+
+div#createPlaydate {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-areas:
+    "playdateForm searchMap"
+    "playdateForm searchMap";
+  grid-gap: 10px;
 }
 </style>
