@@ -55,6 +55,18 @@ insert into pet(user_id, pet_name, birthday, sex, pet_type_id, pet_breed, color,
 
 select * from pet
 
+--hard coding cloud image urls 
+--HAMzo
+update pet set pet_image_url = 'https://res.cloudinary.com/ddmt8rec2/image/upload/v1618412266/wrrjdgfadk2ibszskjxr.jpg?width=507&height=676' where pet_id = 4;
+--Rambone 
+update pet set pet_image_url = 'https://res.cloudinary.com/ddmt8rec2/image/upload/v1618428860/68897527-D531-4714-A9D4-26F2F48DD1E2_bwqsfh.jpg' where pet_id = 1;
+--Maggie
+update pet set pet_image_url = 'https://res.cloudinary.com/ddmt8rec2/image/upload/v1618428815/maggie_zp000x.jpg' where pet_id = 2;
+--Pippin
+update pet set pet_image_url = 'https://res.cloudinary.com/ddmt8rec2/image/upload/v1618429011/hamzo_and_pippin_sbt8o0.jpg' where pet_id = 5;
+--Carl
+update pet set pet_image_url = 'https://res.cloudinary.com/ddmt8rec2/image/upload/v1618428844/Carl_s1gmmz.jpg' where pet_id = 3;
+
 
 
 --connecting pets to play dates

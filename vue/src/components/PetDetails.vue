@@ -13,7 +13,7 @@
         </ul>
       </li>
       <!--this is for adding the pet images -->
-    <li><img v-bind:src="pet.imgUrl" alt="pet profile pic"></li> 
+    <li><img class="profilePic" v-bind:src="pet.imgUrl" alt="pet profile pic"></li> 
     </ul>
   </div>
 </template>
@@ -34,5 +34,10 @@ export default {
   background-color: rgb(80, 66, 19);
   color: burlywood;
 }
+.profilePic{
+  max-height: 200px;
+  max-width: 200px;
+}
+
 
 </style>
