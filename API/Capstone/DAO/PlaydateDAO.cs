@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Capstone.DAO
 {
@@ -17,7 +18,7 @@ namespace Capstone.DAO
         private const string SQL_GETPLAYDATEBYID = "select * from fullPlaydate where playdate_id = @playdate_id;";
         private const string SQL_ADDPLAYDATE = "insert into playdate (start_date_time, end_date_time, user_id, location_id) values (@startDateTime, @endDateTime, @userId, @location_id); select @@IDENTITY;";
         private const string SQL_GET_PLAYDATES_BY_USERID = "select * from fullPlaydate where user_id = @userId;";
-        //used to help builda fully featured playdate object
+        //used to help build a fully featured playdate object
         private const string SQL_GET_PET_TYPES_PERMITTED_BY_PLAYDATE_ID = "select * from playdate_pet_type_permitted where playdate_id = @playdateId";
         private const string SQL_GET_PERSONALITIES_PERMITTED_BY_PLAYDATE_ID = "select * from playdate_personality_permitted where playdate_id = @playdateId";
         //these are for playdate filtering. They will need to be parameterized first before you can actually use them
@@ -26,9 +27,14 @@ namespace Capstone.DAO
         private const string SQL_GET_PLAYDATE_IDS_BY_PERMITTED_PERSONALITIES_ARRAY = "select distinct playdate.playdate_id from playdate join playdate_personality_permitted as ppp on playdate.playdate_id = ppp.playdate_id where (((personality_id_is_permitted = 1) and(personality_id in ({0}))) or(-1 in ({0})))";
         private const string SQL_GET_PLAYDATE_IDS_BY_PROHIBITED_PERSONALITIES_ARRAY = "select distinct playdate.playdate_id from playdate join playdate_personality_permitted as ppp on playdate.playdate_id = ppp.playdate_id where (((personality_id_is_permitted = 0) and(personality_id in ({0}))) or(-1 in ({0})))";
         private const string SQL_GET_PLAYDATE_IDS_BY_DISTANCE_FROM_CENTER_POINT = "select playdate_id from (select *, (distance_km * 0.62137)as distance_mi from (select *,dbo.Haversine_km(@centerLat,@centerLng,lat,lng) as distance_km from fullPlaydate)as km) as fullPlaydate_and_distance where( (distance_km <= @radius) or (@radius =-1) )";//todo: maybe make this only use km on backend. we can convert to miles on front end
-        //these are for inserting the restructions for pet types and personalities
+        //these are for inserting the restrictions for pet types and personalities
         private const string SQL_OVERWRITE_PLAYDATE_PERSONALITY_PERMITTED_BY_PLAYDATE_ID = "begin transaction;delete from playdate_personality_permitted where playdate_id = @playdateId;insert into playdate_personality_permitted (playdate_id,personality_id,personality_id_is_permitted) values {0};commit transaction;";
         private const string SQL_OVERWRITE_PLAYDATE_PET_TYPE_PERMITTED_BY_PLAYDATE_ID = "begin transaction;delete from playdate_pet_type_permitted where playdate_id = @playdateId;insert into playdate_pet_type_permitted (playdate_id, pet_type_id, pet_type_id_is_permitted) values {0};commit transaction;";
+        //adding a pet to a playdate
+        private const string SQL_IS_PET_ATTENDING_PLAYDATE = "select * from playdate_pet where playdate_id = @playdateId and pet_id = @petId;";
+        private const string SQL_ADD_PET_TO_PLAYDATE = "insert into playdate_pet(playdate_id, pet_id) Values(@playdateId, @petId);";
+        private const string SQL_REMOVE_PET_FROM_PLAYDATE = "delete from playdate_pet where playdate_id = @playdateId and pet_id = @petId;";
+        //update playdate
 
         public PlaydateDAO(string connectionString)
         {
@@ -129,6 +135,122 @@ namespace Capstone.DAO
             }
 
             return playdates;
+        }
+
+
+        //add a pet to a playdate
+        public bool AddPetToPlaydate(int petId, int playdateId)
+        {
+            bool isSuccssful = false;
+            try
+            {
+                if (IsPetAttendingPlaydate(petId, playdateId))
+                {
+                    isSuccssful = true;
+                }
+                else
+                {
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        //before we insert the pet and playdate, lets check if it dosnt already exist
+                        SqlCommand cmd = new SqlCommand(SQL_ADD_PET_TO_PLAYDATE, conn);
+                        cmd.Parameters.AddWithValue("@playdateId", playdateId);
+                        cmd.Parameters.AddWithValue("@petId", petId);
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        isSuccssful = rowsAffected > 0;
+                    }
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            return isSuccssful;
+        }
+        //checks if a given pet is attending a given playdate
+        public bool IsPetAttendingPlaydate(int petId, int playdateId)
+        {
+            bool attending = false;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+
+
+                    SqlCommand cmd = new SqlCommand(SQL_IS_PET_ATTENDING_PLAYDATE, conn);
+                    cmd.Parameters.AddWithValue("@playdateId", playdateId);
+                    cmd.Parameters.AddWithValue("@petId", petId);
+                    SqlDataReader rdr = cmd.ExecuteReader();
+                    if (rdr.Read())
+                    {
+                        attending = true;
+                    }
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            return attending;
+        }
+
+        //remove pet from a playdate
+        public bool RemovePetFromPlaydate(int petId, int playdateId)
+        {
+            bool isSuccssful = false;
+            try
+            {
+
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    //before we insert the pet and playdate, lets check if it dosnt already exist
+                    SqlCommand cmd = new SqlCommand(SQL_REMOVE_PET_FROM_PLAYDATE, conn);
+                    cmd.Parameters.AddWithValue("@playdateId", playdateId);
+                    cmd.Parameters.AddWithValue("@petId", petId);
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    isSuccssful = true;
+
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            return isSuccssful;
+
+        }
+
+        //update playdate
+        public Playdate UpdatePlaydate(Playdate playdateToUpdate)
+        {
+            Playdate updatedPlaydate = null;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("update playdate set start_date_time = @startDateTime, end_date_time = @endDateTime, location_id = @locationId where playdate_id = @playdateId;", conn);
+                    cmd.Parameters.AddWithValue("@startDateTime", playdateToUpdate.StartDateTime);
+                    cmd.Parameters.AddWithValue("@endDateTime", playdateToUpdate.EndDateTime);
+                    cmd.Parameters.AddWithValue("@locationId", playdateToUpdate.location.LocationId);
+                    cmd.Parameters.AddWithValue("@playdateId", playdateToUpdate.PlaydateId);
+                    int rowsAffected = cmd.ExecuteNonQuery();
+                    if (rowsAffected > 0)
+                    {
+                        updatedPlaydate = GetPlaydateById(playdateToUpdate.PlaydateId);
+                    }
+
+                }
+            }
+            catch (SqlException)
+            {
+                throw;
+            }
+            return updatedPlaydate;
         }
 
 
@@ -331,14 +453,14 @@ namespace Capstone.DAO
                     cmd.Parameters.AddWithValue("@playdateId", playdateId);
                     List<string> sqlValuesToInsert = new List<string>();
                     int i = 0;
-                    foreach(KeyValuePair<int,bool> kvp in personalitiesPermitted)
+                    foreach (KeyValuePair<int, bool> kvp in personalitiesPermitted)
                     {
                         sqlValuesToInsert.Add($"(@playdateId,@personalityId{i},@personalityIdIsPermitted{i})");
                         cmd.Parameters.AddWithValue($"@personalityId{i}", kvp.Key);
                         cmd.Parameters.AddWithValue($"@personalityIdIsPermitted{i}", kvp.Value);
                         i++;
                     }
-                    cmd.CommandText= String.Format(SQL_OVERWRITE_PLAYDATE_PERSONALITY_PERMITTED_BY_PLAYDATE_ID, string.Join(",", sqlValuesToInsert));
+                    cmd.CommandText = String.Format(SQL_OVERWRITE_PLAYDATE_PERSONALITY_PERMITTED_BY_PLAYDATE_ID, string.Join(",", sqlValuesToInsert));
                     int rowsAffected = cmd.ExecuteNonQuery();
                     if (rowsAffected > 0) { isSuccessful = true; }
                 }

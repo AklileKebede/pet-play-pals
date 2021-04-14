@@ -46,7 +46,7 @@ import "./cssStyles/header.css";
 import "./cssStyles/leftBar.css";
 export default {
 	created() {
-		// INITIALIZE_LOCAL_STATIC_DB_CACHE(state) {
+		// INITIALIZE_LOCAL_STATIC_DB_CACHE(state) { 
 		// },
 
 

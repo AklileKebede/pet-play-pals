@@ -135,7 +135,8 @@ create table playdate_pet(
 	playdate_id int not null,
 	pet_id int not null,
 	constraint FK_playdate_id foreign key (playdate_id) references playdate (playdate_id),
-	constraint FK_playdate_pet_pet_id foreign key (pet_id) references pet (pet_id)
+	constraint FK_playdate_pet_pet_id foreign key (pet_id) references pet (pet_id),
+	constraint UC_playdate_pet_playdate_id_pet_id unique (playdate_id,pet_id)
 )
 --playdate_personality_permitted relator table
 create table playdate_personality_permitted(

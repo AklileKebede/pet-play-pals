@@ -35,3 +35,13 @@ declare @permitted as bit=1;
 begin transaction;delete from playdate_personality_permitted where playdate_id = @playdateId;insert into playdate_personality_permitted (playdate_id,personality_id,personality_id_is_permitted) values {0};commit transaction;
 --overwrite playdate_pet_type_permitted
 begin transaction;delete from playdate_pet_type_permitted where playdate_id = @playdateId;insert into playdate_pet_type_permitted (playdate_id, pet_type_id, pet_type_id_is_permitted) values {0};commit transaction;
+
+select * from fullPlaydate
+
+select* from "user"
+
+begin transaction;delete from playdate_pet_type_permitted where playdate_id = @playdateId;insert into playdate_pet_type_permitted (playdate_id, pet_type_id, pet_type_id_is_permitted) values @playdateId,@petTypeId0,@petTypeIdIsPermitted0;commit transaction;
+
+select * from playdate_pet where playdate_id = @playdateId and pet_id = @petId;
+
+delete from playdate_pet where playdate_id = @playdateId and pet_id = @petId;
