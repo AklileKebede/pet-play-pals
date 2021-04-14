@@ -23,7 +23,8 @@ namespace Capstone.DAO
         private const string SQL_UPDATE_PET_BY_ID = "update pet set pet_name = @petName, birthday = @birthday, sex = @sex, pet_type_id = @petTypeId, pet_breed = @petBreed, color = @color, bio = @bio where pet_id = @petId;";
         private const string SQL_GET_PETTYPE_ID_BY_PETTYPE = "select * from pet_type where pet_type_name = @petType";
         private const string SQL_GET_PETS_FOR_PLAYDATEID = "select pp.playdate_id,p.* from playdate_pet as pp join fullPet as p on pp.pet_id = p.pet_id where playdate_id = @playdateId";
-
+        private const string SQL_UPDATE_PET_IMAGE_URL = "update pet set pet_image_url = @pet_image_url where pet_id = @pet_id";
+        //private const string SQL_GET_PET_IMAGE_URL_BY_ID = "select pet_image_url from pet where pet_id = @pet_id";
         public PetDAO(string connectionString)
         {
             this.connectionString = connectionString;
@@ -396,6 +397,32 @@ namespace Capstone.DAO
             return participants;
         }
 
+        //Inserts uploaded pet image URL from Cloudnary into database for a particular pet 
+        public int UpdatePetImageUrl(int petId, string url)
+        {
+            int rowsAffected = 0;
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(SQL_UPDATE_PET_IMAGE_URL, conn);
+                    cmd.Parameters.AddWithValue("@pet_image_url", url);
+                    cmd.Parameters.AddWithValue("@pet_id", petId);
+                    rowsAffected = cmd.ExecuteNonQuery();
+                }
+
+            }
+            catch(SqlException)
+            {
+                throw;
+            }
+
+            return rowsAffected;
+        }
+
+
+       
         public Pet RowToObject(SqlDataReader rdr)
         {
             Pet pet = new Pet();
@@ -409,9 +436,11 @@ namespace Capstone.DAO
             pet.Breed = Convert.ToString(rdr["pet_breed"]);
             pet.Color = Convert.ToString(rdr["color"]);
             pet.Bio = Convert.ToString(rdr["bio"]);
+            pet.PetImageUrl = Convert.ToString(rdr["pet_image_url"]);
             Dictionary<int, string> Personalities = GetPersonalitiesByPetId(pet.PetId);
             pet.Personalities = Personalities.Values.ToArray();
             pet.PersonalityIds = Personalities.Keys.ToArray();
+            
 
             return pet;
         }

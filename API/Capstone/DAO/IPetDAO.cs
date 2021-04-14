@@ -17,5 +17,6 @@ namespace Capstone.DAO
         int GetPetTypeId(string petType);
         List<Pet> GetAllPets();
         List<Pet> GetParticipantPetsByPlaydateId(int playdateId);
+        int UpdatePetImageUrl(int petId, string url);
     }
 }

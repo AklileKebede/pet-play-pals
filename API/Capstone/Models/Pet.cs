@@ -20,6 +20,7 @@ namespace Capstone.Models
         public string Bio { get; set; }
         public int[] PersonalityIds { get; set; }
         public string[] Personalities { get; set; }
+        public string PetImageUrl { get; set; }
 
         public static bool AreEquivalent(Pet a, Pet b)
         {

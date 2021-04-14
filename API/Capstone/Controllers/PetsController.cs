@@ -118,7 +118,20 @@ namespace Capstone.Controllers
 
         //get pets by filter. query string
 
+        //Adds a pet image url from Cloudnary into database
+        [HttpPut("/image")]
+        public ActionResult<Pet> AddPetImageURL(Pet pet)
+        {
+            int rowsAffected = petDAO.UpdatePetImageUrl(pet.PetId, pet.PetImageUrl);
+            if (rowsAffected == 1)
+            {
+                Pet petWithUrl = petDAO.GetPetById(pet.PetId);
+                return Ok(petWithUrl);
+            }
+            else return BadRequest();
 
+          
+        }
 
 
     }
