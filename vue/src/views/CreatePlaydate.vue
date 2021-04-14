@@ -33,20 +33,22 @@
 				</select>
 			</li>
 			<li>
-				<label for="dateToPlay">Date</label>
+				<label for="startDate">Start Time:</label>
 
 				<input
-					type="date"
-					id="dateToPlay"
+					type="datetime-local"
+					id="startDate"
+					min="today"
 					v-model="playdate.startDate"
 					placeholder="today"
 				/>
+				<span class="validity"></span>
 			</li>
 			<li>
-				<label for="EndDate">Date</label>
+				<label for="endDate">End Time:</label>
 
 				<input
-					type="date"
+					type="datetime-local"
 					id="endDate"
 					v-model="playdate.endDate"
 					placeholder="today"
@@ -155,4 +157,13 @@ export default {
 </script>
 
 <style scoped>
+input:invalid+span:after {
+    content: '✖';
+    padding-left: 5px;
+}
+
+input:valid+span:after {
+    content: '✓';
+    padding-left: 5px;
+}
 </style>
