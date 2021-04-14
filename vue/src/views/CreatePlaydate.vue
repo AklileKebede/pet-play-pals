@@ -82,7 +82,7 @@ export default {
 	components: { MapSearchbox },
 	data() {
 		return {
-			playdate: { petTypesPermitted: {}, personalitiesPermitted: {} },
+			playdate: { petTypesPermitted: {}, personalitiesPermitted: {}, location: {}},
 		};
 	},
 	computed: {
