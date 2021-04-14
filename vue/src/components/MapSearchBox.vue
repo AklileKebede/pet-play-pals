@@ -101,7 +101,7 @@ export default {
 				}
 				marker.setPosition(place.geometry.location);
 				//when the marker is changed, lets update our displayed coords in the HTML
-				this.$store.commit("SET_CURRENT_MAP_MARKER",{lat:place.geometry.location.lat(),lng:place.geometry.location.lng()});
+				this.$store.commit("SET_CURRENT_MAP_MARKER",{lat:place.geometry.location.lat(),lng:place.geometry.location.lng()},address:);
 				this.currentLocation.lat = place.geometry.location.lat();
 				this.currentLocation.lng = place.geometry.location.lng();
 				marker.setVisible(true);
@@ -114,7 +114,7 @@ export default {
 			});
 		},
 		addMarkers() {
-			PlaydatesService.getPlaydates().then((response) => {
+			PlaydatesService.getPlaydates({}).then((response) => {
 				this.playdates = response.data;
 				for (let playdate of this.playdates) {
 					this.markers.push(
@@ -131,7 +131,9 @@ export default {
 	},
 	created() {
 		this.initMap();
-		this.addMarkers();
+		//todo: load the playdates to display. thius dont work so good atm
+		//this.addMarkers();
+
 		//on map load, we need to clear out the current map marker from the store
 		this.$store.commit("SET_CURRENT_MAP_MARKER",{});
 	},

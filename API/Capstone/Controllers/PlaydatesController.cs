@@ -77,9 +77,14 @@ namespace Capstone.Controllers
         [HttpPost()]
         public ActionResult<Playdate> CreatePlaydate(Playdate playdateToAdd)
         {
+            //check if the playdate object is fully formed
+            if(playdateToAdd.location == null)
+            {
+                return BadRequest("The playdate did not have a valid location");
+            }
 
             //if a location ID was not specified, but location data was, we need to check if a similar location already exists in the DB
-            if (playdateToAdd.location.LocationId == -1)
+             if (playdateToAdd.location.LocationId == -1)
             {
                 //lets look for a similar location
                 int LocationIdOnDB = locationDao.GetIdByLocation(playdateToAdd.location);
