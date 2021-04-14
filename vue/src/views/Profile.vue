@@ -23,7 +23,7 @@
       <div id="petList" class="bubble foggy-gray-bg">
         <h2>My Pets</h2>
         <ul>
-          <li v-for="pet in pets" v-bind:key="pet.id">
+          <li v-for="(pet) in pets" v-bind:key="pet.id">
             <pet-details v-bind:pet="pet"></pet-details>
             <router-link
               v-bind:to="{
@@ -152,16 +152,17 @@ export default {
      * The getSuccess method is called when vdropzone-success event is fired
      ******************************************************************************************/
     getSuccess(file, response) {
-      const imgUrl = response.secure_url; // store the url for the uploaded image
-      this.$emit("image-upload", imgUrl); // fire custom event with image url in case someone cares
+      const uploadedImgUrl = response.secure_url; // store the url for the uploaded image
+      this.pets[0].imgUrl = uploadedImgUrl;
+      this.addNewPetPhoto(this.pets[0]);
+      this.$emit("image-upload", uploadedImgUrl); // fire custom event with image url in case someone cares
     },
     // This method is for images 
-    addNewPetPhoto(){
-      PetService.addNewPetPhoto({userId: this.currentUser.userId}). then(
-        (response) => {
-          this.pets = response.data;
-        }
-      )
+    addNewPetPhoto(pet){
+      PetService.addNewPetPhoto(pet).then((respnse)=>{
+      })
+
+      
     },
 
   },
