@@ -12,6 +12,7 @@ import PlaydateMapView from '@/views/PlaydateMapView.vue'
 import PetForm from '@/components/PetForm.vue'
 import EditPet from '@/components/EditPet.vue'
 import EditUsername from '@/components/EditUsername.vue'
+import playdateDetailsView from '../views/PlaydateDetailsView'
 
 
 Vue.use(Router)
@@ -39,8 +40,8 @@ const router = new Router({
 		},
 		{
 			path: '/playdates/:playdateId',
-			name: 'playdates',
-			component: Playdates,
+			name: 'playdateDetails',
+			component: playdateDetailsView,
 			meta: {
 				requiresAuth: false
 			}

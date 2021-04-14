@@ -1,5 +1,5 @@
 <template>
-	<div class="petDetails">
+	<div id="petDetails" class="petDetails bubble foggy-gray-bg">
 		<ul>
 			<li>Name: {{ pet.petName }}</li>
 			<li>Bio: {{ pet.bio }}</li>
@@ -43,10 +43,7 @@ export default {
 </script>
 
 <style scoped>
-.petDetails {
-	background-color: rgb(80, 66, 19);
-	color: burlywood;
-}
+
 .profilePic {
 	max-height: 200px;
 	max-width: 200px;
