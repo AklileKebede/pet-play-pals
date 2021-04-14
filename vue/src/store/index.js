@@ -24,7 +24,7 @@ export default new Vuex.Store({
 		user: currentUser || {},
 		validPersonalities: {},
 		validPetTypes: {},
-		// currentMapMarker: {} || lan && lat
+		currentMapMarker: {},
 
 	},
 	mutations: {
@@ -50,6 +50,7 @@ export default new Vuex.Store({
 		},
 		SET_CURRENT_MAP_MARKER(state,latLanLocation) {
 			state.currentMapMarker = latLanLocation;
+			
 		}
 	},
 })
