@@ -17,6 +17,7 @@ namespace Capstone.Models
         public Dictionary<int, bool> petTypesPermitted { get; set; }
         public Dictionary<int, bool> personalitiesPermitted { get; set; }
         public List<Pet> Participants { get; set; }
+        public string UserName { get; set; }
 
 
 

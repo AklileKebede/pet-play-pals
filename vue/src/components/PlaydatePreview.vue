@@ -2,26 +2,17 @@
 	<div>
 		<ul>
 			<li>Playdate Id: {{ playdate.playdateId }}</li>
-			<li>Date: {{ playdate.date }}</li>
-			<li>Playdate Organizer: {{ playdate.userId }}</li>
-			<li>
-				Participating Pets:
-				<ul>
-					<li v-for="(pet) in playdate.participants" v-bind:key="pet">
-						<pet-details v-bind:pet="pet"></pet-details>
-					</li>
-				</ul>
-			</li>
+			<li>Start Date: {{ playdate.startDateTime }}</li>
+			<li>End Date: {{ playdate.endDateTime }}</li>
+			<li>Playdate Organizer: {{ playdate.userName }}</li>
 			<li>Location: {{ playdate.location.address }}</li>
-			<li></li>
 		</ul>
 	</div>
 </template>
 
 <script>
-import PetDetails from './PetDetails.vue';
 export default {
-	components: { PetDetails },
+	components: {},
 	data() {
 		return {};
 	},

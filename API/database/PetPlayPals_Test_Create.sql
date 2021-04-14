@@ -163,7 +163,9 @@ select pet.*, pet_type.pet_type_name from pet join pet_type on pet.pet_type_id =
 go
 
 create view fullPlaydate as 
-select p.*, l.name as location_name, address, lat, lng from playdate as p join location as l on p.location_id = l.location_id;
+	select p.*,u.username, l.name as location_name, address, lat, lng from playdate as p
+	join location as l on p.location_id = l.location_id
+	join "user" as u on p.user_id = u.user_id;
 go
 
 create view playdateIdAndPetType as 

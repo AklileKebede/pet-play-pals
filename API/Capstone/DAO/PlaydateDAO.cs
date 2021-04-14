@@ -406,6 +406,7 @@ namespace Capstone.DAO
                 Description = Convert.ToString(rdr["description"]),
                 petTypesPermitted = GetPetTypesPermittedByPlaydateId(playdateId),
                 personalitiesPermitted = GetPersonalitiesPermittedByPlaydateId(playdateId),
+                UserName = Convert.ToString(rdr["username"]),
                 Participants = petDAO.GetParticipantPetsByPlaydateId(playdateId)
             };
 
