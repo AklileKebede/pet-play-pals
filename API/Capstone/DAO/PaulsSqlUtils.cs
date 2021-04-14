@@ -13,7 +13,7 @@ namespace Capstone.DAO
         public SqlParameter[] Parameters { get { return this.parameters.ToArray(); } }
         public ParameterizedSqlArray(string snippet, List<arrayType> values, string uniquePrefix)
         {
-            //this will hold our return value: a parameterized snippit of a SQL command, and a dict of params and valyes to add to your SqlCommand
+            //this will hold our return value: a parameterized snippit of a SQL command, and a dict of params and values to add to your SqlCommand
             List<string> paramNames = new List<string>();
             int i = 0;
             foreach (arrayType element in values)

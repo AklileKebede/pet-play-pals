@@ -13,5 +13,7 @@ namespace Capstone.DAO
         Playdate GetPlaydateById(int playdateId);
         List<Playdate> GetPlaydates(PlaydateSearchFilter filter);
         List<Playdate> GetPlaydatesByUserId(int userId);
+        bool OverwritePlaydatePersonalityPermittedByPlaydateId(int playdateId, Dictionary<int, bool> personalitiesPermitted);
+        bool OverwritePlaydatePetTypePermittedByPlaydateId(int playdateId, Dictionary<int, bool> petTypesPermitted);
     }
 }
