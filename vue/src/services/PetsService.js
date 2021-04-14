@@ -20,6 +20,10 @@ export default {
 	addNewPet(pet) {
 		return axios.post("/pets", pet);
 	},
+	// this method is for images
+	addNewPetPhoto(pet_image_url, imgUrl){
+		return axios.put(`/pets/${pet_image_url}`, imgUrl)
+	}
 
 
 

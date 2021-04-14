@@ -155,6 +155,15 @@ export default {
       const imgUrl = response.secure_url; // store the url for the uploaded image
       this.$emit("image-upload", imgUrl); // fire custom event with image url in case someone cares
     },
+    // This method is for images 
+    addNewPetPhoto(){
+      PetService.addNewPetPhoto({userId: this.currentUser.userId}). then(
+        (response) => {
+          this.pets = response.data;
+        }
+      )
+    },
+
   },
   created() {
     this.getPets();

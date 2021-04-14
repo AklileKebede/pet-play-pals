@@ -12,6 +12,8 @@
           <li v-for="personality in pet.personalities" v-bind:key = "personality">{{personality}}</li>
         </ul>
       </li>
+      <!-- this is for adding the pet images -->
+      <!-- <li><img src="{{pet.pet_image_url}}" alt=""></li> -->
     </ul>
   </div>
 </template>
