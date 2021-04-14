@@ -70,11 +70,8 @@
         Location:
         <map-searchbox></map-searchbox>
       </li>
-      <button
-        type="submit"
-        class="smallGreenButton"
-        onclick="compareDateTime()"
-      >
+      <button type="submit" class="smallGreenButton">
+        <!-- onclick="compareDateTime" -->
         Submit
       </button>
       <router-link
@@ -144,21 +141,21 @@ export default {
         }
       }
     },
-    compareDateTime() {
-      let startTime = this.playdate.startDatetime;
-      let endTime = this.playdate.endDatetime;
-      if (startTime > endTime) {
-        alert(
-          "Playdate start time is greater then end time, please make sure playdate ends after it starts"
-        );
-      }
-      if (startTime === endTime) {
-        alert(
-          "Playdate start Time is equal to end time, please make sure playdate ends after it starts"
-        );
-      }
-      console.log(startTime);
-    },
+    // compareDateTime() {
+    //   let startTime = this.playdate.startDatetime;
+    //   let endTime = this.playdate.endDatetime;
+    //   if (startTime > endTime) {
+    //     alert(
+    //       "Playdate start time is greater then end time, please make sure playdate ends after it starts"
+    //     );
+    //   }
+    //   if (startTime === endTime) {
+    //     alert(
+    //       "Playdate start Time is equal to end time, please make sure playdate ends after it starts"
+    //     );
+    //   }
+    //   console.log(startTime);
+    // },
   },
   created() {},
 };
