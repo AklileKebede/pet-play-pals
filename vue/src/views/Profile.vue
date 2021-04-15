@@ -48,21 +48,9 @@
       <div id="playdateList" class="bubble foggy-gray-bg">
         <h2>My Playdates</h2>
         <p>Playdates organized by me:</p>
-        <ul>
-          <li v-for="playdate in playdates" v-bind:key="playdate.id">
-            <playdate-preview v-bind:playdate="playdate"></playdate-preview>
-            <!-- <router-link
-							v-bind:to="{
-								name: 'EditPlaydate',
-								params: {  },
-							}"
-							tag="button"
-							id="editPlaydate"
-							class="smallGreenButton"
-							>Edit Playdate</router-link
-						> -->
-          </li>
-        </ul>
+		<div id="myPlayDates">
+			<playdate-preview v-for="playdate in playdates" v-bind:key="playdate.id" v-bind:playdate="playdate"></playdate-preview>
+		</div>
       </div>
     </div>
   </div>
@@ -132,5 +120,9 @@ ul {
   list-style-type: none;
   margin: auto;
   list-style-position: outside;
+}div#myPlayDates {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 }
 </style>
