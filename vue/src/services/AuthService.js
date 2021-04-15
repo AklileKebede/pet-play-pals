@@ -1,9 +1,17 @@
 import axios from 'axios';
+import axiosRetry from 'axios-retry'
+
+
 
 const http = axios.create(
 	{// Base URL of every endpoint that we will be calling
 		baseURL: process.env.VUE_APP_REMOTE_API
 	});
+
+axiosRetry(http, {
+	retries: 15,
+	retryCondition: true
+});
 export default {
 
 	login(user) {
