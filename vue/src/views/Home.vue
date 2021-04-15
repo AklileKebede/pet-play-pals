@@ -55,6 +55,8 @@ export default {
 #description {
   grid-area: description;
   font-size: 25px;
+    color: #02262b;
+    font-weight: bolder;
   
 }
 
