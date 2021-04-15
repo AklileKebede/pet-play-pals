@@ -59,13 +59,11 @@ namespace Capstone.DAO
                     //Lets start building this insane SQL query
                     StringBuilder queryBuilder = new StringBuilder(SQL_GET_ALL_PLAYDATES);
                     //start the big ol' WHERE clause
-                    queryBuilder.Append(" where(");
+                    queryBuilder.Append(" where( ");
                     #region filter on userId
-                    if (filter.userId != -1)
-                    {
-                        queryBuilder.Append("(user_id = @userId)");
-                        cmd.Parameters.AddWithValue("@userId", filter.userId);
-                    }
+
+                    queryBuilder.Append("(@userId = -1 OR user_id = @userId)");
+                    cmd.Parameters.AddWithValue("@userId", filter.userId);
                     #endregion
 
                     #region filter on allowed personalities
