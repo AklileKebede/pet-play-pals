@@ -1,5 +1,7 @@
 <template>
-	<div class="petDetails bubble">
+
+	<div id="petDetails" class="petDetails bubble foggy-gray-bg">
+
 		<ul>
 			<li>Name: {{ pet.petName }}</li>
 			<li>Bio: {{ pet.bio }}</li>
@@ -44,14 +46,13 @@ export default {
 
 <style scoped>
 .petDetails{
-    height: fit-content;
-    width: fit-content;
     list-style-type: none;
     margin: 0;
     padding: 0;
     padding: 20px;
     background-color: #0D7685;
 }
+
 .profilePic {
 	max-height: 200px;
 	max-width: 200px;
@@ -59,6 +60,9 @@ export default {
 }
 ul{
   list-style: none;
+  width: 50%;
+  margin: auto;
+  
 }
 
 </style>

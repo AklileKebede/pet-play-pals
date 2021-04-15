@@ -127,4 +127,8 @@ div#profileDetails {
   grid-template-areas: "userDetails petList playdateList";
   grid-gap: 10px;
 }
+ul{
+  list-style-type: none;
+  margin: auto;
+}
 </style>
