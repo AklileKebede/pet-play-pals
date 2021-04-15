@@ -23,7 +23,7 @@
       <div id="petList" class="bubble foggy-gray-bg">
         <h2>My Pets</h2>
         <ul>
-          <li v-for="(pet) in pets" v-bind:key="pet.id">
+          <li v-for="pet in pets" v-bind:key="pet.id">
             <pet-details v-bind:pet="pet"></pet-details>
             <router-link
               v-bind:to="{
@@ -47,6 +47,7 @@
       </div>
       <div id="playdateList" class="bubble foggy-gray-bg">
         <h2>My Playdates</h2>
+        <p>Playdates organized by me:</p>
         <ul>
           <li v-for="playdate in playdates" v-bind:key="playdate.id">
             <playdate-preview v-bind:playdate="playdate"></playdate-preview>
@@ -73,9 +74,8 @@ import PetService from "@/services/PetsService";
 import PlaydatesService from "@/services/PlaydatesService";
 import PlaydatePreview from "@/components/PlaydatePreview.vue";
 
-
 export default {
-  components: { PetDetails, PlaydatePreview},
+  components: { PetDetails, PlaydatePreview },
   name: "profile",
   data() {
     return {
@@ -103,7 +103,6 @@ export default {
         }
       );
     },
-
   },
   created() {
     this.getPets();
@@ -123,13 +122,15 @@ export default {
 }
 div#profileDetails {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-areas: "userDetails petList playdateList";
+  /* grid-template-columns: 1fr 1fr 1fr; */
+  grid-template-areas:
+    "userDetails userDetails"
+    "petList playdateList";
   grid-gap: 10px;
 }
-ul{
+ul {
   list-style-type: none;
   margin: auto;
-  list-style-position:outside;
+  list-style-position: outside;
 }
 </style>
