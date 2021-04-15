@@ -80,12 +80,12 @@ insert into personality(personality_name) values
 create table pet(
 	pet_id int identity(1,1) NOT NULL,
 	user_id int NOT NULL,
-	pet_name varchar(20) NOT NULL,
+	pet_name varchar(30) NOT NULL,
 	birthday Date NOT NULL,
 	sex char NOT NULL,
 	pet_type_id int not null,
-	pet_breed varchar(20),
-	color varchar(20) null,
+	pet_breed varchar(50),
+	color varchar(50) null,
 	bio varchar(300),
 	pet_image_url varchar(2000),
 
