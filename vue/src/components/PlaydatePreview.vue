@@ -6,7 +6,7 @@
 			<li>End Date: {{ playdate.endDateTime }}</li>
 			<li>Location: {{ playdate.location.address }}</li>
 			<li>Playdate Organizer: {{ playdate.userName }}</li>
-			<li><router-link v-bind:to="{ name: 'playdateDetails',params:{playdateId:playdate.playdateId} }">See Playdate Details</router-link></li>
+			<li><router-link  v-if="$store.state.token != ''" v-bind:to="{ name: 'playdateDetails',params:{playdateId:playdate.playdateId} }">See Playdate Details</router-link></li>
 			
 		</ul>
 	</div>
