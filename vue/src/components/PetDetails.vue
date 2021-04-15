@@ -22,13 +22,11 @@
 				</ul>
 			</li>
 			<!--this is for adding the pet images -->
-			<li>
 				<img
 					class="profilePic bubble"
 					v-bind:src="pet.imgUrl"
 					alt="pet profile pic"
 				/>
-			</li>
 		</ul>
 	</div>
 </template>
@@ -55,11 +53,11 @@ export default {
 
 .profilePic {
 	max-height: 200px;
-	max-width: 200px;
+	max-width: 300px;
+  align-content: center;
   margin: 10px;
 }
 ul{
-  list-style: none;
   width: 50%;
   margin: auto;
   

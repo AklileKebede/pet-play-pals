@@ -130,5 +130,6 @@ div#profileDetails {
 ul{
   list-style-type: none;
   margin: auto;
+  list-style-position:outside;
 }
 </style>
