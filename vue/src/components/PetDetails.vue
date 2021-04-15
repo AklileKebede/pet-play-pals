@@ -57,10 +57,6 @@ export default {
   align-content: center;
   margin: 10px;
 }
-ul{
-  width: 50%;
-  margin: auto;
-  
-}
+
 
 </style>
