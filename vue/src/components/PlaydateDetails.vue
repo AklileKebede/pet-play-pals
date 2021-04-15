@@ -63,6 +63,7 @@ export default {
 				this.playdate
 			).then((resp) => {
 				this.playdate = resp.data;
+				alert("Changes submitted")
 			});
 		},
 		getPets() {

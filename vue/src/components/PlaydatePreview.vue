@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="bubble foggy-gray-bg">
 		<ul>
 			<li>Playdate Id: {{ playdate.playdateId }}</li>
 			<li>Start Date: {{ playdate.startDateTime }}</li>

@@ -38,13 +38,14 @@
 						>
 							{{ item }}
 							<select
-								v-model="filterParams.personalitiesPermitted[key]"
+								v-model="
+									filterParams.personalitiesPermitted[key]
+								"
 							>
 								<option value="True">Allowed</option>
 								<option value="null">-</option>
 								<option value="False">Disallowed</option>
 							</select>
-
 						</li>
 					</ul>
 				</td>
@@ -84,13 +85,9 @@
 		</div>
 		<div id="searchResults" class="bubble foggy-gray-bg">
 			<h2>Search Results</h2>
-			<ul>
-				<li v-for="playdate in playdates" v-bind:key="playdate.id">
-					<playdate-preview
-						v-bind:playdate="playdate"
-					></playdate-preview>
-				</li>
-			</ul>
+			<div id="searchResultsList">
+				<playdate-preview v-for="playdate in playdates" v-bind:key="playdate.id" v-bind:playdate="playdate"></playdate-preview>
+			</div>
 
 			<!-- Shows below the list of playdates , TODO need to change to show on a search page-->
 		</div>
@@ -190,5 +187,10 @@ div#playdateSearch {
 		"searchFunction searchMap"
 		"searchResults searchResults";
 	grid-gap: 10px;
+}
+div#searchResultsList {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 }
 </style>
