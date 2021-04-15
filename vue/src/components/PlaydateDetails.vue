@@ -18,6 +18,7 @@
 		</div>
 		<div id="addRemovePets" class="bubble foggy-gray-bg">
 			<h2>Add your pets to this playdate</h2>
+			<button v-on:click=updatePlaydate() class="smallGreenButton">Submit</button>
 			<div v-for="myPet in myPets" v-bind:key="myPet.petId">
 				<pet-details v-bind:pet="myPet"></pet-details>
 				<label v-bind:for="`addRemove${myPet.petId}`"
