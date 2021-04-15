@@ -60,52 +60,65 @@ namespace Capstone.DAO
                     StringBuilder queryBuilder = new StringBuilder(SQL_GET_ALL_PLAYDATES);
                     //start the big ol' WHERE clause
                     queryBuilder.Append(" where(");
-                    //filter on userId
-                    queryBuilder.Append("(@userId = -1 OR user_id = @userId)");
-                    cmd.Parameters.AddWithValue("@userId", filter.userId);
+                    #region filter on userId
+                    if (filter.userId != -1)
+                    {
+                        queryBuilder.Append("(user_id = @userId)");
+                        cmd.Parameters.AddWithValue("@userId", filter.userId);
+                    }
+                    #endregion
 
                     #region filter on allowed personalities
-                    ParameterizedSqlArray<int> allowedPersonalitiesArray = new ParameterizedSqlArray<int>(
-                        $"and (playdate_id in ({SQL_GET_PLAYDATE_IDS_BY_PERMITTED_PERSONALITIES_ARRAY}))",
-                        filter.allowedPersonalities,
-                        "allowedPersonalities"
-                        );
-                    queryBuilder.Append(allowedPersonalitiesArray.Snippet);
-                    cmd.Parameters.AddRange(allowedPersonalitiesArray.Parameters);
+                    if (filter.allowedPersonalities.Count > 0)
+                    {
+                        ParameterizedSqlArray<int> allowedPersonalitiesArray = new ParameterizedSqlArray<int>(
+                            $"and (playdate_id in ({SQL_GET_PLAYDATE_IDS_BY_PERMITTED_PERSONALITIES_ARRAY}))",
+                            filter.allowedPersonalities,
+                            "allowedPersonalities"
+                            );
+                        queryBuilder.Append(allowedPersonalitiesArray.Snippet);
+                        cmd.Parameters.AddRange(allowedPersonalitiesArray.Parameters);
+                    }
 
                     #endregion
 
                     #region filter on disallowed personalities
-                    ParameterizedSqlArray<int> disallowedPersonalitiesArray = new ParameterizedSqlArray<int>(
-                        $"and (playdate_id in ({SQL_GET_PLAYDATE_IDS_BY_PROHIBITED_PERSONALITIES_ARRAY}))",
-                        filter.disallowedPersonalities,
-                        "disallowedPersonalities"
-                        );
-                    queryBuilder.Append(disallowedPersonalitiesArray.Snippet);
-                    cmd.Parameters.AddRange(disallowedPersonalitiesArray.Parameters);
-
+                    if (filter.disallowedPersonalities.Count > 0)
+                    {
+                        ParameterizedSqlArray<int> disallowedPersonalitiesArray = new ParameterizedSqlArray<int>(
+                            $"and (playdate_id in ({SQL_GET_PLAYDATE_IDS_BY_PROHIBITED_PERSONALITIES_ARRAY}))",
+                            filter.disallowedPersonalities,
+                            "disallowedPersonalities"
+                            );
+                        queryBuilder.Append(disallowedPersonalitiesArray.Snippet);
+                        cmd.Parameters.AddRange(disallowedPersonalitiesArray.Parameters);
+                    }
                     #endregion
 
                     #region filter on allowed petTypes
-                    ParameterizedSqlArray<int> allowedPetTypesArray = new ParameterizedSqlArray<int>(
-                        $"and (playdate_id in ({SQL_GET_PLAYDATE_IDS_BY_PERMITTED_PET_TYPES_ARRAY}))",
-                        filter.allowedPetTypes,
-                        "allowedPetTypes"
-                        );
-                    queryBuilder.Append(allowedPetTypesArray.Snippet);
-                    cmd.Parameters.AddRange(allowedPetTypesArray.Parameters);
-
+                    if (filter.allowedPetTypes.Count > 0)
+                    {
+                        ParameterizedSqlArray<int> allowedPetTypesArray = new ParameterizedSqlArray<int>(
+                            $"and (playdate_id in ({SQL_GET_PLAYDATE_IDS_BY_PERMITTED_PET_TYPES_ARRAY}))",
+                            filter.allowedPetTypes,
+                            "allowedPetTypes"
+                            );
+                        queryBuilder.Append(allowedPetTypesArray.Snippet);
+                        cmd.Parameters.AddRange(allowedPetTypesArray.Parameters);
+                    }
                     #endregion
 
                     #region filter on disallowed petTypes
-                    ParameterizedSqlArray<int> disallowedPetTypesArray = new ParameterizedSqlArray<int>(
-                        $"and (playdate_id in ({SQL_GET_PLAYDATE_IDS_BY_PROHIBITED_PET_TYPES_ARRAY}))",
-                        filter.disallowedPetTypes,
-                        "disallowedPetTypes"
-                        );
-                    queryBuilder.Append(disallowedPetTypesArray.Snippet);
-                    cmd.Parameters.AddRange(disallowedPetTypesArray.Parameters);
-
+                    if (filter.disallowedPetTypes.Count > 0)
+                    {
+                        ParameterizedSqlArray<int> disallowedPetTypesArray = new ParameterizedSqlArray<int>(
+                            $"and (playdate_id in ({SQL_GET_PLAYDATE_IDS_BY_PROHIBITED_PET_TYPES_ARRAY}))",
+                            filter.disallowedPetTypes,
+                            "disallowedPetTypes"
+                            );
+                        queryBuilder.Append(disallowedPetTypesArray.Snippet);
+                        cmd.Parameters.AddRange(disallowedPetTypesArray.Parameters);
+                    }
                     #endregion
 
                     #region filter by location

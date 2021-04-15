@@ -10,22 +10,7 @@ namespace Capstone.Controllers.searchfilters
     {
         public int userId { get; set; } = -1;
 
-        private Dictionary<int, bool> personalitiesPermitted = new Dictionary<int, bool>();
-        public Dictionary<int, bool> PersonalitiesPermitted
-        {
-            get
-            {
-                if (this.personalitiesPermitted.Count == 0)
-                {
-                    return new Dictionary<int, bool>() { { -1, false } };
-                }
-                else
-                {
-                    return this.personalitiesPermitted;
-                }
-            }
-            set { this.personalitiesPermitted = value; }
-        }
+        public Dictionary<int, bool> personalitiesPermitted = new Dictionary<int, bool>();
 
         public List<int> allowedPersonalities
         {
@@ -33,7 +18,6 @@ namespace Capstone.Controllers.searchfilters
             {
                 List<int> personalites = new List<int>();
                 foreach (KeyValuePair<int, bool> kvp in this.personalitiesPermitted) { if (kvp.Value) { personalites.Add(kvp.Key); } }
-                if (personalites.Count == 0) { personalites.Add(-1); };
                 return personalites;
             }
 
@@ -45,28 +29,11 @@ namespace Capstone.Controllers.searchfilters
             {
                 List<int> personalites = new List<int>();
                 foreach (KeyValuePair<int, bool> kvp in this.personalitiesPermitted) { if (!kvp.Value) { personalites.Add(kvp.Key); } }
-                if (personalites.Count == 0) { personalites.Add(-1); };
                 return personalites;
             }
         }
 
-        private Dictionary<int, bool> petTypesPermitted = new Dictionary<int, bool>();
-
-        public Dictionary<int, bool> PetTypesPermitted
-        {
-            get
-            {
-                if (this.petTypesPermitted.Count == 0)
-                {
-                    return new Dictionary<int, bool>() { { -1, false } };
-                }
-                else
-                {
-                    return this.petTypesPermitted;
-                }
-            }
-            set { this.petTypesPermitted = value; }
-        }
+        public Dictionary<int, bool> petTypesPermitted = new Dictionary<int, bool>();
 
         public List<int> allowedPetTypes
         {
@@ -74,7 +41,6 @@ namespace Capstone.Controllers.searchfilters
             {
                 List<int> petTypes = new List<int>();
                 foreach (KeyValuePair<int, bool> kvp in this.petTypesPermitted) { if (kvp.Value) { petTypes.Add(kvp.Key); } }
-                if (petTypes.Count == 0) { petTypes.Add(-1); };
                 return petTypes;
             }
 
@@ -86,7 +52,6 @@ namespace Capstone.Controllers.searchfilters
             {
                 List<int> petTypes = new List<int>();
                 foreach (KeyValuePair<int, bool> kvp in this.petTypesPermitted) { if (!kvp.Value) { petTypes.Add(kvp.Key); } }
-                if (petTypes.Count == 0) { petTypes.Add(-1); };
                 return petTypes;
             }
         }
