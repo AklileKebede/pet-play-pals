@@ -3,6 +3,7 @@
 	<div id="petDetails" class="petDetails bubble foggy-gray-bg">
 
 		<ul>
+			<li>ID: {{ pet.petId }}</li>
 			<li>Name: {{ pet.petName }}</li>
 			<li>Bio: {{ pet.bio }}</li>
 			<li>Pet Type: {{ pet.petType }}</li>
@@ -47,10 +48,9 @@ export default {
 <style scoped>
 .petDetails{
     list-style-type: none;
-    margin: 0;
-    padding: 0;
     padding: 20px;
     background-color: #0D7685;
+	margin: 10px;
 }
 
 .profilePic {

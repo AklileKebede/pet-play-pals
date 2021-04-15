@@ -16,20 +16,12 @@
 				</ul>
 			</li>
 			<li>
-				<form
-					class="addPetToPlaydate"
-					v-on:submit.prevent="updatePlaydate"
-				>
-					Add your pet to playdate:
-					<ul>
-						<li
-							v-for="(item, key) in $store.state.user"
-							v-bind:key="key"
-						>
-							<label v-bind:for="key">{{ item }}</label>
-						</li>
-					</ul>
-				</form>
+				<h2>Add your pets to this playdate</h2>
+				<div v-for="myPet in myPets" v-bind:key="myPet">
+					<pet-details v-bind:pet="myPet"></pet-details>
+					<button class="smallGreenButton" v-if="!playdate.participants.find((p)=>{p.petId === myPet.petId})" v-on:click="addPet(myPet)">Add pet</button>
+					<button class="smallGreenButton" v-if="playdate.participants.find((p)=>{p.petId === myPet.petId})" v-on:click="removePet(myPet)">remove pet</button>
+				</div>
 			</li>
 		</ul>
 	</div>
@@ -37,17 +29,18 @@
 
 <script>
 import PlaydatesService from "../services/PlaydatesService.js";
-import petDetails from '../components/PetDetails'
+import petDetails from "../components/PetDetails";
+import PetService from '../services/PetsService'
 
 export default {
 	name: "playdate-details",
-	components:{petDetails},
-	props:{
-		playdate : Object
+	components: { petDetails },
+	props: {
+		playdate: Object,
 	},
 	data() {
 		return {
-			pet: {},
+			myPets: {},
 		};
 	},
 	computed: {
@@ -64,6 +57,21 @@ export default {
 				this.playdate = resp.data;
 			});
 		},
+		getPets() {
+			PetService.getPets({ userId: this.currentUser.userId }).then(
+				(response) => {
+					this.myPets = response.data;
+				}
+			);
+		},
+		addPet(petToAdd){
+			this.playdate.participants.push(petToAdd);
+		},
+		removePet(petToRemove){
+			this.playdate.participants.delete(petToRemove);
+		},
+	},created(){
+		this.getPets();
 	}
 };
 </script>
