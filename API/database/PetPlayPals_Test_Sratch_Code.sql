@@ -54,3 +54,5 @@ select * from playdate_pet
 begin transaction; delete from playdate_pet where playdate_id = @playdateId; begin try insert into playdate_pet (playdate_id, pet_id) values (null,null);end try begin catch end catch; commit transaction;
 
 insert into playdate_personality_permitted (playdate_id,personality_id,personality_id_is_permitted) values {0}
+
+select * from playdate_pet_type_permitted
