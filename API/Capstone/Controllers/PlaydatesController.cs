@@ -133,7 +133,7 @@ namespace Capstone.Controllers
 
             #region update allowed pet types
             //next update allowed pet types
-            bool successfulPetTypesUpdate = playdateDao.OverwritePlaydatePetTypePermittedByPlaydateId(playdateId, playdateToUpdate.petTypesPermitted);
+            bool successfulPetTypesUpdate = playdateDao.OverwritePlaydatePetTypePermittedByPlaydateId(playdateId, playdateToUpdate.PetTypesPermitted);
             if (!successfulPetTypesUpdate)
             {
                 return StatusCode(500, "Internal Error. Something went wrong when trying to update your playdate! (unsuccessful pet type update)");
@@ -141,7 +141,7 @@ namespace Capstone.Controllers
             #endregion
 
             #region update allowed personalities
-            bool successfulPersonalitiesUpdate = playdateDao.OverwritePlaydatePersonalityPermittedByPlaydateId(playdateId, playdateToUpdate.personalitiesPermitted);
+            bool successfulPersonalitiesUpdate = playdateDao.OverwritePlaydatePersonalityPermittedByPlaydateId(playdateId, playdateToUpdate.PersonalitiesPermitted);
             if (!successfulPersonalitiesUpdate)
             {
                 return StatusCode(500, "Internal Error. Something went wrong when trying to update your playdate! (unsuccessful personality update)");

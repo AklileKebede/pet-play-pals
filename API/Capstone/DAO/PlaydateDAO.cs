@@ -28,8 +28,8 @@ namespace Capstone.DAO
         private const string SQL_GET_PLAYDATE_IDS_BY_PROHIBITED_PERSONALITIES_ARRAY = "select distinct playdate.playdate_id from playdate join playdate_personality_permitted as ppp on playdate.playdate_id = ppp.playdate_id where (((personality_id_is_permitted = 0) and(personality_id in ({0}))) or(-1 in ({0})))";
         private const string SQL_GET_PLAYDATE_IDS_BY_DISTANCE_FROM_CENTER_POINT = "select playdate_id from (select *, (distance_km * 0.62137)as distance_mi from (select *,dbo.Haversine_km(@centerLat,@centerLng,lat,lng) as distance_km from fullPlaydate)as km) as fullPlaydate_and_distance where( (distance_km <= @radius) or (@radius =-1) )";//todo: maybe make this only use km on backend. we can convert to miles on front end
         //these are for inserting the restrictions for pet types and personalities
-        private const string SQL_OVERWRITE_PLAYDATE_PERSONALITY_PERMITTED_BY_PLAYDATE_ID = "begin transaction;delete from playdate_personality_permitted where playdate_id = @playdateId;insert into playdate_personality_permitted (playdate_id,personality_id,personality_id_is_permitted) values {0};commit transaction;";
-        private const string SQL_OVERWRITE_PLAYDATE_PET_TYPE_PERMITTED_BY_PLAYDATE_ID = "begin transaction;delete from playdate_pet_type_permitted where playdate_id = @playdateId;insert into playdate_pet_type_permitted (playdate_id, pet_type_id, pet_type_id_is_permitted) values {0};commit transaction;";
+        private const string SQL_OVERWRITE_PLAYDATE_PERSONALITY_PERMITTED_BY_PLAYDATE_ID = "begin transaction;delete from playdate_personality_permitted where playdate_id = @playdateId; begin try insert into playdate_personality_permitted (playdate_id,personality_id,personality_id_is_permitted) values {0};end try begin catch end catch; commit transaction;";
+        private const string SQL_OVERWRITE_PLAYDATE_PET_TYPE_PERMITTED_BY_PLAYDATE_ID = "begin transaction;delete from playdate_pet_type_permitted where playdate_id = @playdateId; begin try insert into playdate_pet_type_permitted (playdate_id, pet_type_id, pet_type_id_is_permitted) values {0};end try begin catch end catch; commit transaction;";
         //adding a pet to a playdate
         private const string SQL_IS_PET_ATTENDING_PLAYDATE = "select * from playdate_pet where playdate_id = @playdateId and pet_id = @petId;";
         private const string SQL_ADD_PET_TO_PLAYDATE = "insert into playdate_pet(playdate_id, pet_id) Values(@playdateId, @petId);";
@@ -362,8 +362,8 @@ namespace Capstone.DAO
                     cmd.Parameters.AddWithValue("@location_id", playdateToAdd.location.LocationId);
                     playdateId = Convert.ToInt32(cmd.ExecuteScalar());
                     playdateToAdd.PlaydateId = playdateId;
-                    bool petTypeSuccess = OverwritePlaydatePetTypePermittedByPlaydateId(playdateId, playdateToAdd.petTypesPermitted);
-                    bool personalitySuccess = OverwritePlaydatePersonalityPermittedByPlaydateId(playdateId, playdateToAdd.personalitiesPermitted);
+                    bool petTypeSuccess = OverwritePlaydatePetTypePermittedByPlaydateId(playdateId, playdateToAdd.PetTypesPermitted);
+                    bool personalitySuccess = OverwritePlaydatePersonalityPermittedByPlaydateId(playdateId, playdateToAdd.PersonalitiesPermitted);
                     if (!petTypeSuccess || !personalitySuccess)
                     {
                         playdateId = -1;
@@ -464,7 +464,7 @@ namespace Capstone.DAO
                     }
                     cmd.CommandText = String.Format(SQL_OVERWRITE_PLAYDATE_PERSONALITY_PERMITTED_BY_PLAYDATE_ID, string.Join(",", sqlValuesToInsert));
                     int rowsAffected = cmd.ExecuteNonQuery();
-                    if (rowsAffected > 0) { isSuccessful = true; }
+                    isSuccessful = true;
                 }
             }
             catch (SqlException)
@@ -498,7 +498,7 @@ namespace Capstone.DAO
                     }
                     cmd.CommandText = String.Format(SQL_OVERWRITE_PLAYDATE_PET_TYPE_PERMITTED_BY_PLAYDATE_ID, string.Join(",", sqlValuesToInsert));
                     int rowsAffected = cmd.ExecuteNonQuery();
-                    if (rowsAffected > 0) { isSuccessful = true; }
+                    isSuccessful = true;
                 }
             }
             catch (SqlException)
@@ -562,8 +562,8 @@ namespace Capstone.DAO
                     Lng = Convert.ToSingle(rdr["lng"])
                 },
                 Description = Convert.ToString(rdr["description"]),
-                petTypesPermitted = GetPetTypesPermittedByPlaydateId(playdateId),
-                personalitiesPermitted = GetPersonalitiesPermittedByPlaydateId(playdateId),
+                PetTypesPermitted = GetPetTypesPermittedByPlaydateId(playdateId),
+                PersonalitiesPermitted = GetPersonalitiesPermittedByPlaydateId(playdateId),
                 UserName = Convert.ToString(rdr["username"]),
                 Participants = petDAO.GetParticipantPetsByPlaydateId(playdateId)
             };
